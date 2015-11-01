@@ -21,6 +21,6 @@
        session.removeAttribute("err");
        }
        %>
-    <p>Filler home page</p>
+    <p>Ocean Obseravation System Home Page</p>
   </body>
 </html>

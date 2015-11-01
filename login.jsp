@@ -41,9 +41,9 @@ Webpage for logging in, displays form names and servlet error response messages
 		       required="required" /></td>  
           </tr>  
           <tr >                          
-            <td colspan="2" align="center"><input type="submit" 
-						  value="Login" />  
-              <input type="reset" value="Clear" /></td>  
+            <td colspan="2" align="center">
+		<input type="submit" value="Login" />  
+		<input type="reset" value="Clear" /></td>  
           </tr>        
           <tr>  
             <td colspan="2" align="center">
