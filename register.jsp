@@ -23,36 +23,44 @@ Web page for registering a new user
                 <tbody>
                     <tr>
                         <td>First Name:</td>
-                        <td><input type="text" name="fname" value="" /></td>
+                        <td><input type="text" name="fname" 
+                        required="required" maxlength="24"/></td>
                     </tr>
                     <tr>
                         <td>Last Name:</td>
-                        <td><input type="text" name="lname" value="" /></td>
+                        <td><input type="text" name="lname" 
+                        required="required" maxlength="24"/></td>
                     </tr>
                     <tr>
                         <td>Address:</td>
-                        <td><input type="text" name="address" value="" /></td>
+                        <td><input type="text" name="address" 
+                        required="required" /></td>
                     </tr>
                      <tr>
-                        <td>Phone Number:</td>
-                        <td><input type="text" name="phone" value="" /></td>
+                        <td>Phone Number (999-999-9999):</td>
+                        <td><input type="tel" name="phone" 
+                        required="required" pattern='\d{3}[\-]\d{3}[\-]\d{4}'/></td>
                     </tr>
                     <tr>
                         <td>Email:</td>
-                        <td><input type="text" name="email" value="" /></td>
+                        <td><input type="email" name="email" 
+                        required="required" /></td>
                     </tr>
                     </tr>
                      <tr>
                         <td>Role:</td>
-                        <td><input type="text" name="role" value="" /></td>
+                        <td><input type="text" name="role" 
+                        required="required" maxlength="24"/></td>
                     </tr>
                     <tr>
                         <td>Username:</td>
-                        <td><input type="text" name="uname" value="" /></td>
+                        <td><input type="text" name="uname" 
+                        required="required" maxlength="24"/></td>
                     </tr>
                     <tr>
                         <td>Password:</td>
-                        <td><input type="password" name="pass" value="" /></td>
+                        <td><input type="password" name="pass" 
+                        required="required" maxlength="24"/></td>
                     </tr>
                     <tr>
                         <td><input type="submit" value="Submit" /></td>

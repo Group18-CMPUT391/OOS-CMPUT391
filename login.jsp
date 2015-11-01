@@ -31,7 +31,7 @@ Webpage for logging in, displays form names and servlet error response messages
             <table border="1" width="30%" cellpadding="3">
                 <thead>
                     <tr>
-                        <th colspan="2">Returning user login:</th>
+                        <th colspan="2">Returning User Login:</th>
                     </tr>
                 </thead>
                 <tbody>
