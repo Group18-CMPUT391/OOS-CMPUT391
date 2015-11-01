@@ -22,36 +22,36 @@ Web page for registering a new user
                 </thead>
                 <tbody>
                     <tr>
-                        <td>First Name</td>
+                        <td>First Name:</td>
                         <td><input type="text" name="fname" value="" /></td>
                     </tr>
                     <tr>
-                        <td>Last Name</td>
+                        <td>Last Name:</td>
                         <td><input type="text" name="lname" value="" /></td>
                     </tr>
                     <tr>
-                        <td>Address</td>
+                        <td>Address:</td>
                         <td><input type="text" name="address" value="" /></td>
                     </tr>
                      <tr>
-                        <td>Phone Number</td>
+                        <td>Phone Number:</td>
                         <td><input type="text" name="phone" value="" /></td>
                     </tr>
                     <tr>
-                        <td>Email</td>
+                        <td>Email:</td>
                         <td><input type="text" name="email" value="" /></td>
                     </tr>
                     </tr>
                      <tr>
-                        <td>Role</td>
+                        <td>Role:</td>
                         <td><input type="text" name="role" value="" /></td>
                     </tr>
                     <tr>
-                        <td>Username</td>
+                        <td>Username:</td>
                         <td><input type="text" name="uname" value="" /></td>
                     </tr>
                     <tr>
-                        <td>Password</td>
+                        <td>Password:</td>
                         <td><input type="password" name="pass" value="" /></td>
                     </tr>
                     <tr>
