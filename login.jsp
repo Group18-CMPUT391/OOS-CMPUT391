@@ -50,15 +50,15 @@ Webpage for logging in, displays form names and servlet error response messages
                         <td><input type="reset" value="Reset" /></td>
                     </tr>
                     <tr>
-                    		<td colspan="2" align="center">
-			    								<% 
-			 											if (error != null) {
-				 												out.println(error); 
-				 												session.removeAttribute("err");
-			 											}
-			    								%>
-	    									</td>  
-	  								</tr>
+                    	<td colspan="2" align="center">
+			<% 
+			 if (error != null) {
+			   out.println(error); 
+			   session.removeAttribute("err");
+			   }
+			%>
+	    		</td>
+		    </tr>
                 </tbody>
             </table>
             </center>

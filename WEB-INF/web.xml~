@@ -8,11 +8,11 @@
 
     <servlet>
         <servlet-name>loginservlet</servlet-name>
-        <servlet-class>LoginServlet</servlet-class>
+        <servlet-class>loginservlet</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>loginservlet</servlet-name>
         <url-pattern>/loginservlet</url-pattern>
     </servlet-mapping>
-
+   
 </web-app>
