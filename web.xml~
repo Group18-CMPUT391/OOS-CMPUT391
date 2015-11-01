@@ -5,7 +5,7 @@
  http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd"
  version="2.4">
 
-<!--
+
     <servlet>
         <servlet-name>loginservlet</servlet-name>
         <servlet-class>loginservlet</servlet-class>
@@ -14,7 +14,14 @@
         <servlet-name>loginservlet</servlet-name>
         <url-pattern>/loginservlet</url-pattern>
     </servlet-mapping>
+    <servlet>
+        <servlet-name>FirstServlet</servlet-name>
+        <servlet-class>FirstServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>FirstServlet</servlet-name>
+        <url-pattern>/FirstServlet</url-pattern>
+    </servlet-mapping>
 
--->
 
 </web-app>
