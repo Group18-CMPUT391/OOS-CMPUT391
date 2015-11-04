@@ -1,0 +1,4 @@
+INSERT INTO persons Values('29', 'John', 'Choi', 'address', 'email@w.ca', '1234567899');
+
+INSERT INTO persons Values('1', 'Wayne', 'Choi', 'address', 'ema@w.ca', '1234567899');
+

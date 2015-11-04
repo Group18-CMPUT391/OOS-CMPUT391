@@ -1,117 +1,140 @@
+import java.sql.*;
 import javax.servlet.*;
 import javax.servlet.http.*;
 import java.io.*;
 import java.util.*;
-   
-/**
- * Demonstrates session management mechanisms
- * built into the Servlet API. A session is established
- * with the client and user is prompted to enter his/her name.
- * User's name along with the number of times he/she visited
- * the site is stored in the session. This sample uses
- * rewritten URLs for storing session information.
- *
- * NOTE: Cookie support must be turned off in the browser.
- * Refer to your browser documentation on how to turn off
- * cookies
- * From "Java Servlet Programming Bible"
- * Suresh Rajagopalan et al. John Wiley & Sons 2002.
- *
- */
-   
-public class URLSession extends HttpServlet {
-    /**
-     * Handles HTTP GET request
-     */
-    public void doGet( HttpServletRequest request, 
-		       HttpServletResponse response )
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
+
+public class RegServlet extends HttpServlet {
+	private static final String DB_CONNECTION = "jdbc:oracle:thin:@gwynne.cs.ualberta.ca:1521:CRS";
+	private static final String DB_DRIVER = "oracle.jdbc.driver.OracleDriver";
+	private static final String DB_USER = "user";
+	private static final String DB_PASSWORD = "password";
+	
+	public void doGet(HttpServletRequest request, 
+			HttpServletResponse response)
 	throws ServletException, IOException {
-   
-	String name = null;
-	Integer hitCount = null;
-   
-	// Set the content type to HTML
-	response.setContentType( "text/html" );
-   
-	// Get the output stream from the response object
-	PrintWriter out = response.getWriter();
-   
-	// Get the session (Create a new one if required)
-	HttpSession session = request.getSession( true );
-   
-	name = request.getParameter( "name" );
-   
-	// If session is new, this is the first request
-	if( session.isNew() ) {
-	    // Request information from user
-	    out.println( "<HTML>" );
-	    out.println( "<HEAD>" );
-	    out.println( "<TITLE>User information</TITLE>" );
-	    out.println( "</HEAD>" );
-	    out.println( "<BODY>" );
-	    out.println( "<FORM NAME=userform METHOD=post" +
-                    " ACTION=" + 
-			 response.encodeURL( "URLSession" ) + ">" );
-	    out.print  ( "<BR>Please enter your name: " );
-	    out.println( "<INPUT TYPE=text NAME=name>" );
-	    out.println( "<BR><BR><INPUT TYPE=submit>" );
-	    out.println( "</BODY>" );
-	    out.println( "</HTML>" );
-	} else {
-	    // User has submitted the form
-	    // Name will be available in the request,
-	    // store it in the session
-/*
-	    if( name != null ) {
-		session.setAttribute( "name", name );
-		// This is the first request
-		hitCount = new Integer( 1 );
-	    } else {
-		name = (String) session.getAttribute( "name" );
-		hitCount = (Integer) 
-		    session.getAttribute( "hitCount" );
-	    }
-	    session.setAttribute( "hitCount", 
-				  new Integer( hitCount.intValue() + 1 ) );
-*/
-	    // Return the session information to the client
-	    out.println( "<HTML>" );
-	    out.println( "<HEAD>" );
-	    out.println( "<TITLE>Hello " + name + "!</TITLE>" );
-   
-	    out.println( "</HEAD>" );
-	    out.println( "<BODY>" );
-	    out.println( "<H2>Hello " + name + "!</H2>" );
-	    out.println( "You have requested this page " +
-			 hitCount.intValue() + " time(s)!" );
-	    out.println( "<BR><A HREF='" +
-			 response.encodeURL( "URLSession" ) + 
-			 "'>Click here to continue</A>" );
-	    out.println( "</BODY>" );
-	    out.println( "</HTML>" );
+		
+		String fname = null;
+    	String lname = null;
+    	String address = null;
+    	String phone = null;
+    	String email = null;
+    	String role = null;
+    	String uname = null;
+    	String pass = null;
+    	String nuser = null;
+    	int personID;
+    	
+		
+		response.setContentType("text/html");
+		PrintWriter out = response.getWriter();
+		HttpSession session = request.getSession( true );
+		
+		fname = request.getParameter( "fname" );
+    	lname = request.getParameter( "lname" );
+    	address = request.getParameter( "address" );
+    	phone = request.getParameter( "phone" );
+    	email = request.getParameter( "email" );
+    	role = request.getParameter( "role" );
+    	uname = request.getParameter( "uname" );
+    	pass = request.getParameter( "pass" );
+    	nuser = request.getParameter( "nuser" );
+				
+		try {
+			Connection dbConnection = getDBConnection();
+			Statement stmt = dbConnection.createStatement();
+			ResultSet rs;
+			
+			if (nuser.equals("yes")){
+				String checkmail = "SELECT email FROM persons WHERE email = '" + email + "'" ;
+				rs = stmt.executeQuery(checkmail);
+				
+				if (rs.next()){
+					out.println("Email " + email + " is already in the system.");
+				}
+				else {
+					out.println("Added User " + uname + " to the system.");
+					String maxID = "SELECT max(person_id) FROM persons";
+					rs = stmt.executeQuery(maxID);
+					rs.next();
+					personID = rs.getInt(1);
+					personID++;
+					
+					String insertNewPerson = "INSERT INTO persons Values('" + personID + "','" + fname + "','" + lname + "','" + address + "','" + email + "','" + phone + "')";
+			    	stmt.executeUpdate(insertNewPerson);
+			    	
+			    	String insertNewUser = "INSERT INTO users Values('" + uname + "','" + pass + "','" + role + "','" + personID + "', CURRENT_TIMESTAMP)";
+			    	stmt.executeUpdate(insertNewUser);
+				}
+			}
+			else if (nuser.equals("no")) {
+				String checkuname = "SELECT user_name FROM users WHERE user_name = '" + uname + "'" ;
+				rs = stmt.executeQuery(checkuname);
+				
+				if (rs.next()){
+					out.println("User" + uname + " is already in the system.");
+				}
+				else {
+					String getID = "SELECT person_id FROM persons WHERE email = '" + email + "'" ;
+					rs = stmt.executeQuery(getID);
+					
+					while (rs.next()) {
+						personID = rs.getInt("person_id");
+						
+						String insertNewUserOldID = "INSERT INTO users Values('" + uname + "','" + pass + "','" + role + "','" + personID + "', CURRENT_TIMESTAMP)";
+				    	stmt.executeUpdate(insertNewUserOldID);
+				    	
+				    	out.println("Added User " + uname + " to the system.");
+			    	}
+				}
+				
+				
+				
+			}
+		} catch (SQLException e) {
+			System.out.println(e.getMessage());
+			}
 	}
-	// Flush the output stream
-	out.flush();
-   
-	// Close the output stream
-	out.close();
-    }
-   
-    /**
-     * Handles HTTP POST request
-     */
-    public void doPost( HttpServletRequest request, 
-			HttpServletResponse response )
-	throws ServletException, IOException {
-	// Invoke doGet to process this request
-	doGet( request, response );
-    }
-   
-    /**
-     * Returns a brief description about this servlet
-     */
-    public String getServletInfo() {
-	return "Servlet that stores user's name in the Session";
-    }
+
+	private static Connection getDBConnection() {
+
+		Connection dbConnection = null;
+		try {
+			Class.forName(DB_DRIVER);
+		} catch (ClassNotFoundException e) {
+			System.out.println(e.getMessage());
+		}
+		try {
+			dbConnection = DriverManager.getConnection(
+                              DB_CONNECTION, DB_USER,DB_PASSWORD);
+			return dbConnection;
+		} catch (SQLException e) {
+			System.out.println(e.getMessage());
+		}
+		return dbConnection;
+	}
+	
+	  /**
+	    * Handles HTTP POST request
+	    */
+	   public void doPost( HttpServletRequest request, 
+				HttpServletResponse response )
+		throws ServletException, IOException {
+		// Invoke doGet to process this request
+		doGet( request, response );
+	   }
 }
 
+
+////    /**
+////     * Returns a brief description about this servlet
+////     */
+////    public String getServletInfo() {
+////	return "Servlet that stores user's name in the Session";
+////    }
+//}
+//

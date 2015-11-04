@@ -21,7 +21,7 @@ Assume necessary html definitions are already made
 <a href="/oos-cmput391/index.jsp">home</a> | 
 <%
     if (username == null) {
-	out.println("<a href=\"/oos-cmput391/register.jsp\" target=\"popup\" onclick=\"popup(this.href='/oos-cmput391/register.jsp' );return false;\">register</a>");
+	out.println("<a href=\"#\" target=\"popup\" onclick=\"popup(this.href='/oos-cmput391/register.jsp' );return false;\">register</a>");
         out.println(" | <a href=\"/oos-cmput391/login.jsp\">login</a>");
 	out.println(" | <a href=\"/oos-cmput391//help.jsp\">help</a>");
     } else {
