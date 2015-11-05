@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 
 <%  
-   String error = null;  
+   String status = null;  
    try{  
-      error = (String) session.getAttribute("err");  
+      status = (String) session.getAttribute("status");  
    } catch(NullPointerException e) {
       e.printStackTrace();
    }
@@ -11,16 +11,16 @@
 
 <html>
   <head>
-    <title>Main Page</title>
+    <title>HOME</title>
     <jsp:include page="includes/header.jsp"/>
   </head>
   <body>
     <% 
-       if (error != null) {
-       out.println(error);
-       session.removeAttribute("err");
+       if (status != null) {
+	       out.println(status);
+	       session.removeAttribute("status");
        }
        %>
-    <p>Ocean Obseravation System Home Page</p>
+    <h2>Ocean Obseravation System Home Page</h2>
   </body>
 </html>

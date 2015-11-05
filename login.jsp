@@ -5,10 +5,10 @@ Webpage for logging in, displays form names and servlet error response messages
 <!DOCTYPE html>
 
 <%  
-   String error = null;  
+   String status = null;  
    String username = null;
    try{  
-      error = (String) session.getAttribute("err");  
+      status = (String) session.getAttribute("status");  
       username = (String) session.getAttribute("username");
    } catch(NullPointerException e) {
       e.printStackTrace();
@@ -51,14 +51,14 @@ Webpage for logging in, displays form names and servlet error response messages
                     </tr>
                     <tr>
                     	<td colspan="2" align="center">
-			<% 
-			 if (error != null) {
-			   out.println(error); 
-			   session.removeAttribute("err");
-			   }
-			%>
-	    		</td>
-		    </tr>
+							<% 
+								if (status != null) {
+								  out.println(status); 
+								  session.removeAttribute("status");
+								}
+							%>
+	    				</td>
+		    		</tr>
                 </tbody>
             </table>
             </center>
