@@ -54,10 +54,10 @@ public class RegServlet extends HttpServlet {
 				rs = stmt.executeQuery(checkmail);
 				
 				if (rs.next()){
-					out.println("Email " + email + " is already in the system.");
+					session.setAttribute("err","Email " + email + " is already in the system.");
+					response.sendRedirect("/oos-cmput391/existing_user.jsp");
 				}
 				else {
-					out.println("Added User " + uname + " to the system.");
 					String maxID = "SELECT max(person_id) FROM persons";
 					rs = stmt.executeQuery(maxID);
 					rs.next();
@@ -69,6 +69,9 @@ public class RegServlet extends HttpServlet {
 			    	
 			    	String insertNewUser = "INSERT INTO users Values('" + uname + "','" + pass + "','" + role + "','" + personID + "', CURRENT_TIMESTAMP)";
 			    	stmt.executeUpdate(insertNewUser);
+			    	
+			    	session.setAttribute("err","Added User " + uname + " to the system.");
+					response.sendRedirect("/oos-cmput391/existing_user.jsp");
 				}
 			}
 			else if (nuser.equals("no")) {
@@ -76,20 +79,33 @@ public class RegServlet extends HttpServlet {
 				rs = stmt.executeQuery(checkuname);
 				
 				if (rs.next()){
-					out.println("User" + uname + " is already in the system.");
+					session.setAttribute("err","Added User " + uname + " to the system.");
+					response.sendRedirect("/oos-cmput391/existing_user.jsp");
+					
 				}
 				else {
-					String getID = "SELECT person_id FROM persons WHERE email = '" + email + "'" ;
-					rs = stmt.executeQuery(getID);
-					
-					while (rs.next()) {
-						personID = rs.getInt("person_id");
+					String checkmail2 = "SELECT email FROM persons WHERE email = '" + email + "'" ;
+					rs = stmt.executeQuery(checkmail2);
+					if (rs.next()){
+						String getID = "SELECT person_id FROM persons WHERE email = '" + email + "'" ;
+						rs = stmt.executeQuery(getID);
 						
-						String insertNewUserOldID = "INSERT INTO users Values('" + uname + "','" + pass + "','" + role + "','" + personID + "', CURRENT_TIMESTAMP)";
-				    	stmt.executeUpdate(insertNewUserOldID);
-				    	
-				    	out.println("Added User " + uname + " to the system.");
-			    	}
+						while (rs.next()) {
+							personID = rs.getInt("person_id");
+							
+							String insertNewUserOldID = "INSERT INTO users Values('" + uname + "','" + pass + "','" + role + "','" + personID + "', CURRENT_TIMESTAMP)";
+					    	stmt.executeUpdate(insertNewUserOldID);
+					    	
+					    	session.setAttribute("err","Added User " + uname + " to the system.");
+							response.sendRedirect("/oos-cmput391/existing_user.jsp");
+				    	}
+					}
+					else {
+						session.setAttribute("err","Email " + email + " is not in the system.");
+						response.sendRedirect("/oos-cmput391/existing_user.jsp");
+					}
+					
+					
 				}
 				
 				

@@ -4,19 +4,24 @@ Web page for registering a new user
 
 
 <!DOCTYPE html>
+
+<%  
+   String error = null;  
+   String username = null;
+   try{  
+      error = (String) session.getAttribute("err");  
+   } catch(NullPointerException e) {
+      e.printStackTrace();
+   }
+%>  
+
 <html>
     <head>
         <title>Registration (Exising User)</title>
         <center><jsp:include page="includes/header.jsp"/></center>
-        <script>
-        	function target_popup(form) {
-    				window.open('', 'formpopup', 'width=100,height=100,resizeable,scrollbars');
-    				form.target = 'formpopup';
-    			}
-        </script>
     </head>
     <body>
-    	  <form action="regservlet?nuser=no" method="post" onsubmit="target_popup(this)">
+    	  <form action="regservlet?nuser=no" method="post" onsubmit="this">
             <center>
             <table border="1" width="30%" cellpadding="5">
                 <thead>
@@ -53,6 +58,16 @@ Web page for registering a new user
                         <td><input type="submit" value="Submit" /></td>
                         <td><input type="reset" value="Reset" /></td>
                     </tr>
+                    <tr>
+                    	<td colspan="2" align="center">
+			<% 
+			 if (error != null) {
+			   out.println(error); 
+			   session.removeAttribute("err");
+			   }
+			%>
+	    		</td>
+		    </tr>
                 </tbody>
             </table>
             </center>
