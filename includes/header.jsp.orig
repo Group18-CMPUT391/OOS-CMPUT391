@@ -1,13 +1,19 @@
 <!--
 Assume necessary html definitions are already made
 -->
+
 <%@ page import="javax.servlet.http.*" %>
+<%@ page import="util.User" %>
+
 <% 
-   String username = (String) session.getAttribute("username");
-   if (username != null) {
-      out.println("Welcome, " + username);
-   }
+	//User user = (User) session.getAttribute("user");
+	String username = (String) session.getAttribute("username");
+	if (username != null) {
+		out.println("Welcome, " + username);
+		//out.println("Role: " + role);
+	}
 %>
+<<<<<<< HEAD
 <meta charset="utf-8">
   <title>jQuery UI Dialog - Default functionality</title>
   <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
@@ -23,7 +29,16 @@ $( "#register" ).dialog( "open" );
 });
 });
   </script>
+=======
 
+<script>
+	function popup(url) {
+		window.open(url,'name','height=100,width=200');
+		if (window.focus) {newwindow.focus()}
+		return false;
+	}
+</script>
+>>>>>>> 03aaa139714035e6557238f29992ac0be103bbc6
 
 <p>
 <div id="register" title="Registering a User">
@@ -31,8 +46,9 @@ $( "#register" ).dialog( "open" );
 <a href="/oos-cmput391/existing_user.jsp">This is an Existing User</a></div>
 <a href="/oos-cmput391/index.jsp">home</a> | 
 <%
+<<<<<<< HEAD
     if (username == null) {
-	out.println("<a href=\"/oos-cmput391/index.jsp\" id=\"click\">register</a>");
+	out.println("<a href=\"#\" id=\"click\">register</a>");
         out.println(" | <a href=\"/oos-cmput391/login.jsp\">login</a>");
 	out.println(" | <a href=\"/oos-cmput391//help.jsp\">help</a>");
     } else {
@@ -48,6 +64,23 @@ $( "#register" ).dialog( "open" );
 	   out.println(" | <a href=\"/oos-cmput391/adminStats\">admin stats</a>");
 	}
     }
+=======
+	if (username == null) {
+		out.println("<a href=\"/oos-cmput391/register.jsp\" target=\"popup\" onclick=\"popup(this.href='/oos-cmput391/register.jsp' );return false;\">register</a>");
+		out.println(" | <a href=\"/oos-cmput391/login.jsp\">login</a>");
+		out.println(" | <a href=\"/oos-cmput391//help.jsp\">help</a>");
+	} else {
+		out.println("<a href=\"/oos-cmput391/search.jsp\">search</a>");
+		out.println(" | <a href=\"/oos-cmput391/upload.jsp\">upload</a>");
+		out.println(" | <a href=\"/oos-cmput391/subscribe.jsp\">subscribe</a>");
+		out.println(" | <a href=\"/oos-cmput391/account_settings.jsp\">account settings</a>");
+		//out.println(" | <a href=\"/oos-cmput391/help.jsp\">help</a>");
+		out.println(" | <a href=\"/oos-cmput391/logout.jsp\">logout</a>"); 
+		/* if (user.getRole().equals("a")) {
+			out.println(" | <a href=\"/oos-cmput391/adminStats\">admin stats</a>");
+		} */
+	} 
+>>>>>>> 03aaa139714035e6557238f29992ac0be103bbc6
 %>
 </p>
 

@@ -18,7 +18,17 @@ Web page for registering a new user
 <html>
     <head>
         <title>Registration (New User)</title>
+<<<<<<< HEAD
         <center><jsp:include page="includes/header.jsp"/></center>
+=======
+        <script>
+        	function target_popup(form) {
+			window.open('', 'formpopup', 'width=100,height=100,resizeable,scrollbars');
+			form.target = 'formpopup';
+		}
+        </script>
+        
+>>>>>>> 03aaa139714035e6557238f29992ac0be103bbc6
     </head>
     <body>
     	  <form action="regservlet?nuser=yes" method="post" onsubmit="this">
@@ -92,7 +102,5 @@ Web page for registering a new user
             </table>
             </center>
         </form>
-        
-       
     </body>
 </html>

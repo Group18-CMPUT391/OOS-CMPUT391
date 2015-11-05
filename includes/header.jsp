@@ -1,7 +1,10 @@
 <!--
 Assume necessary html definitions are already made
 -->
+
 <%@ page import="javax.servlet.http.*" %>
+<%@ page import="util.User" %>
+
 <% 
    String username = (String) session.getAttribute("username");
    if (username != null) {
