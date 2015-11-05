@@ -4,6 +4,14 @@ Web page for registering a new user
 
 
 <!DOCTYPE html>
+<%  
+   String error = null;  
+   try{  
+      error = (String) session.getAttribute("err");  
+   } catch(NullPointerException e) {
+      e.printStackTrace();
+   }
+%>  
 <html>
     <head>
         <title>Registration</title>

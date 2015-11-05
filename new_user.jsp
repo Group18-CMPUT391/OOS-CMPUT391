@@ -9,9 +9,9 @@ Web page for registering a new user
         <title>Registration (New User)</title>
         <script>
         	function target_popup(form) {
-    				window.open('', 'formpopup', 'width=100,height=100,resizeable,scrollbars');
-    				form.target = 'formpopup';
-    			}
+			window.open('', 'formpopup', 'width=100,height=100,resizeable,scrollbars');
+			form.target = 'formpopup';
+		}
         </script>
         
     </head>
