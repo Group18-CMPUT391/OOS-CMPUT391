@@ -55,7 +55,7 @@ public class RegServlet extends HttpServlet {
 				
 				if (rs.next()){
 					session.setAttribute("err","Email " + email + " is already in the system.");
-					response.sendRedirect("/oos-cmput391/existing_user.jsp");
+					response.sendRedirect("/oos-cmput391/new_user.jsp");
 				}
 				else {
 					String maxID = "SELECT max(person_id) FROM persons";
@@ -71,7 +71,7 @@ public class RegServlet extends HttpServlet {
 			    	stmt.executeUpdate(insertNewUser);
 			    	
 			    	session.setAttribute("err","Added User " + uname + " to the system.");
-					response.sendRedirect("/oos-cmput391/existing_user.jsp");
+					response.sendRedirect("/oos-cmput391/new_user.jsp");
 				}
 			}
 			else if (nuser.equals("no")) {
