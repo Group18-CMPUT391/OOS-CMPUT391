@@ -7,6 +7,7 @@ Web page for registering a new user
 <html>
     <head>
         <title>Registration (Exising User)</title>
+        <center><jsp:include page="includes/header.jsp"/></center>
         <script>
         	function target_popup(form) {
     				window.open('', 'formpopup', 'width=100,height=100,resizeable,scrollbars');

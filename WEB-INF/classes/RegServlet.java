@@ -11,8 +11,8 @@ import java.util.Date;
 public class RegServlet extends HttpServlet {
 	private static final String DB_CONNECTION = "jdbc:oracle:thin:@gwynne.cs.ualberta.ca:1521:CRS";
 	private static final String DB_DRIVER = "oracle.jdbc.driver.OracleDriver";
-	private static final String DB_USER = "user";
-	private static final String DB_PASSWORD = "password";
+	private static final String DB_USER = "wkchoi";
+	private static final String DB_PASSWORD = "Kingfreak95";
 	
 	public void doGet(HttpServletRequest request, 
 			HttpServletResponse response)
