@@ -6,13 +6,17 @@ import java.util.*;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import util.Db;
+
 
 
 public class RegServlet extends HttpServlet {
-	private static final String DB_CONNECTION = "jdbc:oracle:thin:@gwynne.cs.ualberta.ca:1521:CRS";
-	private static final String DB_DRIVER = "oracle.jdbc.driver.OracleDriver";
-	private static final String DB_USER = "wkchoi";
-	private static final String DB_PASSWORD = "Kingfreak95";
+	
+	private HttpSession session;
+	private String username;
+	private String password;
+	private String db_password;
+	private Statement stmt;
 	
 	public void doGet(HttpServletRequest request, 
 		HttpServletResponse response)
@@ -29,7 +33,10 @@ public class RegServlet extends HttpServlet {
 		String nuser = null;
 		int personID;
 
-
+		
+		Db database = new Db();
+		database.connect_db();
+	
 		response.setContentType("text/html");
 		PrintWriter out = response.getWriter();
 		HttpSession session = request.getSession( true );
@@ -45,13 +52,16 @@ public class RegServlet extends HttpServlet {
 		nuser = request.getParameter( "nuser" );
 
 		try {
-			Connection dbConnection = getDBConnection();
-			Statement stmt = dbConnection.createStatement();
+			
+			
+			
+
 			ResultSet rs;
 
 			if (nuser.equals("yes")){
 				String checkmail = "SELECT email FROM persons WHERE email = '" + email + "'" ;
-				rs = stmt.executeQuery(checkmail);
+				rs = database.execute_stmt(checkmail);
+
 
 				if (rs.next()){
 					session.setAttribute("err","Email " + email + " is already in the system.");
@@ -60,16 +70,18 @@ public class RegServlet extends HttpServlet {
 				else {
 					
 					String maxID = "SELECT max(person_id) FROM persons";
-					rs = stmt.executeQuery(maxID);
+					rs = database.execute_stmt(maxID);
 					rs.next();
 					personID = rs.getInt(1);
 					personID++;
 					
 					String insertNewPerson = "INSERT INTO persons Values('" + personID + "','" + fname + "','" + lname + "','" + address + "','" + email + "','" + phone + "')";
-			    	stmt.executeUpdate(insertNewPerson);
+					database.execute_stmt(insertNewPerson);
+
 			    	
 			    	String insertNewUser = "INSERT INTO users Values('" + uname + "','" + pass + "','" + role + "','" + personID + "', CURRENT_TIMESTAMP)";
-			    	stmt.executeUpdate(insertNewUser);
+			    	database.execute_stmt(insertNewUser);
+
 			    	
 			    	session.setAttribute("err","Added User " + uname + " to the system.");
 					response.sendRedirect("/oos-cmput391/new_user.jsp");
@@ -77,7 +89,8 @@ public class RegServlet extends HttpServlet {
 			}
 			else if (nuser.equals("no")) {
 				String checkuname = "SELECT user_name FROM users WHERE user_name = '" + uname + "'" ;
-				rs = stmt.executeQuery(checkuname);
+				rs = database.execute_stmt(checkuname);
+
 				
 				if (rs.next()){
 					session.setAttribute("err","Added User " + uname + " to the system.");
@@ -86,16 +99,19 @@ public class RegServlet extends HttpServlet {
 				}
 				else {
 					String checkmail2 = "SELECT email FROM persons WHERE email = '" + email + "'" ;
-					rs = stmt.executeQuery(checkmail2);
+					rs = database.execute_stmt(checkmail2);
+
 					if (rs.next()){
 						String getID = "SELECT person_id FROM persons WHERE email = '" + email + "'" ;
-						rs = stmt.executeQuery(getID);
+						rs = database.execute_stmt(getID);
+
 						
 						while (rs.next()) {
 							personID = rs.getInt("person_id");
 							
 							String insertNewUserOldID = "INSERT INTO users Values('" + uname + "','" + pass + "','" + role + "','" + personID + "', CURRENT_TIMESTAMP)";
-					    	stmt.executeUpdate(insertNewUserOldID);
+							database.execute_stmt(insertNewUserOldID);
+
 					    	
 					    	session.setAttribute("err","Added User " + uname + " to the system.");
 							response.sendRedirect("/oos-cmput391/existing_user.jsp");
@@ -108,33 +124,12 @@ public class RegServlet extends HttpServlet {
 					
 					
 				}
-				
-				
-				
 			}
 		} catch (SQLException e) {
 			System.out.println(e.getMessage());
 			}
 	}
 
-	private static Connection getDBConnection() {
-
-		Connection dbConnection = null;
-		try {
-			Class.forName(DB_DRIVER);
-		} catch (ClassNotFoundException e) {
-			System.out.println(e.getMessage());
-		}
-		try {
-			dbConnection = DriverManager.getConnection(
-                              DB_CONNECTION, DB_USER,DB_PASSWORD);
-			return dbConnection;
-		} catch (SQLException e) {
-			System.out.println(e.getMessage());
-		}
-		return dbConnection;
-	}
-	
 	  /**
 	    * Handles HTTP POST request
 	    */
