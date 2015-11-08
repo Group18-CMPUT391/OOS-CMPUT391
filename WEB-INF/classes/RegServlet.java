@@ -13,10 +13,6 @@ import util.Db;
 public class RegServlet extends HttpServlet {
 	
 	private HttpSession session;
-	private String username;
-	private String password;
-	private String db_password;
-	private Statement stmt;
 	
 	public void doGet(HttpServletRequest request, 
 		HttpServletResponse response)

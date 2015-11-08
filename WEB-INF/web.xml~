@@ -24,13 +24,6 @@
         <url-pattern>/regservlet</url-pattern>
     </servlet-mapping>
     
-    <servlet>
-        <servlet-name>sensorservlet</servlet-name>
-        <servlet-class>SensorServlet</servlet-class>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>sensorservlet</servlet-name>
-        <url-pattern>/sensorservlet</url-pattern>
-    </servlet-mapping>
+    
 
 </web-app>

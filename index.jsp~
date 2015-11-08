@@ -12,7 +12,7 @@
 <html>
   <head>
     <title>HOME</title>
-    <center><jsp:include page="includes/header.jsp"/></center>
+    <jsp:include page="includes/header.jsp"/>
   </head>
   <body>
     <% 
