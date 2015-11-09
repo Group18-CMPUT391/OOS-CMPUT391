@@ -21,6 +21,8 @@
 	       session.removeAttribute("status");
        }
        %>
-    <h2>Ocean Obseravation System Home Page</h2>
+    <center>
+        <h2>Ocean Obseravation System Home Page</h2>
+    </center>
   </body>
 </html>

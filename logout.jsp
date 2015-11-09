@@ -5,17 +5,18 @@ Handles loging out by destroying the session variable.
 -->
 
 <%@ page import="javax.servlet.http.*" %>
+<%@ page import="util.User" %>
 
 <%  
-   String username = null;
+   User user = null;
    try{  
-      username = (String) session.getAttribute("username");
+      user = (User) session.getAttribute("user");
    } catch(NullPointerException e) {
       e.printStackTrace();
    }
-   if (username != null) {
-      session.removeAttribute("username");
-      session.removeAttribute("email");
+   if (user != null) {
+      session.removeAttribute("user");
+      //session.removeAttribute("email");
       /* session.removeAttribute("firstname");
       session.removeAttribute("lastname");
       session.removeAttribute("address");

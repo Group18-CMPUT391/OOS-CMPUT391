@@ -2,8 +2,6 @@
 Webpage for logging in, displays form names and servlet error response messages
 -->
 
-<!DOCTYPE html>
-
 <%  
    String status = null;  
    String username = null;
@@ -22,7 +20,7 @@ Webpage for logging in, displays form names and servlet error response messages
   <head>
     <title>Login Page</title>
     <center>
-    <jsp:include page="includes/header.jsp"/>
+    	<jsp:include page="includes/header.jsp"/>
     </center>
   </head>
   <body>
