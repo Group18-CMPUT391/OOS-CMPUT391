@@ -67,6 +67,7 @@ public class Db {
 		}
 		return null;
 	}
+	
 
 	/**
 	 * Performs the update query execution.

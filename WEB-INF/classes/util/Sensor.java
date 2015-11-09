@@ -11,6 +11,11 @@ import java.util.Date;
 public class Sensor {
 	
 	Db database = new Db();
+	private static final String DB_CONNECTION = "jdbc:oracle:thin:@gwynne.cs.ualberta.ca:1521:CRS";
+	private static final String DB_DRIVER = "oracle.jdbc.driver.OracleDriver";
+	private static final String DB_USER = "wkchoi";
+	private static final String DB_PASSWORD = "Kingfreak95";
+	
 
 	
 	
@@ -39,27 +44,60 @@ public class Sensor {
 		return " ";
 	}
 	
-//	public String UploadAudio (String location, String sensor_type, String description) {
-//		String maxID = "SELECT max(sensor_id) FROM sensor";
-//		rs = database.execute_stmt(maxID);
-//		rs.next();
-//		int sensor_id; = rs.getInt(1);
-//		sensor_id;++;
-//		
-//		String maxAID = "SELECT max(sensor_id) FROM sensor";
-//		rs = database.execute_stmt(maxAID);
-//		rs.next();
-//		int max_Aid; = rs.getInt(1);
-//		max_Aid;++;
-//		
-//		
-//		
-//		String insertNewUser = "INSERT INTO audio_recordings Values('" + max_Aid + "', '" + sensor_id + 
-//				"', 'CURRENT_TIMESTAMP', '" + length + "', '" + description + "', '" + recorded_data + "')";
-//    	database.execute_stmt(insertNewUser);
-//		
-//		
-//	}
+	public String uploadAudio (int recording_id, int sensor_id, String date_created, 
+			int length, String description, InputStream recorded_data) {
+
+		try {
+			
+			SimpleDateFormat format = new SimpleDateFormat( "YYYY-MM-DD" );  // United States style of format.
+			java.util.Date myDate = format.parse( date_created );
+			java.sql.Date sqlDate = new java.sql.Date( myDate.getTime() );
+			
+			Connection dbConnection = getDBConnection();
+			//Statement stmt = dbConnection.createStatement();
+			PreparedStatement statement = dbConnection.prepareStatement("INSERT INTO audio_recordings VALUES(" + recording_id +
+					"," + sensor_id +",?,"+ length + ",'"+ description +"', ?)");   
+			statement.setDate(1,sqlDate);
+			statement.setBlob(2,recorded_data);
+			statement.executeQuery();
+			statement.executeUpdate("commit");
+			return "Audio File Added";
+			 
+//			String insertaudio = "INSERT INTO audio_recordings Values(?,?,?,?,?,?)";
+//			PreparedStatement statement = dbConnection.prepareStatement(insertaudio);
+//			statement.setInt(1, recording_id);
+//	        statement.setInt(2, sensor_id);
+//	        statement.setDate(3, java.sql.Date.valueOf(date_created.replace("T"," ")));
+//	        statement.setInt(4, length);
+//	        statement.setString(5, description);
+//	        statement.setBlob(6, empty_blob());
+//	        statement.executeUpdate();
+//	        statement.executeUpdate("commit");
+//	        return "Audio File Added";
+	        
+		}catch (Exception e) {
+			System.out.println(e.getMessage());
+			}
+		return "Audio File was not added.";
+	}
+	
+	
+	private static Connection getDBConnection() {
+		Connection dbConnection = null;
+		try {
+			Class.forName(DB_DRIVER);
+		}catch (ClassNotFoundException e) {
+			System.out.println(e.getMessage());
+		}
+		try {
+			dbConnection = DriverManager.getConnection(
+					DB_CONNECTION, DB_USER,DB_PASSWORD);
+			return dbConnection;
+		} catch (SQLException e) {
+			System.out.println(e.getMessage());
+			}
+		return dbConnection;
+	}
 //
 //	public String DeleteSensor {
 //	}

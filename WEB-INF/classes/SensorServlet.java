@@ -9,6 +9,10 @@ import java.util.Date;
 import util.Db;
 import util.Sensor;
 
+import org.apache.commons.fileupload.FileItem;
+import org.apache.commons.fileupload.disk.DiskFileItemFactory;
+import org.apache.commons.fileupload.servlet.ServletFileUpload;
+
 public class SensorServlet extends HttpServlet {
 	
 	private HttpSession session;
@@ -17,26 +21,84 @@ public class SensorServlet extends HttpServlet {
 		HttpServletResponse response)
 		throws ServletException, IOException {
 		
+		
 		response.setContentType("text/html");
 		PrintWriter out = response.getWriter();
 		HttpSession session = request.getSession( true );
 		
+		int sensor_id = 0, recording_id = 0, length = 0;
+		String location = null, sensor_type = null, description = null, date_created = null;
+		InputStream fileContent = null;
+
 		
-		String sensor_id = request.getParameter( "sensor_id" );
-		String location = request.getParameter( "location" );
-		String sensor_type = request.getParameter( "sensor_type" );
-		String description = request.getParameter( "description" );
-		int sID = Integer.parseInt(sensor_id);
-		String type = request.getParameter( "type" );
-		
-		Sensor sens = new Sensor();
-		
-		
-		if (type.equals("sensor")) {
-			String querrymessage = sens.newSensor(sID, location, sensor_type, description);
-			session.setAttribute("err", querrymessage);
-			response.sendRedirect("/oos-cmput391/uploadsensor.jsp?type=sensor");
+		try {
+			DiskFileItemFactory factory = new DiskFileItemFactory();
+			ServletFileUpload upload = new ServletFileUpload(factory);
+			
+			List<FileItem> items = upload.parseRequest(request);
+			for (FileItem item : items) {
+				if (item.isFormField()) {
+					if(item.getFieldName().equals("sensor_id"))
+			        {   
+						sensor_id=Integer.parseInt(item.getString());
+			        }
+					if(item.getFieldName().equals("location"))
+			        {   
+						location=item.getString();
+			        }
+					if(item.getFieldName().equals("sensor_type"))
+			        {   
+						sensor_type=item.getString();
+			        }
+					if(item.getFieldName().equals("description"))
+			        {   
+						description=item.getString();
+			        }
+					if(item.getFieldName().equals("recording_id"))
+			        {   
+						recording_id=Integer.parseInt(item.getString());
+			        }
+					if(item.getFieldName().equals("date_created"))
+			        {   
+						date_created=item.getString();
+			        }
+					if(item.getFieldName().equals("length"))
+			        {   
+						length=Integer.parseInt(item.getString());
+			        }
+				}
+				else {
+					fileContent = item.getInputStream();
+				}
+			}
+			
+			
+			String type = request.getParameter( "type" );
+			
+			
+			Sensor sens = new Sensor();
+			
+			if (type.equals("sensor")) {
+				String querrymessage = sens.newSensor(sensor_id, location, sensor_type, description);
+				session.setAttribute("err", querrymessage);
+				response.sendRedirect("/oos-cmput391/uploadsensor.jsp?type=sensor");
+			}
+			else if (type.equals("audio_recordings")) {
+				String querrymessage = sens.uploadAudio (recording_id, sensor_id, date_created, length, description, fileContent);
+				session.setAttribute("err", querrymessage);
+				response.sendRedirect("/oos-cmput391/uploadsensor.jsp?type=audio_recordings");
+			}
+		    
+		    //InputStream recorded_data = item.getInputStream();
+
+			
+		}catch (Exception e) {
+			System.out.println(e.getMessage());
 		}
+		
+
+
+
 			
 	}
 	

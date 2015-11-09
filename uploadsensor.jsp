@@ -23,7 +23,7 @@ Web page for registering a new user
     	String sensortype = request.getParameter("type");
     	
     	if (sensortype.equals("sensor")) {
-    		out.println("<form action=\"sensorservlet?type=sensor\" method=\"post\" onsubmit=\"this\">");
+    		out.println("<form action=\"sensorservlet?type=sensor\" method=\"post\" enctype=\"multipart/form-data\" onsubmit=\"this\">");
     			out.println("<center><table border=\"1\" width=\"30%\" cellpadding=\"5\">");
     				out.println("<thead><tr><th colspan=\"2\">Input New Sensor Information:</th></tr></thead>");
     				out.println("<tbody>");
@@ -49,14 +49,18 @@ Web page for registering a new user
 	    				out.println("</tbody></table></center></form>");
     	}
     	else if (sensortype.equals("audio_recordings")) {
-    		out.println("<form action=\"sensorservlet?type=sensor\" method=\"post\" onsubmit=\"this\">");
+    		out.println("<form action=\"sensorservlet?type=audio_recordings\" method=\"post\" enctype=\"multipart/form-data\" onsubmit=\"this\">");
 			out.println("<center><table border=\"1\" width=\"30%\" cellpadding=\"5\">");
-				out.println("<thead><tr><th colspan=\"2\">Input New Sensor Information:</th></tr></thead>");
+				out.println("<thead><tr><th colspan=\"2\">Input New Audio Information:</th></tr></thead>");
 				out.println("<tbody>");
+					out.println("<tr><td>Recording ID:</td>");
+					out.println("<td><input type=\"number\" name=\"recording_id\" required=\"required\"/></td></tr>");
 					out.println("<tr><td>Sensor ID:</td>");
 					out.println("<td><input type=\"number\" name=\"sensor_id\" required=\"required\"/></td></tr>");
-					out.println("<tr><td>location:</td>");
-					out.println("<td><input type=\"datetime-local\" name=\"date_created\" required=\"required\"/></td></tr>");
+					out.println("<tr><td>Date:</td>");
+					out.println("<td><input type=\"date\" name=\"date_created\" step=\"1\" required=\"required\"/></td></tr>");
+					out.println("<tr><td>length:</td>");
+					out.println("<td><input type=\"number\" name=\"length\" required=\"required\"/></td></tr>");
 					out.println("<tr><td>Description:</td>");
 					out.println("<td><input type=\"text\" name=\"description\" required=\"required\" maxlength=\"128\" /></td></tr>");
 					out.println("<td colspan=\"2\" align=\"center\"><input type=\"file\" name=\"recorded_data\" required=\"required\" maxlength=\"128\" /></td></tr>");
