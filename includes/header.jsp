@@ -14,7 +14,16 @@ Assume necessary html definitions are already made
 	}
 	
 	if (user != null) {
-	   out.println("Welcome, " + user.getUser_name());
+		String role = null;
+		if (user.getRole().equals("a")) {
+			role = "admin";
+		} else if (user.getRole().equals("d")) {
+			role = "data curator"; 
+		} else if (user.getRole().equals("s")) {
+			role = "scientist";
+		}
+		
+		out.println("Welcome " + role + ", " + user.getUser_name());	
 	}
 %>
 
@@ -56,7 +65,7 @@ Assume necessary html definitions are already made
 	        out.println("<a href=\"/oos-cmput391/sensor.jsp\">upload</a> | ");
 		} else if (user.getRole().equals("s")) {
 	        out.println("<a href=\"/oos-cmput391/sensor.jsp\">subscribe</a> | ");
-	        out.println("<a href=\"/oos-cmput391/search.jsp\">search</a> | ");
+	        out.println("<a href=\"/oos-cmput391/search.jsp\">search</a> | ");	
 		}
 		out.println("<a href=\"/oos-cmput391/account_settings.jsp\">account settings</a> | ");
 	    out.println("<a href=\"/oos-cmput391/logout.jsp\">logout</a>"); 

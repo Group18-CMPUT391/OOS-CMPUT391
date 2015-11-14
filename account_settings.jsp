@@ -19,19 +19,13 @@ username, firstname, lastname, address, email, phone and password changing
 	String address = null;
 	String phone = null;
 	String password = null;
-	
-	String redirectURL = null;
-	
+		
 	try {
 	   status = (String) session.getAttribute("status");
 	   user = (User) session.getAttribute("user");
 	   //username = (String) session.getAttribute("username");
 	} catch (NullPointerException e) {
 	   e.printStackTrace();
-	}
-	
-	if (user != null) {
-		session.setAttribute("user", user);
 	}
 	
 	// prepopulate the fields with user information if none exist
@@ -43,17 +37,13 @@ username, firstname, lastname, address, email, phone and password changing
 	if (email==null) {
 	    redirectURL = "/c391proj/getUserInfo";
 	}
-	
-	// cannot access this page unless logged in
-	if (username == null) {
-	   String errormsg = "Please log in before accessing account information";
-	   session.setAttribute("err", errormsg);
-	   redirectURL = "/c391proj/login.jsp";
+	*/
+	// Cannot access this page unless logged in
+	if (user == null) {
+	   status = "Please log in before accessing account information";
+	   session.setAttribute("status", status);
+	    response.sendRedirect("/oos-cmput391/login.jsp");
 	}
-	
-	if (redirectURL != null) {
-	    response.sendRedirect(redirectURL);
-	}*/
 %>
 
 <html>
@@ -65,7 +55,7 @@ username, firstname, lastname, address, email, phone and password changing
   </head>	
   <body>
     	<div style="text-align:center">
-    		<div style="display:inline-block; text-align:left;">
+    		<div style="display:inline-block">
 				<a href="/oos-cmput391/change_pass.jsp">change user_name & password</a><br> 
 				<a href="/oos-cmput391/change_info.jsp">change personal info</a> 
 			</div>

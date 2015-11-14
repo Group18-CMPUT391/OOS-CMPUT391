@@ -50,4 +50,13 @@
         <servlet-name>updatepassservlet</servlet-name>
         <url-pattern>/updatepassservlet</url-pattern>
     </servlet-mapping>
+
+    <servlet>
+        <servlet-name>searchservlet</servlet-name>
+        <servlet-class>SearchServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>searchservlet</servlet-name>
+        <url-pattern>/searchservlet</url-pattern>
+    </servlet-mapping>
 </web-app>

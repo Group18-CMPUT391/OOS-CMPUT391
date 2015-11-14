@@ -9,8 +9,6 @@ import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
-import java.util.List;
-
 import oracle.sql.*;
 import oracle.jdbc.*;
 
@@ -101,11 +99,12 @@ public class Db {
 		
 		return user;
 	}
-	
+
 	// Get password from username
 	public String getPassword (String username) {
 		String password = "";
-		String query = "select password from users where user_name = '" + username + "'";
+		String query = "select password from users where user_name = '" + 
+			username + "'";
 		ResultSet rs = execute_stmt(query);
 		try {
 			while(rs != null && rs.next()) {
@@ -232,38 +231,5 @@ public class Db {
 		return execute_update(query);
 	}
 
-
-    // Returns the resultset of the search by keywords and date
-    public ResultSet getResultsByDateAndKeywords(long person_id, String fromdate, String todate, String keywords) {
-    	String query = "SELECT sensor_id FROM "
-	    					+ "("
-	    					+ "SELECT * FROM SENSORS "
-	    					+ "WHERE location LIKE '%" + keywords + "%' "
-	    					+ "OR sensor_type LIKE '%" + keywords + "%' "
-	    					+ "OR description LIKE '%" + keywords + "%' "
-	    					+ "UNION "
-	    					+ "SELECT * FROM AUDIO_RECORDINGS "
-	    					+ "WHERE recording_id LIKE '%" + keywords + "%' "
-	    					+ "OR description LIKE '%" + keywords + "%' "
-	    					+ "OR recorded_data LIKE '%" + keywords + "%' "
-	    					+ "OR sensor_id LIKE '%" + keywords + "%' "
-	    					+ "AND date_created BETWEEN '" + fromdate + "' AND '" + todate + "' "
-	    					+ "UNION "	
-	    					+ "SELECT * FROM IMAGES "
-	    					+ "WHERE image_id LIKE '%" + keywords + "%' "
-	    					+ "OR description LIKE '%" + keywords + "%' "
-	    					+ "OR recorded_dat LIKE '%" + keywords + "%' "
-	    					+ "OR sensor_id LIKE '%" + keywords + "%' "
-	    					+ "AND date_created BETWEEN '" + fromdate + "' AND '" + todate + "' "
-	    					+ "UNION "
-	    					+ "SELECT * FROM SCALAR_DATA "
-	    					+ "WHERE id LIKE '%" + keywords + "%' "
-	    					+ "OR value LIKE '%" + keywords + "%' "
-	    					+ "OR sensor_id LIKE '%" + keywords + "%' "
-	    					+ "AND date_created BETWEEN '" + fromdate + "' AND '" + todate + "') "
-	    					+ ") "
-    					+ "WHERE sensor_id in (SELECT sensor_id FROM subsriptions WHERE person_id = '" + person_id + "')";
-
-        return execute_stmt(query);
-    }
+	
 }

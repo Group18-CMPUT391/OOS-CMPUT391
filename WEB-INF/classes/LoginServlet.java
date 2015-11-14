@@ -61,12 +61,5 @@ public class LoginServlet extends HttpServlet {
 		// Invoke doGet to process this request
 		doGet( request, response );
 	}
-
-	/**
-	 * Returns a brief description about this servlet
-	 */
-	public String getServletInfo() {
-		return "Servlet that stores user's name and password in the session";
-	}
 }
 
