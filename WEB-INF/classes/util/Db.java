@@ -266,4 +266,19 @@ public class Db {
 
         return execute_stmt(query);
     }
+    
+    // Delete a sensor
+    public Integer delete_sensor(long sensor_id) {
+    	String query = "delete from sensors where sensor_id = " + sensor_id + "'";
+    	return execute_update(query);
+    }
+    
+    // Delete both user and person
+    public void delete_user_person(long person_id) {
+    	String query_user = "delete from users where person_id = " + person_id + "'";
+    	String query_person  = "delete from persons where person_id = " + person_id + "'";
+    	
+    	execute_update(query_user);
+    	execute_update(query_person);
+    }
 }
