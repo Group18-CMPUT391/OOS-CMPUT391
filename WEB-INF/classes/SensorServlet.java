@@ -28,7 +28,8 @@ public class SensorServlet extends HttpServlet {
 		PrintWriter out = response.getWriter();
 		HttpSession session = request.getSession( true );
 		
-		int sensor_id = 0, recording_id = 0, length = 0;
+		int sensor_id = 0, recording_id = 0, length = 0, image_id = 0, id = 0;
+		double value = 0;
 		String location = null, sensor_type = null, description = null, 
 				date_created = null, ext = null;
 		InputStream fileContent = null;
@@ -74,6 +75,10 @@ public class SensorServlet extends HttpServlet {
 			        {   
 						length=Integer.parseInt(item.getString());
 			        }
+					else if(item.getFieldName().equals("value"))
+			        {   
+						value=Double.parseDouble(item.getString());
+			        }
 				}
 				else {
 					fileContent = item.getInputStream();
@@ -86,42 +91,43 @@ public class SensorServlet extends HttpServlet {
 			if (type.equals("sensor")) {
 				String querrymessage = sens.newSensor(sensor_id, location, sensor_type, description);
 				session.setAttribute("err", querrymessage);
-				response.sendRedirect("/oos-cmput391/uploadsensor.jsp?type=sensor");
+				response.sendRedirect("/oos-cmput391/sensor.jsp");
 			}
 			else if (type.equals("audio_recordings")) {
 				if(ext.equalsIgnoreCase("wav")){
 					String querrymessage = sens.uploadAudio (recording_id, sensor_id, 
-							date_created, length, description, fileContent);
+							date_created.split("T"), length, description, fileContent);
 					session.setAttribute("err", querrymessage);
-					response.sendRedirect("/oos-cmput391/uploadsensor.jsp?type=audio_recordings");
+					response.sendRedirect("/oos-cmput391/sensor.jsp");
 				}
 				else {
 					session.setAttribute("err", "This is not a wav file");
-					response.sendRedirect("/oos-cmput391/uploadsensor.jsp?type=audio_recordings");
+					response.sendRedirect("/oos-cmput391/sensor.jsp");
 				}
 				
 			}
 			else if (type.equals("images")) {
 				if(ext.equalsIgnoreCase("jpg")){
 					String querrymessage = sens.uploadImage (image_id, sensor_id, 
-							date_created, length, description, fileContent);
+							date_created.split("T"), description, fileContent);
 					session.setAttribute("err", querrymessage);
-					response.sendRedirect("/oos-cmput391/uploadsensor.jsp?type=audio_recordings");
+					response.sendRedirect("/oos-cmput391/sensor.jsp?type=images");
 				}
 				else {
 					session.setAttribute("err", "This is not a jpg file");
-					response.sendRedirect("/oos-cmput391/uploadsensor.jsp?type=audio_recordings");
+					response.sendRedirect("/oos-cmput391/sensors.jsp");
 				}
 				
 			}
-		    //InputStream recorded_data = item.getInputStream();
+			else if (type.equals("scalar")) {
+				String querrymessage = sens.addScalarData (id, sensor_id, date_created.split("T"),value);
+				session.setAttribute("err", querrymessage);
+				response.sendRedirect("/oos-cmput391/sensor.jsp");
+			}
+
 		}catch (Exception e) {
 			System.out.println(e.getMessage());
 		}
-		
-
-
-
 			
 	}
 	

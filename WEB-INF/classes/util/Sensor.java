@@ -6,7 +6,15 @@ import java.io.*;
 import java.util.*;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+
+import java.awt.Graphics;
+import java.awt.Image;
+import java.awt.image.BufferedImage;
+import javax.imageio.ImageIO;
+import net.coobird.thumbnailator.*;
+
 import java.util.Date;
+
 
 public class Sensor {
 	
@@ -34,10 +42,10 @@ public class Sensor {
 				return "SORRY! Sensor with ID " + sensor_id + " is already in the system.";
 			}
 			else {
-				String insertNewSensor = "INSERT INTO sensors Values('" + sensor_id + "','" + location + 
+				String insertNewSensor = "INSERT INTO sensors Values(" + sensor_id + ",'" + location + 
 						"','" + sensor_type + "','" + description + "')";
 		    	database.execute_update(insertNewSensor);	
-		    	return "New sensor with ID " + sensor_id + " created.";
+		    	return "New Sensor with ID " + sensor_id + " created.";
 			}
 		}catch (SQLException e) {
 			System.out.println(e.getMessage());
@@ -45,56 +53,113 @@ public class Sensor {
 		return " ";
 	}
 	
-	public String uploadAudio (int recording_id, int sensor_id, String date_created, 
+	public String uploadAudio (int recording_id, int sensor_id, String[] date_created, 
 			int length, String description, InputStream recorded_data) {
-
-		try {
 			
-			SimpleDateFormat format = new SimpleDateFormat( "YYYY-MM-DD" );  // United States style of format.
-			java.util.Date myDate = format.parse( date_created );
-			java.sql.Date sqlDate = new java.sql.Date( myDate.getTime() );
+		String dateTimeLocal = null;
+		String[] time = date_created[1].split(":");
+		if (time.length != 3) {
+			dateTimeLocal = date_created[0]  + " " + date_created[1] + ":00";
+		}
+		else {
+			dateTimeLocal = date_created[0] + " " + date_created[1];
+		}
+		
+		try {
+			SimpleDateFormat format = new SimpleDateFormat( "YYYY-MM-DD HH:mm:ss" );
+			java.util.Date date_time = format.parse(dateTimeLocal );
+			java.sql.Timestamp sqlDate = new java.sql.Timestamp( date_time.getTime());
 			
 			Connection dbConnection = getDBConnection();
 			//Statement stmt = dbConnection.createStatement();
 			PreparedStatement statement = dbConnection.prepareStatement("INSERT INTO audio_recordings VALUES(" + recording_id +
 					"," + sensor_id +",?,"+ length + ",'"+ description +"', ?)");   
-			statement.setDate(1,sqlDate);
+			statement.setTimestamp(1,sqlDate);
 			statement.setBlob(2,recorded_data);
 			statement.executeQuery();
 			statement.executeUpdate("commit");
-			return "Audio File Added";
+			
+			return "Audio File Added. ";
 		}catch (Exception e) {
 			System.out.println(e.getMessage());
 			}
-		return "Audio File was not added.";
+		return "Audio File was not Added.";
 	}
 	
-	public String uploadImage (int image_id, int sensor_id, String date_created, 
+	public String uploadImage (int image_id, int sensor_id, String[] date_created,
 			String description, InputStream recorded_data) {
-		BufferedImage img = ImageIO.read(recorded_data);
-		BufferedImage scaledImg = Scalr.resize(img, Scalr.Method.ULTRA_QUALITY, Scalr.Mode.AUTOMATIC,  400, 300);
-		ByteArrayOutputStream baos = new ByteArrayOutputStream();
-		ImageIO.write(scaledImg, "jpg", baos);
-		InputStream is = new ByteArrayInputStream(baos.toByteArray());
 		
-		SimpleDateFormat format = new SimpleDateFormat( "YYYY-MM-DD" );  // United States style of format.
-		java.util.Date myDate = format.parse( date_created );
-		java.sql.Date sqlDate = new java.sql.Date( myDate.getTime() );
+		String dateTimeLocal = null;
+		String[] time = date_created[1].split(":");
+		if (time.length != 3) {
+			dateTimeLocal = date_created[0]  + " " + date_created[1] + ":00";
+		}
+		else {
+			dateTimeLocal = date_created[0] + " " + date_created[1];
+		}
+		
 		try {
+			SimpleDateFormat format = new SimpleDateFormat( "YYYY-MM-DD HH:mm:ss" );
+			java.util.Date date_time = format.parse(dateTimeLocal );
+			java.sql.Timestamp sqlDate = new java.sql.Timestamp( date_time.getTime());
+			
+			InputStream original = recorded_data;
+			BufferedImage img = ImageIO.read(original);
+			BufferedImage scaledImg = Thumbnails.of(img).scale(0.25).asBufferedImage();
+			
+			ByteArrayOutputStream baos = new ByteArrayOutputStream();
+			ImageIO.write(scaledImg, "jpg", baos);
+			InputStream scaled = new ByteArrayInputStream(baos.toByteArray());
+		
 			Connection dbConnection = getDBConnection();
 			//Statement stmt = dbConnection.createStatement();
 			PreparedStatement statement = dbConnection.prepareStatement("INSERT INTO images VALUES(" + image_id +
-					"," + sensor_id +",?,"+ length + ",'"+ description +"', ?, ?)");   
-			statement.setDate(1,sqlDate);
-			statement.setBlob(2,is);
-			statement.setBlob(3,recorded_data);
+					"," + sensor_id +",?,'"+ description +"', ?, ?)");   
+			statement.setTimestamp(1,sqlDate);
+			statement.setBlob(2,scaled);
+			statement.setBlob(3,original);
 			statement.executeQuery();
 			statement.executeUpdate("commit");
-			return "Audio File Added";
+			return "Image File Added";
+		}catch (Exception e) {
+			System.out.println(e.getMessage());
+			}
+		
+		return "Image File was not Added";
+	}
+	
+	
+	public String addScalarData (int id, int sensor_id, String[] date_created, double value) {
+		database.connect_db();
+		String dateTimeLocal = null;
+		String[] time = date_created[1].split(":");
+		if (time.length != 3) {
+			dateTimeLocal = date_created[0]  + " " + date_created[1] + ":00";
+		}
+		else {
+			dateTimeLocal = date_created[0] + " " + date_created[1];
 		}
 		
-		
+		try {
+			SimpleDateFormat format = new SimpleDateFormat( "YYYY-MM-DD HH:mm:ss" );
+			java.util.Date date_time = format.parse(dateTimeLocal );
+			java.sql.Timestamp sqlDate = new java.sql.Timestamp( date_time.getTime());
+			
+			Connection dbConnection = getDBConnection();
+			//Statement stmt = dbConnection.createStatement();
+			PreparedStatement statement = dbConnection.prepareStatement("INSERT INTO scalar_data VALUES(" + id +
+					"," + sensor_id +",?,"+ value +")"); 
+			statement.setTimestamp(1,sqlDate);
+			statement.executeQuery();
+			statement.executeUpdate("commit");
+			return "Scalar Data Added";
+			
+		}catch (Exception e) {
+			System.out.println(e.getMessage());
+			}
+		return "Scalar Data was not Added";
 	}
+	
 
 		//String sid = "SELECT sensor_id FROM sensors WHERE sensor_type = " + sensor_type;
 	
