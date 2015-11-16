@@ -9,16 +9,18 @@ import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.List;
+
 import oracle.sql.*;
 import oracle.jdbc.*;
 
-import util.Role;
 import util.User;
-import util.Photo;
+import util.Person;
+//import util.Photo;
 
 public class Db {
-	static final String USERNAME = "wkchoi";
-	static final String PASSWORD = "Kingfreak95";
+	static final String USERNAME = "hbtruong";
+	static final String PASSWORD = "qwerty123456";
 	// JDBC driver name and database URL
 	static final String DRIVER_NAME = "oracle.jdbc.driver.OracleDriver";
 	static final String DB_URL = "jdbc:oracle:thin:@gwynne.cs.ualberta.ca:1521:CRS";
@@ -27,6 +29,7 @@ public class Db {
 	private Connection conn;
 	private Statement stmt;
 
+	// Connect jdbc
 	public int connect_db() {
 		try {
 			Class drvClass = Class.forName(DRIVER_NAME);
@@ -55,11 +58,6 @@ public class Db {
 		}
 	}
 
-	/**
-	 * 
-	 * @param query
-	 * @return ResultSet
-	 */
 	public ResultSet execute_stmt(String query) {
 		try {
 			return stmt.executeQuery(query);
@@ -70,12 +68,6 @@ public class Db {
 	}
 	
 
-	/**
-	 * Performs the update query execution.
-	 * Returns 0 when unsuccessful
-	 * @param query
-	 * @return Integer
-	 */
 	public Integer execute_update(String query) {
 		try {
 			return stmt.executeUpdate(query);
@@ -85,92 +77,56 @@ public class Db {
 		return 0;
 	}
 	
-	/**
-	 * Fetches all information in database relating to username
-	 * @param String username
-	 * @returns User
-	 */
-	public User get_user(String username) {
-		ResultSet rs_users;
-		ResultSet rs_persons;
-		String query_users = "select * from users "
-			+ "where user_name = '" + username + "'";
-		String query_persons = "select * from persons "
-			+ "where user_name = '" + username + "'";
-		rs_users = execute_stmt(query_users);
-		rs_persons = execute_stmt(query_persons);
-		return user_from_resultset(rs_users, rs_persons);
-	}
-
-	/**
-	 * Returns the username's matching password
-	 * @param String username
-	 * @returns String password
-	 */
-	public String get_password(String username) {
-		String tPassword = "";
-		String query = "select password from users where user_name = '" + 
-			username + "'";
+	// Get a user object from user_name
+	public User getUser (String user_name) {
+		User user = null;
+	    String password = null;
+	    String role = null;
+	    long person_id = 0;
+	    String date_registered = null;
+		
+	    String query = "select * from users "
+			+ "where user_name = '" + user_name + "'";
 		ResultSet rs = execute_stmt(query);
 		try {
 			while(rs != null && rs.next()) {
-				tPassword = (rs.getString(1)).trim();
+				user_name = rs.getString("user_name");
+				password = rs.getString("password");
+				role = rs.getString("role");
+				person_id = rs.getLong("person_id");
+				date_registered = rs.getString("date_registered");
+			}
+			user = new User(user_name, password, role, person_id, date_registered);
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+		
+		return user;
+	}
+	
+	// Get password from username
+	public String getPassword (String username) {
+		String password = "";
+		String query = "select password from users where user_name = '" + username + "'";
+		ResultSet rs = execute_stmt(query);
+		try {
+			while(rs != null && rs.next()) {
+				password = (rs.getString(1)).trim();
 			}
 		} catch(Exception e) {
 			e.printStackTrace();
 		}
-		return tPassword;
+		return password;
 	}
 
-	/**
-	 * Returns a User object from two resultsets
-	 * resulting from the user and persons tables
-	 * @param ResultSet rs_user
-	 * @param ResultSet rs_person
-	 * @returns User
-	 */
-	public User user_from_resultset(ResultSet rs_user, ResultSet rs_person) {
-		String user_name = null;
-		String password = null;
-		String date = null;
-		String email = null;
-		String fname = null;
-		String lname = null;
-		String phone = null;
-		String address = null;
-		User user = null;
-		String role = null;
-		
-		// Get data from rs_user
-		try {
-			while (rs_user.next()) { 
-				user_name = rs_user.getString("user_name");
-				password = rs_user.getString("password");
-				date = rs_user.getString("date_registered");
-				role = rs_user.getString("role");
-			}
-			while (rs_person.next()) {
-				email = rs_person.getString("email");
-				fname = rs_person.getString("first_name");
-				lname = rs_person.getString("last_name");
-				phone = rs_person.getString("phone");
-				address = rs_person.getString("address");
-			}
-			user = new User(user_name, email, fname, lname, phone, address,
-					role, date);
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return user;
+	// Change password
+	public int updatePassword(String username, String password) {
+		String query = "update users set password = '"+password+
+		    "' where user_name = '" + username + "'";
+		return execute_update(query);
 	}
 	
-	/**
-	 * Checks if a user with specified username exists within the database
-	 * Returns true if username exists, otherwise returns false
-	 *
-	 * @param String username
-	 * @return boolean
-	 */
+	// Check if username exists in database
 	public boolean userExists(String username) {
 		String userquery = "select * from users where user_name='" + 
 			username + "'";
@@ -184,12 +140,15 @@ public class Db {
 		}
 		return true;
 	}
+	
+	// Change username
+	public Integer updateUsername (String user_name, String n_user_name) {
+		String query = "update users set user_name = '" + 
+				n_user_name + "' where user_name = '" + user_name + "'";
+		return execute_update(query);
+	}
 
-	/**
-	 * Adds a user to the database, given a specified username and password
-	 * @param String username, String password
-	 * @return Integer
-	 */
+	// Insert a user
 	public Integer addUser(String username, String password) {
 		String query = "insert into users values ('" + 
 			username + "', '" + 
@@ -197,11 +156,37 @@ public class Db {
 		return execute_update(query);
 	}
 
-	/**
-	 * Checks if a person with a given email address already exists
-	 * @param String email
-	 * @return boolean
-	 */
+	// Return a person object
+	public Person getPerson (long person_id) {
+		Person person = null;
+	    String first_name = null;
+	    String last_name = null;
+	    String address = null;
+	    String email = null;
+	    String phone = null;
+		
+	    String query = "select * from persons "
+				+ "where person_id = '" + person_id + "'";
+	    ResultSet rs = execute_stmt(query);
+			
+		// Get data from rs
+		try {
+			while (rs.next()) { 
+				first_name = rs.getString("first_name");
+				last_name = rs.getString("last_name");
+				address = rs.getString("address");
+				email = rs.getString("email");
+				phone = rs.getString("phone");
+			}
+			person = new Person(person_id, first_name, last_name, address, email, phone);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return person;
+	}
+
+	// Check email exists
 	public boolean emailExists(String email) {
 		String query = "select email from persons where email = '" + 
 			email + "'";
@@ -214,30 +199,88 @@ public class Db {
 		return true;
 	}
 
-	/**
-	 * Set the email of a user. Handles if does not exist.
-	 * @param String username, String email
-	 * @return Integer
-	 */
-	public Integer setEmail(String username, String email) {
-		String checkquery = "select user_name, email from persons where " + 
-			"user_name = '" + username + "'";
-		ResultSet rscheck = execute_stmt(checkquery);
-		try {
-			if (rscheck.next()) {
-				// update the email
-				String updatequery = "update persons set email = '" + email + 
-					"' where user_name = '" + username + "'";
-				return execute_update(updatequery);
-			} else {
-				// add a row into the database
-				String addquery = "insert into persons (user_name, email)" + 
-					"values ('" + username + "', '" + email + "')";
-				return execute_update(addquery);
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return 0;
+	// Change email
+	public Integer updateEmail (long person_id, String email) {
+		String query = "update persons set email = '" + 
+				email + "' where person_id = '" + person_id + "'";
+		return execute_update(query);
 	}
+	
+	// Change first_name
+	public Integer updateFname(long person_id, String fname) {
+		String query = "update persons set first_name = '" + 
+				fname + "' where person_id = '" + person_id + "'";
+		return execute_update(query);
+	}
+
+	// Change last_name
+	public Integer updateLname(long person_id, String lname) {
+		String query = "update persons set last_name = '" + 
+				lname + "' where person_id = '" + person_id + "'";
+		return execute_update(query);
+	}
+
+	// Change address
+	public Integer updateAddress(long person_id, String address) {
+		String query = "update persons set address = '" + 
+				address + "' where person_id = '" + person_id + "'";
+		return execute_update(query);
+	}
+
+	// Change phone
+	public Integer updatePhone(long person_id, String phone) {
+		String query = "update persons set phone = '" + 
+				phone + "' where person_id = '" + person_id + "'";
+		return execute_update(query);
+	}
+
+
+    // Returns the resultset of the search by keywords and date
+    public ResultSet getResultsByDateAndKeywords(long person_id, String fromdate, String todate, String keywords) {
+    	String query = "SELECT sensor_id FROM "
+	    					+ "("
+	    					+ "SELECT * FROM SENSORS "
+	    					+ "WHERE location LIKE '%" + keywords + "%' "
+	    					+ "OR sensor_type LIKE '%" + keywords + "%' "
+	    					+ "OR description LIKE '%" + keywords + "%' "
+	    					+ "UNION "
+	    					+ "SELECT * FROM AUDIO_RECORDINGS "
+	    					+ "WHERE recording_id LIKE '%" + keywords + "%' "
+	    					+ "OR description LIKE '%" + keywords + "%' "
+	    					+ "OR recorded_data LIKE '%" + keywords + "%' "
+	    					+ "OR sensor_id LIKE '%" + keywords + "%' "
+	    					+ "AND date_created BETWEEN '" + fromdate + "' AND '" + todate + "' "
+	    					+ "UNION "	
+	    					+ "SELECT * FROM IMAGES "
+	    					+ "WHERE image_id LIKE '%" + keywords + "%' "
+	    					+ "OR description LIKE '%" + keywords + "%' "
+	    					+ "OR recorded_dat LIKE '%" + keywords + "%' "
+	    					+ "OR sensor_id LIKE '%" + keywords + "%' "
+	    					+ "AND date_created BETWEEN '" + fromdate + "' AND '" + todate + "' "
+	    					+ "UNION "
+	    					+ "SELECT * FROM SCALAR_DATA "
+	    					+ "WHERE id LIKE '%" + keywords + "%' "
+	    					+ "OR value LIKE '%" + keywords + "%' "
+	    					+ "OR sensor_id LIKE '%" + keywords + "%' "
+	    					+ "AND date_created BETWEEN '" + fromdate + "' AND '" + todate + "') "
+	    					+ ") "
+    					+ "WHERE sensor_id in (SELECT sensor_id FROM subsriptions WHERE person_id = '" + person_id + "')";
+
+        return execute_stmt(query);
+    }
+    
+    // Delete a sensor
+    public Integer delete_sensor(long sensor_id) {
+    	String query = "delete from sensors where sensor_id = " + sensor_id + "'";
+    	return execute_update(query);
+    }
+    
+    // Delete both user and person
+    public void delete_user_person(long person_id) {
+    	String query_user = "delete from users where person_id = " + person_id + "'";
+    	String query_person  = "delete from persons where person_id = " + person_id + "'";
+    	
+    	execute_update(query_user);
+    	execute_update(query_person);
+    }
 }

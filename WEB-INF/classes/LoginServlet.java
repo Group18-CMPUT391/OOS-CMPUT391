@@ -20,26 +20,22 @@ public class LoginServlet extends HttpServlet {
 
 		// Set the content type to HTML
 		response.setContentType( "text/html" );
-
 		// Get the output stream from the response object
 		PrintWriter out = response.getWriter();
-
 		// Get the session (Create a new one if required)
-		HttpSession session = request.getSession( true );
+		HttpSession session = request.getSession(true);
 
 		// Get user and pasword from login page
-		username = request.getParameter( "user" );
+		username = request.getParameter("user");
 		password = request.getParameter("pass");
 
 		Db database = new Db();
 		database.connect_db();
-		db_password = database.get_password(username);
+		db_password = database.getPassword(username);
 
 		if(password.equals(db_password)) {
 			out.println("<p><b>Login successful.</b></p>");
-			//not working
-			//session.setAttribute("user", database.get_user(username));
-			session.setAttribute("username", username);
+			session.setAttribute("user", database.getUser(username));
 			response.sendRedirect("/oos-cmput391/index.jsp");
 		} else {
 			String errormsg = "Username or Password invalid.";
@@ -64,13 +60,6 @@ public class LoginServlet extends HttpServlet {
 					throws ServletException, IOException {
 		// Invoke doGet to process this request
 		doGet( request, response );
-	}
-
-	/**
-	 * Returns a brief description about this servlet
-	 */
-	public String getServletInfo() {
-		return "Servlet that stores user's name and password in the session";
 	}
 }
 
