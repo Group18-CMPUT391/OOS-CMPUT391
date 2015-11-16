@@ -12,6 +12,8 @@ import util.Sensor;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
+import org.apache.commons.io.FilenameUtils;
+
 
 public class SensorServlet extends HttpServlet {
 	
@@ -27,13 +29,15 @@ public class SensorServlet extends HttpServlet {
 		HttpSession session = request.getSession( true );
 		
 		int sensor_id = 0, recording_id = 0, length = 0;
-		String location = null, sensor_type = null, description = null, date_created = null;
+		String location = null, sensor_type = null, description = null, 
+				date_created = null, ext = null;
 		InputStream fileContent = null;
 
 		
 		try {
 			DiskFileItemFactory factory = new DiskFileItemFactory();
 			ServletFileUpload upload = new ServletFileUpload(factory);
+			Sensor sens = new Sensor();
 			
 			List<FileItem> items = upload.parseRequest(request);
 			for (FileItem item : items) {
@@ -42,56 +46,75 @@ public class SensorServlet extends HttpServlet {
 			        {   
 						sensor_id=Integer.parseInt(item.getString());
 			        }
-					if(item.getFieldName().equals("location"))
+					else if(item.getFieldName().equals("location"))
 			        {   
 						location=item.getString();
 			        }
-					if(item.getFieldName().equals("sensor_type"))
+					else if(item.getFieldName().equals("sensor_type"))
 			        {   
 						sensor_type=item.getString();
 			        }
-					if(item.getFieldName().equals("description"))
+					else if(item.getFieldName().equals("description"))
 			        {   
 						description=item.getString();
 			        }
-					if(item.getFieldName().equals("recording_id"))
+					else if(item.getFieldName().equals("recording_id"))
 			        {   
 						recording_id=Integer.parseInt(item.getString());
 			        }
-					if(item.getFieldName().equals("date_created"))
+					else if(item.getFieldName().equals("image_id"))
+			        {   
+						image_id=Integer.parseInt(item.getString());
+			        }
+					else if(item.getFieldName().equals("date_created"))
 			        {   
 						date_created=item.getString();
 			        }
-					if(item.getFieldName().equals("length"))
+					else if(item.getFieldName().equals("length"))
 			        {   
 						length=Integer.parseInt(item.getString());
 			        }
 				}
 				else {
 					fileContent = item.getInputStream();
+					
+					ext = FilenameUtils.getExtension(item.getName());
 				}
 			}
 			
-			
 			String type = request.getParameter( "type" );
-			
-			
-			Sensor sens = new Sensor();
-			
 			if (type.equals("sensor")) {
 				String querrymessage = sens.newSensor(sensor_id, location, sensor_type, description);
 				session.setAttribute("err", querrymessage);
 				response.sendRedirect("/oos-cmput391/uploadsensor.jsp?type=sensor");
 			}
 			else if (type.equals("audio_recordings")) {
-				String querrymessage = sens.uploadAudio (recording_id, sensor_id, date_created, length, description, fileContent);
-				session.setAttribute("err", querrymessage);
-				response.sendRedirect("/oos-cmput391/uploadsensor.jsp?type=audio_recordings");
+				if(ext.equalsIgnoreCase("wav")){
+					String querrymessage = sens.uploadAudio (recording_id, sensor_id, 
+							date_created, length, description, fileContent);
+					session.setAttribute("err", querrymessage);
+					response.sendRedirect("/oos-cmput391/uploadsensor.jsp?type=audio_recordings");
+				}
+				else {
+					session.setAttribute("err", "This is not a wav file");
+					response.sendRedirect("/oos-cmput391/uploadsensor.jsp?type=audio_recordings");
+				}
+				
 			}
-		    
+			else if (type.equals("images")) {
+				if(ext.equalsIgnoreCase("jpg")){
+					String querrymessage = sens.uploadImage (image_id, sensor_id, 
+							date_created, length, description, fileContent);
+					session.setAttribute("err", querrymessage);
+					response.sendRedirect("/oos-cmput391/uploadsensor.jsp?type=audio_recordings");
+				}
+				else {
+					session.setAttribute("err", "This is not a jpg file");
+					response.sendRedirect("/oos-cmput391/uploadsensor.jsp?type=audio_recordings");
+				}
+				
+			}
 		    //InputStream recorded_data = item.getInputStream();
-
-			
 		}catch (Exception e) {
 			System.out.println(e.getMessage());
 		}

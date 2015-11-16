@@ -12,7 +12,6 @@ public class Sensor {
 	
 	Db database = new Db();
 	private static final String DB_CONNECTION = "jdbc:oracle:thin:@gwynne.cs.ualberta.ca:1521:CRS";
-	//private static final String DB_CONNECTION = "jdbc:oracle:thin:@localhost:1525:CRS";
 	private static final String DB_DRIVER = "oracle.jdbc.driver.OracleDriver";
 	private static final String DB_USER = "wkchoi";
 	private static final String DB_PASSWORD = "Kingfreak95";
@@ -31,7 +30,7 @@ public class Sensor {
 			String sid = "SELECT sensor_id FROM sensors WHERE sensor_id = " + sensor_id;
 			ResultSet rs = database.execute_stmt(sid);
 			if (rs.next()){
-				return "SORRY! Sensor with ID " + sensor_id + " is already in the system.";
+				return "SORRY Sensor with ID " + sensor_id + " is already in the system.";
 			}
 			else {
 				String insertNewSensor = "INSERT INTO sensors Values('" + sensor_id + "','" + location + 
@@ -63,40 +62,25 @@ public class Sensor {
 			statement.executeQuery();
 			statement.executeUpdate("commit");
 			return "Audio File Added";
+			 
+//			String insertaudio = "INSERT INTO audio_recordings Values(?,?,?,?,?,?)";
+//			PreparedStatement statement = dbConnection.prepareStatement(insertaudio);
+//			statement.setInt(1, recording_id);
+//	        statement.setInt(2, sensor_id);
+//	        statement.setDate(3, java.sql.Date.valueOf(date_created.replace("T"," ")));
+//	        statement.setInt(4, length);
+//	        statement.setString(5, description);
+//	        statement.setBlob(6, empty_blob());
+//	        statement.executeUpdate();
+//	        statement.executeUpdate("commit");
+//	        return "Audio File Added";
+	        
 		}catch (Exception e) {
 			System.out.println(e.getMessage());
 			}
 		return "Audio File was not added.";
 	}
 	
-	public String uploadImage (int image_id, int sensor_id, String date_created, 
-			String description, InputStream recorded_data) {
-		BufferedImage img = ImageIO.read(recorded_data);
-		BufferedImage scaledImg = Scalr.resize(img, Scalr.Method.ULTRA_QUALITY, Scalr.Mode.AUTOMATIC,  400, 300);
-		ByteArrayOutputStream baos = new ByteArrayOutputStream();
-		ImageIO.write(scaledImg, "jpg", baos);
-		InputStream is = new ByteArrayInputStream(baos.toByteArray());
-		
-		SimpleDateFormat format = new SimpleDateFormat( "YYYY-MM-DD" );  // United States style of format.
-		java.util.Date myDate = format.parse( date_created );
-		java.sql.Date sqlDate = new java.sql.Date( myDate.getTime() );
-		try {
-			Connection dbConnection = getDBConnection();
-			//Statement stmt = dbConnection.createStatement();
-			PreparedStatement statement = dbConnection.prepareStatement("INSERT INTO images VALUES(" + image_id +
-					"," + sensor_id +",?,"+ length + ",'"+ description +"', ?, ?)");   
-			statement.setDate(1,sqlDate);
-			statement.setBlob(2,is);
-			statement.setBlob(3,recorded_data);
-			statement.executeQuery();
-			statement.executeUpdate("commit");
-			return "Audio File Added";
-		}
-		
-		
-	}
-
-		//String sid = "SELECT sensor_id FROM sensors WHERE sensor_type = " + sensor_type;
 	
 	private static Connection getDBConnection() {
 		Connection dbConnection = null;

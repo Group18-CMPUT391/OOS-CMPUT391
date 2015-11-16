@@ -57,7 +57,7 @@ public class RegServlet extends HttpServlet {
 			if (nuser.equals("yes")){
 				String checkmail = "SELECT email FROM persons WHERE email = '" + email + "'" ;
 				rs = database.execute_stmt(checkmail);
-
+				set html parameter to null
 
 				if (rs.next()){
 					session.setAttribute("err","Email " + email + " is already in the system.");
