@@ -175,27 +175,6 @@ Web page for Sensor
 			</div>
 			<div id="scalar" title="Input Scalar Data" >
 				<form action="sensorservlet?type=scalar" method="post" enctype="multipart/form-data" onsubmit="this">
-					<center><table border="1" width="30%" cellpadding="5">
-						<thead><tr><th colspan="2">Input New Scalar Information:</th></tr></thead>
-						<tbody>
-							<tr><td>scalar ID:</td>
-							<td><input type="number" name="id" required="required" min="0"/></td></tr>
-							<tr><td>Sensor ID:</td>
-							<td><select name="sensor_id">
-								<%String sid_s = "SELECT sensor_id FROM sensors WHERE sensor_type = 's' ORDER BY sensor_id";
-								ResultSet rs_s = s.executeQuery(sid_s);
-										while(rs_s.next()) {
-											out.println("<option value=\""+String.valueOf(rs_s.getInt(1))+"\">" + rs_s.getInt(1) + "</option>");
-										}%>
-							</select></td>
-							<tr><td>Date:</td>
-							<td><input type="datetime-local" name="date_created" step="1" required="required"/></td></tr>
-							<tr><td>value:</td>
-							<td><input type="number" name="value" required="required"/></td></tr>
-							<tr><td colspan="2" align="center"><input type="submit" value="Submit" /> <input type="reset" value="Reset" /></td></tr>
-						</tbody></table></center></form>
-				</form>
-				<form action="sensorservlet?type=csv" method="post" enctype="multipart/form-data" onsubmit="this">
 				<table>
 						<thead><tr><th colspan="2">Add Comma Separated Value Text:</th></tr></thead>
 						<tbody>
@@ -206,7 +185,7 @@ Web page for Sensor
 					</table>
 				</form>
 			</div>
-	<table>	
+	<center><table>	
 		<tr><td valign="top">	
 			<table border=\"1\" width=\"30%\" cellpadding=\"5\">
 				<thead>
@@ -259,7 +238,7 @@ Web page for Sensor
 				</tr>
 				<tr>
 					<td>
-						<table border="1" width="30%" cellpadding="5" style="white-space:nowrap;border-collapse:collapse;">
+						<center><table border="1" width="30%" cellpadding="5" style="white-space:nowrap;border-collapse:collapse;">
 						<%
 							String sensorSelect = null;
 							sensorSelect = request.getParameter("sensor_selected");
@@ -308,13 +287,32 @@ Web page for Sensor
 									out.println("<td>" + String.valueOf(rs_LA.getInt("description")) + "</td>");
 								}
 							}
+							else if (sensorSelect.equals("s")) {
 						%>
-						</table>
+								<thead>
+									<tr><td colspan="6"><center><b>Scalar Data</b></center></td></tr>
+									<tr><td><b>ID</b></td>
+									<td><b>Sensor ID</b></td>
+									<td><b>Date Created</b></td>
+									<td><b>Value</b></td></tr>
+								</thead>
+						<%		
+										String list_a = "SELECT * FROM scalar_data ORDER BY id";
+										ResultSet rs_LA = s.executeQuery(list_a);
+										while (rs_LA.next()){
+											out.println("<tr><td>" + String.valueOf(rs_LA.getInt("id")) + "</td>");
+											out.println("<td>" + String.valueOf(rs_LA.getInt("sensor_id")) + "</td>");
+											out.println("<td>" + String.valueOf(rs_LA.getTimestamp("date_created")) + "</td>");
+											out.println("<td>" + String.valueOf(rs_LA.getInt("value")) + "</td>");
+										}
+									}
+								%>
+						</table></center>
 					</td>
 				</tr>
 			</table>
 		</td></tr>	
-	</table>				
+	</table></center>				
 <%} catch (SQLException e) {
 				System.out.println(e.getMessage());
 		    }%>	    	

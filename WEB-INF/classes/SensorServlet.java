@@ -120,9 +120,22 @@ public class SensorServlet extends HttpServlet {
 				
 			}
 			else if (type.equals("scalar")) {
-				String querrymessage = sens.addScalarData (id, sensor_id, date_created.split("T"),value);
-				session.setAttribute("err", querrymessage);
-				response.sendRedirect("/oos-cmput391/sensor.jsp");
+				BufferedReader reader = new BufferedReader(new InputStreamReader(fileContent));
+				String line = null;
+				int var_id = 1;
+				while( (line = reader.readLine())!= null ){
+					
+					String [] tokens = line.split(",");
+		    		int var_sensor_id = Integer.parseInt(tokens[0]);
+		    		String var_date_created = tokens[1];
+		    		double var_value = Integer.parseInt(tokens[2]);
+		    		
+		    		String querrymessage = sens.addScalarData (var_sensor_id, var_date_created.split(" "),var_value);
+		    		session.setAttribute("err", querrymessage);
+					response.sendRedirect("/oos-cmput391/sensor.jsp");
+		    		var_id++;
+				}
+				
 			}
 
 		}catch (Exception e) {

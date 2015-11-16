@@ -129,8 +129,8 @@ public class Sensor {
 	}
 	
 	
-	public String addScalarData (int id, int sensor_id, String[] date_created, double value) {
-		database.connect_db();
+	public String addScalarData (int sensor_id, String[] date_created, double value) {
+		
 		String dateTimeLocal = null;
 		String[] time = date_created[1].split(":");
 		if (time.length != 3) {
@@ -141,23 +141,31 @@ public class Sensor {
 		}
 		
 		try {
-			SimpleDateFormat format = new SimpleDateFormat( "YYYY-MM-DD HH:mm:ss" );
+			SimpleDateFormat format = new SimpleDateFormat( "DD/MM/YYYY HH:mm:ss" );
 			java.util.Date date_time = format.parse(dateTimeLocal );
 			java.sql.Timestamp sqlDate = new java.sql.Timestamp( date_time.getTime());
 			
 			Connection dbConnection = getDBConnection();
-			//Statement stmt = dbConnection.createStatement();
+			Statement s = dbConnection.createStatement();
+			
+			String maxID = "SELECT max(id) FROM scalar_data";
+			
+			ResultSet rs = s.executeQuery(maxID);
+			rs.next();
+			int id = rs.getInt(1);
+			id++;
+			
 			PreparedStatement statement = dbConnection.prepareStatement("INSERT INTO scalar_data VALUES(" + id +
 					"," + sensor_id +",?,"+ value +")"); 
 			statement.setTimestamp(1,sqlDate);
 			statement.executeQuery();
 			statement.executeUpdate("commit");
-			return "Scalar Data Added";
+			return "Scalar Data file Added";
 			
 		}catch (Exception e) {
 			System.out.println(e.getMessage());
 			}
-		return "Scalar Data was not Added";
+		return "Scalar Data file was not Added";
 	}
 	
 
