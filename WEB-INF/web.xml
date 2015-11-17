@@ -59,4 +59,13 @@
         <servlet-name>searchservlet</servlet-name>
         <url-pattern>/searchservlet</url-pattern>
     </servlet-mapping>
+
+    <servlet>
+        <servlet-name>analysisservlet</servlet-name>
+        <servlet-class>AnalysisServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>analysisservlet</servlet-name>
+        <url-pattern>/analysisservlet</url-pattern>
+    </servlet-mapping>
 </web-app>

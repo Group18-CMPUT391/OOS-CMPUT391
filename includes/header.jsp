@@ -57,7 +57,7 @@ Assume necessary html definitions are already made
 			out.println("<a href=\"https://github.com/Group18-CMPUT391/oos-cmput391/wiki/Self-Help-Wiki\">help</a>");
 			
 			return;
-	    }
+	    	}
 	
 		if (user.getRole().equals("a")) {
 			out.println("<a href=\"#\" id=\"click\">register</a> | ");
@@ -66,17 +66,11 @@ Assume necessary html definitions are already made
 		} else if (user.getRole().equals("s")) {
 	        out.println("<a href=\"/oos-cmput391/sensor.jsp\">subscribe</a> | ");
 	        out.println("<a href=\"/oos-cmput391/search.jsp\">search</a> | ");	
+		out.println("<a href=\"/oos-cmput391/data_analysis.jsp\">generate report</a> | ");
 		}
-		out.println("<a href=\"/oos-cmput391/account_settings.jsp\">account settings</a> | ");
-	    out.println("<a href=\"/oos-cmput391/logout.jsp\">logout</a>"); 
 
-	     /* else {
-	    	if (user.getRole().equals("a")) {
-	    		out.println("<a href=\"#\" id=\"click\">register</a> | ");
-	    	}
-	        out.println("<a href=\"/oos-cmput391/sensor.jsp\">sensor</a> | ");
-			out.println("<a href=\"https://github.com/Group18-CMPUT391/oos-cmput391/wiki/Self-Help-Wiki\">help</a> | ");
-	    } */
+		out.println("<a href=\"/oos-cmput391/account_settings.jsp\">account settings</a> | ");
+		out.println("<a href=\"/oos-cmput391/logout.jsp\">logout</a>"); 
 	%>
 </p>
 
