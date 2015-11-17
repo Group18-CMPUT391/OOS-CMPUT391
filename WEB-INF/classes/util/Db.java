@@ -24,6 +24,7 @@ public class Db {
 	// JDBC driver name and database URL
 	static final String DRIVER_NAME = "oracle.jdbc.driver.OracleDriver";
 	static final String DB_URL = "jdbc:oracle:thin:@gwynne.cs.ualberta.ca:1521:CRS";
+	//static final String DB_URL = "jdbc:oracle:thin:@localhost:1525:CRS";
 
 	private Connection conn;
 	private Statement stmt;
@@ -65,6 +66,7 @@ public class Db {
 		}
 		return null;
 	}
+	
 
 	public Integer execute_update(String query) {
 		try {
