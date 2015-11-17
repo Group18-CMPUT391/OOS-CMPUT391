@@ -81,9 +81,16 @@ Web page for Sensor
 	<%@ page import="util.Db" %>
     <%@ page import="java.sql.*" %>
     <%@ page import="java.io.*" %>
+    <%@ page import="util.User" %>
+    <%@ page import="util.Sensor" %>
 	<% 
-   String username = (String) session.getAttribute("username");
-   if (username == null) {
+	User user = null;
+	try {
+		user = (User) session.getAttribute("user");
+	} catch (NullPointerException e) {
+		e.printStackTrace();
+	}
+   if (user == null) {
    	  session.setAttribute("status", "Please login to access page");
    	  response.sendRedirect("/oos-cmput391/login.jsp");
    }
@@ -96,10 +103,8 @@ Web page for Sensor
    }
    
    try{
-	   Class.forName("oracle.jdbc.driver.OracleDriver");
-	   //Connection con = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1525:CRS","wkchoi", "Kingfreak95");
-	   Connection con = DriverManager.getConnection("jdbc:oracle:thin:@gwynne.cs.ualberta.ca:1521:CRS","wkchoi", "Kingfreak95");
-	   Statement s = con.createStatement();
+	   Db db = new Db();
+	   db.connect_db();
    %>
 	
 			<div id="sensor" title="New Sensor">
@@ -134,7 +139,7 @@ Web page for Sensor
 						<tr><td>Sensor ID:</td>
 						<td><select name="sensor_id">
 							<%String sid_a = "SELECT sensor_id FROM sensors WHERE sensor_type = 'a' ORDER BY sensor_id";
-							ResultSet rs_a = s.executeQuery(sid_a);
+							ResultSet rs_a = db.execute_stmt(sid_a);
 									while(rs_a.next()) {
 										out.println("<option value=\""+String.valueOf(rs_a.getInt(1))+"\">" + rs_a.getInt(1) + "</option>");
 									}%>
@@ -160,7 +165,7 @@ Web page for Sensor
 						<tr><td>Sensor ID:</td>
 						<td><select name="sensor_id">
 							<%String sid_i = "SELECT sensor_id FROM sensors WHERE sensor_type = 'i' ORDER BY sensor_id";
-							ResultSet rs_i = s.executeQuery(sid_i);
+							ResultSet rs_i = db.execute_stmt(sid_i);
 									while(rs_i.next()) {
 										out.println("<option value=\""+String.valueOf(rs_i.getInt(1))+"\">" + rs_i.getInt(1) + "</option>");
 									}%>
@@ -253,17 +258,17 @@ Web page for Sensor
 									<td><b>Sensor ID</b></td>
 									<td><b>Date Created</b></td>
 									<td><b>Length</b></td>
-									<td><b>Desciption</b></td>
+									<td><b>Description</b></td>
 									<td><b>Download</b></td></tr></thead>
 						<%		
 								String list_a = "SELECT * FROM audio_recordings ORDER BY recording_id";
-								ResultSet rs_LA = s.executeQuery(list_a);
+								ResultSet rs_LA = db.execute_stmt(list_a);
 								while (rs_LA.next()){
 									out.println("<tr><td>" + String.valueOf(rs_LA.getInt("recording_id")) + "</td>");
 									out.println("<td>" + String.valueOf(rs_LA.getInt("sensor_id")) + "</td>");
 									out.println("<td>" + String.valueOf(rs_LA.getTimestamp("date_created")) + "</td>");
 									out.println("<td>" + String.valueOf(rs_LA.getInt("length")) + "</td>");
-									out.println("<td>" + String.valueOf(rs_LA.getString("description")) + "</td>");
+									out.println("<td>" + String.valueOf(rs_LA.getString("description")) + "</td></tr>");
 								}
 							}
 							else if (sensorSelect.equals("i")) {
@@ -273,18 +278,18 @@ Web page for Sensor
 									<tr><td><b>Image ID</b></td>
 									<td><b>Sensor ID</b></td>
 									<td><b>Date Created</b></td>
-									<td><b>Desciption</b></td>
+									<td><b>Description</b></td>
 									<td><b>Thumbnail</b></td>
 									<td><b>Download</b></td></tr>
 								</thead>
 						<%		
 								String list_a = "SELECT * FROM images ORDER BY image_id";
-								ResultSet rs_LA = s.executeQuery(list_a);
+								ResultSet rs_LA = db.execute_stmt(list_a);
 								while (rs_LA.next()){
 									out.println("<tr><td>" + String.valueOf(rs_LA.getInt("image_id")) + "</td>");
 									out.println("<td>" + String.valueOf(rs_LA.getInt("sensor_id")) + "</td>");
 									out.println("<td>" + String.valueOf(rs_LA.getTimestamp("date_created")) + "</td>");
-									out.println("<td>" + String.valueOf(rs_LA.getInt("description")) + "</td>");
+									out.println("<td>" + String.valueOf(rs_LA.getInt("description")) + "</td></tr>");
 								}
 							}
 							else if (sensorSelect.equals("s")) {
@@ -297,16 +302,20 @@ Web page for Sensor
 									<td><b>Value</b></td></tr>
 								</thead>
 						<%		
-										String list_a = "SELECT * FROM scalar_data ORDER BY id";
-										ResultSet rs_LA = s.executeQuery(list_a);
-										while (rs_LA.next()){
-											out.println("<tr><td>" + String.valueOf(rs_LA.getInt("id")) + "</td>");
-											out.println("<td>" + String.valueOf(rs_LA.getInt("sensor_id")) + "</td>");
-											out.println("<td>" + String.valueOf(rs_LA.getTimestamp("date_created")) + "</td>");
-											out.println("<td>" + String.valueOf(rs_LA.getInt("value")) + "</td>");
-										}
-									}
-								%>
+								
+								String list_a = "SELECT * FROM scalar_data ORDER BY id";
+								ResultSet rs_LA = db.execute_stmt(list_a);
+								while (rs_LA.next()){
+									out.println("<tr><td>" + String.valueOf(rs_LA.getInt("id")) + "</td>");
+									out.println("<td>" + String.valueOf(rs_LA.getInt("sensor_id")) + "</td>");
+									out.println("<td>" + String.valueOf(rs_LA.getTimestamp("date_created")) + "</td>");
+									out.println("<td>" + String.valueOf(rs_LA.getInt("value")) + "</td></tr>");
+								}
+								
+								
+							}
+						%>
+											
 						</table></center>
 					</td>
 				</tr>

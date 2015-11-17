@@ -7,7 +7,6 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import util.Db;
-import util.Sensor;
 
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
@@ -38,8 +37,8 @@ public class SensorServlet extends HttpServlet {
 		try {
 			DiskFileItemFactory factory = new DiskFileItemFactory();
 			ServletFileUpload upload = new ServletFileUpload(factory);
-			Sensor sens = new Sensor();
-			
+			Db db = new Db();
+			db.connect_db();
 			List<FileItem> items = upload.parseRequest(request);
 			for (FileItem item : items) {
 				if (item.isFormField()) {
@@ -89,13 +88,13 @@ public class SensorServlet extends HttpServlet {
 			
 			String type = request.getParameter( "type" );
 			if (type.equals("sensor")) {
-				String querrymessage = sens.newSensor(sensor_id, location, sensor_type, description);
+				String querrymessage = db.newSensor(sensor_id, location, sensor_type, description);
 				session.setAttribute("err", querrymessage);
 				response.sendRedirect("/oos-cmput391/sensor.jsp");
 			}
 			else if (type.equals("audio_recordings")) {
 				if(ext.equalsIgnoreCase("wav")){
-					String querrymessage = sens.uploadAudio (recording_id, sensor_id, 
+					String querrymessage = db.uploadAudio (recording_id, sensor_id, 
 							date_created.split("T"), length, description, fileContent);
 					session.setAttribute("err", querrymessage);
 					response.sendRedirect("/oos-cmput391/sensor.jsp");
@@ -108,7 +107,7 @@ public class SensorServlet extends HttpServlet {
 			}
 			else if (type.equals("images")) {
 				if(ext.equalsIgnoreCase("jpg")){
-					String querrymessage = sens.uploadImage (image_id, sensor_id, 
+					String querrymessage = db.uploadImage (image_id, sensor_id, 
 							date_created.split("T"), description, fileContent);
 					session.setAttribute("err", querrymessage);
 					response.sendRedirect("/oos-cmput391/sensor.jsp?type=images");
@@ -130,11 +129,12 @@ public class SensorServlet extends HttpServlet {
 		    		String var_date_created = tokens[1];
 		    		double var_value = Integer.parseInt(tokens[2]);
 		    		
-		    		String querrymessage = sens.addScalarData (var_sensor_id, var_date_created.split(" "),var_value);
+		    		String querrymessage = db.addScalarData (var_sensor_id, var_date_created.split(" "),var_value);
 		    		session.setAttribute("err", querrymessage);
 					response.sendRedirect("/oos-cmput391/sensor.jsp");
 		    		var_id++;
 				}
+				//sens.createCSV();
 				
 			}
 

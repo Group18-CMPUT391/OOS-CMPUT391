@@ -10,24 +10,46 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Date;
+import java.util.*;
+import java.io.*;
+import java.sql.*;
 
 import oracle.sql.*;
 import oracle.jdbc.*;
+
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+
+import java.awt.Graphics;
+import java.awt.Image;
+import java.awt.image.BufferedImage;
+import javax.imageio.ImageIO;
+import net.coobird.thumbnailator.*;
+
+
 
 import util.User;
 import util.Person;
 //import util.Photo;
 
 public class Db {
-	static final String USERNAME = "hbtruong";
-	static final String PASSWORD = "qwerty123456";
+	static final String USERNAME = "wkchoi";
+	static final String PASSWORD = "Kingfreak95";
 	// JDBC driver name and database URL
 	static final String DRIVER_NAME = "oracle.jdbc.driver.OracleDriver";
 	static final String DB_URL = "jdbc:oracle:thin:@gwynne.cs.ualberta.ca:1521:CRS";
 	//static final String DB_URL = "jdbc:oracle:thin:@localhost:1525:CRS";
 
 	private Connection conn;
+	public Connection getConn() {
+		return conn;
+	}
+	
 	private Statement stmt;
+	public Statement getstmt() {
+		return stmt;
+	}
 
 	// Connect jdbc
 	public int connect_db() {
@@ -283,4 +305,133 @@ public class Db {
     	execute_update(query_user);
     	execute_update(query_person);
     }
+    
+    
+    public String uploadAudio (int recording_id, int sensor_id, String[] date_created, 
+			int length, String description, InputStream recorded_data) {
+			
+		String dateTimeLocal = null;
+		String[] time = date_created[1].split(":");
+		if (time.length != 3) {
+			dateTimeLocal = date_created[0]  + " " + date_created[1] + ":00";
+		}
+		else {
+			dateTimeLocal = date_created[0] + " " + date_created[1];
+		}
+		
+		try{
+			SimpleDateFormat format = new SimpleDateFormat( "YYYY-MM-DD HH:mm:ss" );
+			java.util.Date date_time = format.parse(dateTimeLocal );
+			java.sql.Timestamp sqlDate = new java.sql.Timestamp( date_time.getTime());
+			
+			PreparedStatement statement = conn.prepareStatement("INSERT INTO audio_recordings VALUES(" + recording_id +
+					"," + sensor_id +",?,"+ length + ",'"+ description +"', ?)");   
+			statement.setTimestamp(1,sqlDate);
+			statement.setBlob(2,recorded_data);
+			statement.executeQuery();
+			statement.executeUpdate("commit");
+			
+			return "Audio File Added. ";
+		}catch (Exception e) {
+			System.out.println(e.getMessage());
+			}
+		return "Audio File was not Added.";
+    }
+    
+    public String addScalarData (int sensor_id, String[] date_created, double value) {
+		
+		String dateTimeLocal = null;
+		String[] time = date_created[1].split(":");
+		if (time.length != 3) {
+			dateTimeLocal = date_created[0]  + " " + date_created[1] + ":00";
+		}
+		else {
+			dateTimeLocal = date_created[0] + " " + date_created[1];
+		}
+		
+		try {
+			SimpleDateFormat format = new SimpleDateFormat( "DD/MM/YYYY HH:mm:ss" );
+			java.util.Date date_time = format.parse(dateTimeLocal );
+			java.sql.Timestamp sqlDate = new java.sql.Timestamp( date_time.getTime());
+		
+			String maxID = "SELECT max(id) FROM scalar_data";
+			
+			ResultSet rs = execute_stmt(maxID);
+			rs.next();
+			int id = rs.getInt(1);
+			id++;
+			
+			PreparedStatement statement = conn.prepareStatement("INSERT INTO scalar_data VALUES(" + id +
+					"," + sensor_id +",?,"+ value +")"); 
+			statement.setTimestamp(1,sqlDate);
+			statement.executeQuery();
+			statement.executeUpdate("commit");
+			return "Scalar Data file Added";
+			
+		}catch (Exception e) {
+			System.out.println(e.getMessage());
+			}
+		return "Scalar Data file was not Added";
+	}
+    
+    public String newSensor (int sensor_id, String location, String sensor_type, String description) {
+		
+		try {
+			String sid = "SELECT sensor_id FROM sensors WHERE sensor_id = " + sensor_id;
+			ResultSet rs = execute_stmt(sid);
+			if (rs.next()){
+				return "SORRY! Sensor with ID " + sensor_id + " is already in the system.";
+			}
+			else {
+				String insertNewSensor = "INSERT INTO sensors Values(" + sensor_id + ",'" + location + 
+						"','" + sensor_type + "','" + description + "')";
+		    	execute_update(insertNewSensor);	
+		    	return "New Sensor with ID " + sensor_id + " created.";
+			}
+		}catch (SQLException e) {
+			System.out.println(e.getMessage());
+			}
+		return " ";
+	}
+    
+	public String uploadImage (int image_id, int sensor_id, String[] date_created,
+			String description, InputStream recorded_data) {
+		
+		String dateTimeLocal = null;
+		String[] time = date_created[1].split(":");
+		if (time.length != 3) {
+			dateTimeLocal = date_created[0]  + " " + date_created[1] + ":00";
+		}
+		else {
+			dateTimeLocal = date_created[0] + " " + date_created[1];
+		}
+		
+		try {
+			SimpleDateFormat format = new SimpleDateFormat( "YYYY-MM-DD HH:mm:ss" );
+			java.util.Date date_time = format.parse(dateTimeLocal );
+			java.sql.Timestamp sqlDate = new java.sql.Timestamp( date_time.getTime());
+			
+			InputStream original = recorded_data;
+			BufferedImage img = ImageIO.read(original);
+			BufferedImage scaledImg = Thumbnails.of(img).scale(0.25).asBufferedImage();
+			
+			ByteArrayOutputStream baos = new ByteArrayOutputStream();
+			ImageIO.write(scaledImg, "jpg", baos);
+			InputStream scaled = new ByteArrayInputStream(baos.toByteArray());
+		
+			
+			PreparedStatement statement = conn.prepareStatement("INSERT INTO images VALUES(" + image_id +
+					"," + sensor_id +",?,'"+ description +"', ?, ?)");   
+			statement.setTimestamp(1,sqlDate);
+			statement.setBlob(2,scaled);
+			statement.setBlob(3,recorded_data);
+			statement.executeQuery();
+			statement.executeUpdate("commit");
+			return "Image File Added";
+		}catch (Exception e) {
+			System.out.println(e.getMessage());
+			}
+		
+		return "Image File was not Added";
+	}
 }
