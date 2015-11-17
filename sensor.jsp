@@ -82,7 +82,6 @@ Web page for Sensor
     <%@ page import="java.sql.*" %>
     <%@ page import="java.io.*" %>
     <%@ page import="util.User" %>
-    <%@ page import="util.Sensor" %>
 	<% 
 	User user = null;
 	try {
@@ -101,8 +100,6 @@ Web page for Sensor
    } catch(NullPointerException e) {
       e.printStackTrace();
    }
-   
-   try{
 	   Db db = new Db();
 	   db.connect_db();
    %>
@@ -138,11 +135,10 @@ Web page for Sensor
 						<td><input type="number" name="recording_id" required="required" min="0"/></td></tr>
 						<tr><td>Sensor ID:</td>
 						<td><select name="sensor_id">
-							<%String sid_a = "SELECT sensor_id FROM sensors WHERE sensor_type = 'a' ORDER BY sensor_id";
-							ResultSet rs_a = db.execute_stmt(sid_a);
-									while(rs_a.next()) {
-										out.println("<option value=\""+String.valueOf(rs_a.getInt(1))+"\">" + rs_a.getInt(1) + "</option>");
-									}%>
+						<%for(int i =0; i < db.getSensorA_id_list().size(); i++) {
+							out.println("<option value=\""+ db.getSensorA_id_list().get(i)+"\">"+db.getSensorA_id_list().get(i)+ "</option>");
+						}
+						%>
 						</select></td>
 						<tr><td>Date:</td>
 						<td><input type="datetime-local" name="date_created" step="1" required="required"/></td></tr>
@@ -164,11 +160,10 @@ Web page for Sensor
 						<td><input type="number" name="image_id" required="required" min="0"/></td></tr>
 						<tr><td>Sensor ID:</td>
 						<td><select name="sensor_id">
-							<%String sid_i = "SELECT sensor_id FROM sensors WHERE sensor_type = 'i' ORDER BY sensor_id";
-							ResultSet rs_i = db.execute_stmt(sid_i);
-									while(rs_i.next()) {
-										out.println("<option value=\""+String.valueOf(rs_i.getInt(1))+"\">" + rs_i.getInt(1) + "</option>");
-									}%>
+						<%for(int i =0; i < db.getSensorI_id_list().size(); i++) {
+							out.println("<option value=\""+ db.getSensorI_id_list().get(i)+"\">"+db.getSensorI_id_list().get(i)+ "</option>");
+						}
+						%>
 						</select></td>
 						<tr><td>Date:</td>
 						<td><input type="datetime-local" name="date_created" step="1" required="required"/></td></tr>
@@ -261,14 +256,8 @@ Web page for Sensor
 									<td><b>Description</b></td>
 									<td><b>Download</b></td></tr></thead>
 						<%		
-								String list_a = "SELECT * FROM audio_recordings ORDER BY recording_id";
-								ResultSet rs_LA = db.execute_stmt(list_a);
-								while (rs_LA.next()){
-									out.println("<tr><td>" + String.valueOf(rs_LA.getInt("recording_id")) + "</td>");
-									out.println("<td>" + String.valueOf(rs_LA.getInt("sensor_id")) + "</td>");
-									out.println("<td>" + String.valueOf(rs_LA.getTimestamp("date_created")) + "</td>");
-									out.println("<td>" + String.valueOf(rs_LA.getInt("length")) + "</td>");
-									out.println("<td>" + String.valueOf(rs_LA.getString("description")) + "</td></tr>");
+								for(int i =0; i < db.recording_list().size(); i++) {
+									out.println(db.recording_list().get(i));
 								}
 							}
 							else if (sensorSelect.equals("i")) {
@@ -283,13 +272,8 @@ Web page for Sensor
 									<td><b>Download</b></td></tr>
 								</thead>
 						<%		
-								String list_a = "SELECT * FROM images ORDER BY image_id";
-								ResultSet rs_LA = db.execute_stmt(list_a);
-								while (rs_LA.next()){
-									out.println("<tr><td>" + String.valueOf(rs_LA.getInt("image_id")) + "</td>");
-									out.println("<td>" + String.valueOf(rs_LA.getInt("sensor_id")) + "</td>");
-									out.println("<td>" + String.valueOf(rs_LA.getTimestamp("date_created")) + "</td>");
-									out.println("<td>" + String.valueOf(rs_LA.getInt("description")) + "</td></tr>");
+								for(int i =0; i < db.image_list().size(); i++) {
+									out.println(db.image_list().get(i));
 								}
 							}
 							else if (sensorSelect.equals("s")) {
@@ -302,28 +286,16 @@ Web page for Sensor
 									<td><b>Value</b></td></tr>
 								</thead>
 						<%		
-								
-								String list_a = "SELECT * FROM scalar_data ORDER BY id";
-								ResultSet rs_LA = db.execute_stmt(list_a);
-								while (rs_LA.next()){
-									out.println("<tr><td>" + String.valueOf(rs_LA.getInt("id")) + "</td>");
-									out.println("<td>" + String.valueOf(rs_LA.getInt("sensor_id")) + "</td>");
-									out.println("<td>" + String.valueOf(rs_LA.getTimestamp("date_created")) + "</td>");
-									out.println("<td>" + String.valueOf(rs_LA.getInt("value")) + "</td></tr>");
+								for(int i =0; i < db.scalar_list().size(); i++) {
+									out.println(db.scalar_list().get(i));
 								}
-								
-								
 							}
-						%>
-											
+						%>				
 						</table></center>
 					</td>
 				</tr>
 			</table>
 		</td></tr>	
-	</table></center>				
-<%} catch (SQLException e) {
-				System.out.println(e.getMessage());
-		    }%>	    	
+	</table></center>					
 </body> 
 </html>

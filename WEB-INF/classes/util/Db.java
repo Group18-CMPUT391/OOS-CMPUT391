@@ -397,6 +397,7 @@ public class Db {
 	public String uploadImage (int image_id, int sensor_id, String[] date_created,
 			String description, InputStream recorded_data) {
 		
+		
 		String dateTimeLocal = null;
 		String[] time = date_created[1].split(":");
 		if (time.length != 3) {
@@ -405,6 +406,7 @@ public class Db {
 		else {
 			dateTimeLocal = date_created[0] + " " + date_created[1];
 		}
+		
 		
 		try {
 			SimpleDateFormat format = new SimpleDateFormat( "YYYY-MM-DD HH:mm:ss" );
@@ -416,17 +418,21 @@ public class Db {
 			BufferedImage scaledImg = Thumbnails.of(img).scale(0.25).asBufferedImage();
 			
 			ByteArrayOutputStream baos = new ByteArrayOutputStream();
-			ImageIO.write(scaledImg, "jpg", baos);
-			InputStream scaled = new ByteArrayInputStream(baos.toByteArray());
-		
+			ImageIO.write(img, "jpg", baos);
+			original = new ByteArrayInputStream(baos.toByteArray());
 			
+			ByteArrayOutputStream baos2 = new ByteArrayOutputStream();
+			ImageIO.write(scaledImg, "jpg", baos2);
+			InputStream scaled = new ByteArrayInputStream(baos2.toByteArray());
+		
 			PreparedStatement statement = conn.prepareStatement("INSERT INTO images VALUES(" + image_id +
 					"," + sensor_id +",?,'"+ description +"', ?, ?)");   
 			statement.setTimestamp(1,sqlDate);
-			statement.setBlob(2,scaled);
-			statement.setBlob(3,recorded_data);
+			statement.setBinaryStream(2,scaled);
+			statement.setBinaryStream(3,original);
 			statement.executeQuery();
 			statement.executeUpdate("commit");
+		
 			return "Image File Added";
 		}catch (Exception e) {
 			System.out.println(e.getMessage());
@@ -434,4 +440,85 @@ public class Db {
 		
 		return "Image File was not Added";
 	}
+	
+	public List<String> getSensorA_id_list() {
+		List<String> sensor_id = new ArrayList<String>();
+		try{
+			String sid = "SELECT sensor_id FROM sensors WHERE sensor_type = 'a' ORDER BY sensor_id";
+			ResultSet rs = execute_stmt(sid);
+					while(rs.next()) {
+						sensor_id.add(String.valueOf(rs.getInt(1)));
+					}
+		}catch (Exception e) {
+			System.out.println(e.getMessage());
+			}
+		return sensor_id;
+	}
+	
+	public List<String> getSensorI_id_list() {
+		List<String> sensor_id = new ArrayList<String>();
+		try{
+			String sid = "SELECT sensor_id FROM sensors WHERE sensor_type = 'i' ORDER BY sensor_id";
+			ResultSet rs = execute_stmt(sid);
+					while(rs.next()) {
+						sensor_id.add(String.valueOf(rs.getInt(1)));
+					}
+		}catch (Exception e) {
+			System.out.println(e.getMessage());
+			}
+		return sensor_id;
+	}
+	
+	public List<String> recording_list() {
+		List<String> recordingList = new ArrayList<String>();
+		try{
+			String list = "SELECT * FROM audio_recordings ORDER BY recording_id";
+			ResultSet rs = execute_stmt(list);
+			while (rs.next()){
+				recordingList.add("<tr><td>" + String.valueOf(rs.getInt(1))+"</td>"+
+									"<td>" + String.valueOf(rs.getInt(2))+"</td>"+
+									"<td>" + String.valueOf(rs.getTimestamp(3))+"</td>"+
+									"<td>" + String.valueOf(rs.getInt(4))+"</td>"+
+									"<td>" + rs.getString(5) + "</td></tr>");
+			}
+		}catch (Exception e) {
+			System.out.println(e.getMessage());
+			}
+		return recordingList;
+	}
+	
+	public List<String> image_list() {
+		List<String> imageList = new ArrayList<String>();
+		try{
+			String list = "SELECT * FROM images ORDER BY image_id";
+			ResultSet rs = execute_stmt(list);
+			while (rs.next()){
+				imageList.add("<tr><td>" + String.valueOf(rs.getInt(1))+"</td>"+
+									"<td>" + String.valueOf(rs.getInt(2))+"</td>"+
+									"<td>" + String.valueOf(rs.getTimestamp(3))+"</td>"+
+									"<td>" + rs.getString(4) + "</td></tr>");
+			}
+		}catch (Exception e) {
+			System.out.println(e.getMessage());
+			}
+		return imageList;
+	}
+	
+	public List<String> scalar_list() {
+		List<String> scalarList = new ArrayList<String>();
+		try{
+			String list = "SELECT * FROM scalar_data ORDER BY id";
+			ResultSet rs = execute_stmt(list);
+			while (rs.next()){
+				scalarList.add("<tr><td>" + String.valueOf(rs.getInt(1))+"</td>"+
+									"<td>" + String.valueOf(rs.getInt(2))+"</td>"+
+									"<td>" + String.valueOf(rs.getTimestamp(3))+"</td>"+
+									"<td>" + String.valueOf(rs.getInt(4)) + "</td></tr>");
+			}
+		}catch (Exception e) {
+			System.out.println(e.getMessage());
+			}
+		return scalarList;
+	}
+	
 }
