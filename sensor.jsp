@@ -294,6 +294,7 @@ Web page for Sensor
 									out.println(db.scalar_list().get(i));
 								}
 							}
+							db.close_db();
 						%>				
 						</table></center>
 					</td>
