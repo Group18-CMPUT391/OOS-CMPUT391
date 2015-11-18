@@ -35,8 +35,8 @@ import util.Person;
 //import util.Photo;
 
 public class Db {
-	static final String USERNAME = "wkchoi";
-	static final String PASSWORD = "Kingfreak95";
+	static final String USERNAME = "hbtruong";
+	static final String PASSWORD = "qwerty123456";
 	// JDBC driver name and database URL
 	static final String DRIVER_NAME = "oracle.jdbc.driver.OracleDriver";
 	static final String DB_URL = "jdbc:oracle:thin:@gwynne.cs.ualberta.ca:1521:CRS";
@@ -111,7 +111,7 @@ public class Db {
 				password = rs.getString("password");
 				role = rs.getString("role");
 				person_id = rs.getLong("person_id");
-				date_registered = rs.getString("date_registered");
+				date_registered = String.valueOf(rs.getTimestamp("date_registered"));
 			}
 			user = new User(user_name, password, role, person_id, date_registered);
 		} catch(Exception e) {
