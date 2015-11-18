@@ -22,8 +22,8 @@ public class Sensor {
 	private static final String DB_CONNECTION = "jdbc:oracle:thin:@gwynne.cs.ualberta.ca:1521:CRS";
 	//private static final String DB_CONNECTION = "jdbc:oracle:thin:@localhost:1525:CRS";
 	private static final String DB_DRIVER = "oracle.jdbc.driver.OracleDriver";
-	private static final String DB_USER = "wkchoi";
-	private static final String DB_PASSWORD = "Kingfreak95";
+	private static final String DB_USER = "hbtruong";
+	private static final String DB_PASSWORD = "qwerty123456";
 	
 
 	

@@ -29,7 +29,7 @@ Search page allows to user to enter a search query
 
 <html>
   <head>
-    <title>Search</title>
+    <title>Data analysis</title>
     <center>
     	<jsp:include page="includes/header.jsp"/>
     </center>
@@ -37,17 +37,19 @@ Search page allows to user to enter a search query
   <body>
 	<div style="text-align:center">
   		<div style="display:inline-block">
-			<form name='choosetime' action='analysisservlet' "+
-		    "method='PUT'>
-				<table><tr><th>Timeframe</th><td>
-					<input type='radio' name='tframe' value='daily'>Daily</input>
-					<input type='radio' name='tframe' value='weekly'>Weekly</input>
-					<input type='radio' name='tframe' value='monthly'>Monthly</input>
-					<input type='radio' name='tframe' value='yearly'>Yearly</input>
-					</td></tr>
+			<form name='choosetime' action='analysisservlet' " + "method='PUT'>
+				<table>
+					<tr><th>Timeframe</th>
+						<td>
+							<input type='radio' name='tframe' value='daily'>Daily</input>
+							<input type='radio' name='tframe' value='weekly'>Weekly</input>
+							<input type='radio' name='tframe' value='monthly'>Monthly</input>
+							<input type='radio' name='tframe' value='yearly'>Yearly</input>
+						</td>
+					</tr>
 					<tr><td><input type='submit'></input></td></tr>
 				</table>
-				</form>
+			</form>
 		</div>
 	</div>
   </body>

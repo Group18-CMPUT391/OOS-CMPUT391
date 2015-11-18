@@ -98,7 +98,7 @@ Web page for Sensor
    try{
 	   Class.forName("oracle.jdbc.driver.OracleDriver");
 	   //Connection con = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1525:CRS","wkchoi", "Kingfreak95");
-	   Connection con = DriverManager.getConnection("jdbc:oracle:thin:@gwynne.cs.ualberta.ca:1521:CRS","wkchoi", "Kingfreak95");
+	   Connection con = DriverManager.getConnection("jdbc:oracle:thin:@gwynne.cs.ualberta.ca:1521:CRS","hbtruong", "qwerty123456");
 	   Statement s = con.createStatement();
    %>
 	
