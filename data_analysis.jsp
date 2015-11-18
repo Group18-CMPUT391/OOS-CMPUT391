@@ -21,7 +21,7 @@ Search page allows to user to enter a search query
 	}
     
     if (user == null) {
-        status = "Please log in before accessing";
+        status = "Please log in before continue";
         session.setAttribute("status", status);
         response.sendRedirect("/oos-cmput391/login.jsp");
     }

@@ -68,4 +68,14 @@
         <servlet-name>analysisservlet</servlet-name>
         <url-pattern>/analysisservlet</url-pattern>
     </servlet-mapping>
+    
+    <servlet>
+        <servlet-name>imageservlet</servlet-name>
+        <servlet-class>ImageServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>imageservlet</servlet-name>
+        <url-pattern>/imageservlet</url-pattern>
+    </servlet-mapping>
+    
 </web-app>

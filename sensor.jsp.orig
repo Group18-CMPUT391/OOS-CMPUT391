@@ -101,8 +101,17 @@ Web page for Sensor
    } catch(NullPointerException e) {
       e.printStackTrace();
    }
+<<<<<<< HEAD
+   
+   try{
+	   Class.forName("oracle.jdbc.driver.OracleDriver");
+	   //Connection con = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1525:CRS","wkchoi", "Kingfreak95");
+	   Connection con = DriverManager.getConnection("jdbc:oracle:thin:@gwynne.cs.ualberta.ca:1521:CRS","hbtruong", "qwerty123456");
+	   Statement s = con.createStatement();
+=======
 	   Db db = new Db();
 	   db.connect_db();
+>>>>>>> fc8730c4f3bca60cb8f08a1a28d6d5957975bc54
    %>
 	
 			<div id="sensor" title="New Sensor">

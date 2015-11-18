@@ -64,23 +64,35 @@ public class RegServlet extends HttpServlet {
 					response.sendRedirect("/oos-cmput391/new_user.jsp");
 				}
 				else {
-					
-					String maxID = "SELECT max(person_id) FROM persons";
-					rs = database.execute_stmt(maxID);
-					rs.next();
-					personID = rs.getInt(1);
-					personID++;
-					
-					String insertNewPerson = "INSERT INTO persons Values('" + personID + "','" + fname + "','" + lname + "','" + address + "','" + email + "','" + phone + "')";
-					database.execute_stmt(insertNewPerson);
+					String checkuname = "SELECT user_name FROM users WHERE user_name = '" + uname + "'" ;
+					rs = database.execute_stmt(checkuname);
 
-			    	
-			    	String insertNewUser = "INSERT INTO users Values('" + uname + "','" + pass + "','" + role + "','" + personID + "', CURRENT_TIMESTAMP)";
-			    	database.execute_stmt(insertNewUser);
+					
+					if (rs.next()){
+						session.setAttribute("err","User " + uname + " Is already in the system.");
+						response.sendRedirect("/oos-cmput391/existing_user.jsp");
+						
+					}
+					else {
+						String maxID = "SELECT max(person_id) FROM persons";
+						rs = database.execute_stmt(maxID);
+						rs.next();
+						personID = rs.getInt(1);
+						personID++;
+						
+						String insertNewPerson = "INSERT INTO persons Values('" + personID + "','" + fname + "','" + lname + "','" + address + "','" + email + "','" + phone + "')";
+						database.execute_stmt(insertNewPerson);
 
-			    	
-			    	session.setAttribute("err","Added User " + uname + " to the system.");
-					response.sendRedirect("/oos-cmput391/new_user.jsp");
+				    	
+				    	String insertNewUser = "INSERT INTO users Values('" + uname + "','" + pass + "','" + role + "','" + personID + "', CURRENT_TIMESTAMP)";
+				    	database.execute_stmt(insertNewUser);
+
+				    	
+				    	session.setAttribute("err","Added User " + uname + " to the system.");
+						response.sendRedirect("/oos-cmput391/new_user.jsp");
+					}
+					
+					
 				}
 			}
 			else if (nuser.equals("no")) {
@@ -89,7 +101,7 @@ public class RegServlet extends HttpServlet {
 
 				
 				if (rs.next()){
-					session.setAttribute("err","Added User " + uname + " to the system.");
+					session.setAttribute("err","User " + uname + " Is already in the system.");
 					response.sendRedirect("/oos-cmput391/existing_user.jsp");
 					
 				}
@@ -121,6 +133,7 @@ public class RegServlet extends HttpServlet {
 					
 				}
 			}
+		database.close_db();
 		} catch (SQLException e) {
 			System.out.println(e.getMessage());
 			}

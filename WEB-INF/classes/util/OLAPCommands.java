@@ -7,7 +7,7 @@ import java.util.Calendar;
 import util.Db;
 
 public class OLAPCommands {
-    private Db db;
+    private Db database;
     private String timeframe;
 	private Calendar right_now = Calendar.getInstance();
 	private int year = right_now.get(Calendar.YEAR);
@@ -16,7 +16,7 @@ public class OLAPCommands {
 	private int day = right_now.get(Calendar.DAY_OF_YEAR);
 
     public OLAPCommands(String tframe) {
-		this.db = new Db();
+		this.database = new Db();
 		this.timeframe = tframe;
     }
     
@@ -48,25 +48,48 @@ public class OLAPCommands {
      * Returns the total details of sensors registered 
      * for the specified timeframe format
      */
-    public String getSensorsScalarDaily() {
-    	String drop_query = "DROP TABLE data_cube";
-    			
-		db.connect_db();
+    public ResultSet getAnalysis(long person_id) {
+    	
+    	database.connect_db();
     	try {
-    		db.execute_stmt(drop_query);
+    		database.execute_stmt("DROP TABLE data_cube");
+    		database.execute_stmt("DROP TABLE sensor_analysis");
     	} catch (Exception e) {
-    		// Do nothing
+		    e.printStackTrace();
     	}
     	
+    	String new_table = "CREATE TABLE sensor_analysis AS "
+			    			+ "SELECT S1.sensor_id, S2.date_created, S3.location, S2.value " 
+							+ "FROM subscriptions S1, scalar_data S2, sensors S3, persons P "
+							+ "WHERE P.person_id = " + person_id + " "
+							+ "AND S1.person_id = P.person_id "
+							+ "AND S1.sensor_id = S2.sensor_id "
+							+ "AND S1.sensor_id = S3.sensor_id "
+							+ "ORDER BY S1.sensor_id, S2.date_created, S3.location, S2.value ";
+    	/*
     	String cube_query = "CREATE TABLE data_cube AS "
-    						+ "SELECT S1.sensor_id, S2.date_created, S3.location, AVG(value) 'average', MIN(value) 'min', MAX(value) 'max' " 
+    						+ "SELECT S1.sensor_id, S2.date_created, S3.location, AVG(value) \"average\", MIN(value) \"min\", MAX(value) \"max\" " 
     						+ "FROM subscriptions S1, scalar_data S2, sensors S3, persons P "
     						+ "WHERE S1.person_id = P.person_id "
     						+ "AND S1.sensor_id = S2.sensor_id "
     						+ "AND S1.sensor_id = S3.sensor_id "
-    						+ "GROUP BY CUBE (S2.sensor_id, S2.date_created, S3.location) ";
-    						
-		String query = "SELECT S1.sensor_id, TRUNC(date_created, 'DD'), location, AVG(value), MIN(value), MAX(value) "
+    						+ "GROUP BY CUBE (S1.sensor_id, S2.date_created, S3.location) "
+    						+ "ORDER BY S1.sensor_id, S2.date_created, S3.location ";
+    	*/
+    
+    	
+    	String query = "SELECT sensor_id, location, TRUNC(date_created, 'DD'), TRUNC(date_created, 'WW'), TRUNC(date_created, 'MM'), "
+    					+ "TRUNC(date_created, 'YY') + AVG(value), MIN(value), MAX(value) "
+    					+ "FROM new_table "
+    					+ "GROUP BY ROLLUP (sensor_id, location, TRUNC(date_created, 'DD'), TRUNC(date_created, 'WW'), TRUNC(date_created, 'MM'), "
+    					+ "TRUNC(date_created, 'YY') ";
+    	
+    	database.execute_stmt(new_table);
+    	ResultSet rs = database.execute_stmt(query);
+    	
+    	
+    	/*
+		String query1 = "SELECT S1.sensor_id, TRUNC(date_created, 'DD'), location, AVG(value), MIN(value), MAX(value) "
 				+ "INTO sensor_values "
 				+ "FROM sensors S1, scalar_data S2 ORDER BY date_created "		
 				+ "WHERE S1.sensor_id = S2.sensor_id "
@@ -85,35 +108,10 @@ public class OLAPCommands {
 		Sting query5 = "SELECT S1.sensor_id, TRUNC(date_created, 'YYYY'), location, AVG(value), MIN(value), MAX(value) "
 				+ "FROM sensor_values "
 				+ "GROUP BY TRUNC(date_created, 'YYYY')";
-		
-		String result = "";
-		String title = "";
-		String oldTitle = "";
-		ResultSet rset;
-		db.connect_db();
-		
-		try {
-		    rset = db.execute_stmt(query);
-		    result = result + "<table border='1'>";
-		    /*while(rset.next()) {
-			// Table Row Section Title Stuff Here
-			mydate.setTime(rset.getDate(2));
-			// Set the title stuff
-			title = getColTitle(mydate);
-			// Check if we should add the title in
-			if (!title.equals(oldTitle)) {
-			    oldTitle = title;
-			    result = result+"<tr><th>"+title+"</th></tr>";
-			}
-			// Add in the sensors
-			result = result +"<tr><td>"+rset.getInt(1)+"</td></tr>";
-		    }*/
-		    result = result + "</table>";
-		} catch (Exception e) {
-		    e.printStackTrace();
-		}
-		
-		db.close_db();
-		return result;
+		*/
+    	
+	
+		database.close_db();
+		return rs;
     }
 }
