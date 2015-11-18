@@ -61,14 +61,7 @@ Web page for Sensor
 					$( "#sensor" ).dialog( "open" );
 					return false;
 				});
-				$( "#fullsize" ).dialog({ height:'auto', 
-										width:'auto', 
-										autoOpen: false, 
-										resizable: false});
-				$( ".fullsizeClick" ).click(function() {
-					$( "#fullsize" ).load(this.href).dialog( "open" );
-					return false;
-				});
+				
 				
 			});
 			function autoResize(id){
