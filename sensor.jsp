@@ -61,6 +61,14 @@ Web page for Sensor
 					$( "#sensor" ).dialog( "open" );
 					return false;
 				});
+				$( "#fullsize" ).dialog({ height:'auto', 
+										width:'auto', 
+										autoOpen: false, 
+										resizable: false});
+				$( ".fullsizeClick" ).click(function() {
+					$( "#fullsize" ).load(this.href).dialog( "open" );
+					return false;
+				});
 				
 			});
 			function autoResize(id){
@@ -185,6 +193,8 @@ Web page for Sensor
 					</table>
 				</form>
 			</div>
+			<div id="fullsize" title="Fullsize Image">
+			</div>
 	<center><table>	
 		<tr><td valign="top">	
 			<table border=\"1\" width=\"30%\" cellpadding=\"5\">
@@ -258,6 +268,7 @@ Web page for Sensor
 						<%		
 								for(int i =0; i < db.recording_list().size(); i++) {
 									out.println(db.recording_list().get(i));
+									
 								}
 							}
 							else if (sensorSelect.equals("i")) {
@@ -269,7 +280,7 @@ Web page for Sensor
 									<td><b>Date Created</b></td>
 									<td><b>Description</b></td>
 									<td><b>Thumbnail</b></td>
-									<td><b>Download</b></td></tr>
+									<td><b>Fullsize</b></td></tr>
 								</thead>
 						<%		
 								for(int i =0; i < db.image_list().size(); i++) {

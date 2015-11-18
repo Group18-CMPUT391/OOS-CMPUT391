@@ -24,6 +24,7 @@ import java.text.SimpleDateFormat;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
+import java.awt.image.RenderedImage;
 import javax.imageio.ImageIO;
 import net.coobird.thumbnailator.*;
 
@@ -42,14 +43,8 @@ public class Db {
 	//static final String DB_URL = "jdbc:oracle:thin:@localhost:1525:CRS";
 
 	private Connection conn;
-	public Connection getConn() {
-		return conn;
-	}
-	
 	private Statement stmt;
-	public Statement getstmt() {
-		return stmt;
-	}
+	FileOutputStream image;
 
 	// Connect jdbc
 	public int connect_db() {
@@ -428,8 +423,8 @@ public class Db {
 			PreparedStatement statement = conn.prepareStatement("INSERT INTO images VALUES(" + image_id +
 					"," + sensor_id +",?,'"+ description +"', ?, ?)");   
 			statement.setTimestamp(1,sqlDate);
-			statement.setBinaryStream(2,scaled);
-			statement.setBinaryStream(3,original);
+			statement.setBlob(2,scaled);
+			statement.setBlob(3,original);
 			statement.executeQuery();
 			statement.executeUpdate("commit");
 		
@@ -489,14 +484,18 @@ public class Db {
 	
 	public List<String> image_list() {
 		List<String> imageList = new ArrayList<String>();
+		
 		try{
 			String list = "SELECT * FROM images ORDER BY image_id";
 			ResultSet rs = execute_stmt(list);
-			while (rs.next()){
+			while (rs.next()){			
 				imageList.add("<tr><td>" + String.valueOf(rs.getInt(1))+"</td>"+
 									"<td>" + String.valueOf(rs.getInt(2))+"</td>"+
 									"<td>" + String.valueOf(rs.getTimestamp(3))+"</td>"+
-									"<td>" + rs.getString(4) + "</td></tr>");
+									"<td>" + rs.getString(4)+"</td>"+
+									"<td><center><image src=\"/oos-cmput391/imageservlet?full=no&id="+
+											rs.getInt(1)+"\"><center></td>"+
+									"<td><center><a href=\"/oos-cmput391/imageservlet?full=yes&id="+rs.getInt(1)+"\">Open Full Image!<center></td></tr>");
 			}
 		}catch (Exception e) {
 			System.out.println(e.getMessage());
