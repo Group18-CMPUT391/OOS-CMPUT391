@@ -2,3 +2,4 @@ $ cat .gitignore
 .DS_Store
 *~
 *.swp
+*.class
