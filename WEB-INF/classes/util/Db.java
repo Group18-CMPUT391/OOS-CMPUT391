@@ -474,7 +474,8 @@ public class Db {
 									"<td>" + String.valueOf(rs.getInt(2))+"</td>"+
 									"<td>" + String.valueOf(rs.getTimestamp(3))+"</td>"+
 									"<td>" + String.valueOf(rs.getInt(4))+"</td>"+
-									"<td>" + rs.getString(5) + "</td></tr>");
+									"<td>" + rs.getString(5) + "</td>" + 
+									"<td><audio controls><source src=\"/oos-cmput391/audioservlet?id="+rs.getInt(1)+"\" type=\"audio/wav\"></audio></td></tr>");
 			}
 		}catch (Exception e) {
 			System.out.println(e.getMessage());
@@ -495,7 +496,7 @@ public class Db {
 									"<td>" + rs.getString(4)+"</td>"+
 									"<td><center><image src=\"/oos-cmput391/imageservlet?full=no&id="+
 											rs.getInt(1)+"\"><center></td>"+
-									"<td><center><a href=\"/oos-cmput391/imageservlet?full=yes&id="+rs.getInt(1)+"\">Open Full Image!<center></td></tr>");
+									"<td><center><a href=\"/oos-cmput391/imageservlet?full=yes&id="+rs.getInt(1)+"\" download>Download Full Size Image!<center></td></tr>");
 			}
 		}catch (Exception e) {
 			System.out.println(e.getMessage());

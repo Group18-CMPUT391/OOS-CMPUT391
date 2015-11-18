@@ -257,7 +257,7 @@ Web page for Sensor
 									<td><b>Date Created</b></td>
 									<td><b>Length</b></td>
 									<td><b>Description</b></td>
-									<td><b>Download</b></td></tr></thead>
+									<td><b>Audio File (Right Click Save audio as... to Save)</b></td></tr></thead>
 						<%		
 								for(int i =0; i < db.recording_list().size(); i++) {
 									out.println(db.recording_list().get(i));
@@ -273,7 +273,7 @@ Web page for Sensor
 									<td><b>Date Created</b></td>
 									<td><b>Description</b></td>
 									<td><b>Thumbnail</b></td>
-									<td><b>Fullsize</b></td></tr>
+									<td><b>Full Size</b></td></tr>
 								</thead>
 						<%		
 								for(int i =0; i < db.image_list().size(); i++) {

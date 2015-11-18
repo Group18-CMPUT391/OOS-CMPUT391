@@ -78,4 +78,13 @@
         <url-pattern>/imageservlet</url-pattern>
     </servlet-mapping>
     
+    <servlet>
+        <servlet-name>audioservlet</servlet-name>
+        <servlet-class>AudioServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>audioservlet</servlet-name>
+        <url-pattern>/audioservlet</url-pattern>
+    </servlet-mapping>
+    
 </web-app>
