@@ -275,6 +275,7 @@ Web page for Sensor
 									<td><b>Thumbnail</b></td>
 									<td><b>Full Size</b></td></tr>
 								</thead>
+								
 						<%		
 								for(int i =0; i < db.image_list().size(); i++) {
 									out.println(db.image_list().get(i));
@@ -283,7 +284,7 @@ Web page for Sensor
 							else if (sensorSelect.equals("s")) {
 						%>
 								<thead>
-									<tr><td colspan="6"><center><b>Scalar Data</b></center></td></tr>
+									<tr><td colspan="6"><center><b>Scalar Data</b><br><a href="/oos-cmput391/scalarservlet">Download CSV File</a></center></td></tr>
 									<tr><td><b>ID</b></td>
 									<td><b>Sensor ID</b></td>
 									<td><b>Date Created</b></td>
@@ -295,7 +296,7 @@ Web page for Sensor
 								}
 							}
 							db.close_db();
-						%>				
+						%>
 						</table></center>
 					</td>
 				</tr>

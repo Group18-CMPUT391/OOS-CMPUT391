@@ -87,4 +87,13 @@
         <url-pattern>/audioservlet</url-pattern>
     </servlet-mapping>
     
+    <servlet>
+        <servlet-name>scalarservlet</servlet-name>
+        <servlet-class>ScalarServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>scalarservlet</servlet-name>
+        <url-pattern>/scalarservlet</url-pattern>
+    </servlet-mapping>
+    
 </web-app>

@@ -35,8 +35,8 @@ import util.Person;
 //import util.Photo;
 
 public class Db {
-	static final String USERNAME = "hbtruong";
-	static final String PASSWORD = "qwerty123456";
+	static final String USERNAME = "wkchoi";
+	static final String PASSWORD = "Kingfreak95";
 	// JDBC driver name and database URL
 	static final String DRIVER_NAME = "oracle.jdbc.driver.OracleDriver";
 	static final String DB_URL = "jdbc:oracle:thin:@gwynne.cs.ualberta.ca:1521:CRS";
@@ -496,7 +496,7 @@ public class Db {
 									"<td>" + rs.getString(4)+"</td>"+
 									"<td><center><image src=\"/oos-cmput391/imageservlet?full=no&id="+
 											rs.getInt(1)+"\"><center></td>"+
-									"<td><center><a href=\"/oos-cmput391/imageservlet?full=yes&id="+rs.getInt(1)+"\" download>Download Full Size Image!<center></td></tr>");
+									"<td><center><a href=\"/oos-cmput391/imageservlet?full=yes&id="+rs.getInt(1)+"\">Download Full Size Image!<center></td></tr>");
 			}
 		}catch (Exception e) {
 			System.out.println(e.getMessage());
