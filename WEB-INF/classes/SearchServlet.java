@@ -6,6 +6,7 @@ import java.sql.*;
 import oracle.jdbc.driver.*;
 import java.text.*;
 import java.net.*;
+
 import util.Db;
 import util.User;
 
@@ -67,10 +68,10 @@ public class SearchServlet extends HttpServlet {
             e.getMessage();
         }
         
-        out.println("<!DOCTYPE html>");
-        out.println("<html>");
+        out.println("<!DOCTYPE html><html>");
         out.println("<head>");
         out.println("<title>Search Results</title>");
+        out.println("<center>");
 
         /* 
          * Display header 
@@ -82,7 +83,7 @@ public class SearchServlet extends HttpServlet {
             e.printStackTrace();
         }
         
-        out.println("</head>");
+        out.println("</center></head>");
         out.println("<body>");
         out.println("<br>");
         
@@ -115,6 +116,7 @@ public class SearchServlet extends HttpServlet {
         } catch (Exception e) {
             e.getStackTrace();
         }
+        
         database.close_db();
         out.print("</body>");
         out.print("</html>");

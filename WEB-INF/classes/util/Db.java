@@ -20,15 +20,13 @@ import oracle.jdbc.*;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.awt.image.RenderedImage;
 import javax.imageio.ImageIO;
+
 import net.coobird.thumbnailator.*;
-
-
 
 public class Db {
 	static final String USERNAME = "wkchoi";
@@ -36,11 +34,10 @@ public class Db {
 	// JDBC driver name and database URL
 	static final String DRIVER_NAME = "oracle.jdbc.driver.OracleDriver";
 	static final String DB_URL = "jdbc:oracle:thin:@gwynne.cs.ualberta.ca:1521:CRS";
-	//static final String DB_URL = "jdbc:oracle:thin:@localhost:1525:CRS";
 
 	private Connection conn;
 	private Statement stmt;
-	FileOutputStream image;
+	private FileOutputStream image;
 
 	// Connect jdbc
 	public int connect_db() {
@@ -102,7 +99,7 @@ public class Db {
 			+ "where user_name = '" + user_name + "'";
 		ResultSet rs = execute_stmt(query);
 		try {
-			while(rs != null && rs.next()) {
+			if (rs != null && rs.next()) {
 				user_name = rs.getString("user_name");
 				password = rs.getString("password");
 				role = rs.getString("role");
@@ -123,7 +120,7 @@ public class Db {
 		String query = "select password from users where user_name = '" + username + "'";
 		ResultSet rs = execute_stmt(query);
 		try {
-			while(rs != null && rs.next()) {
+			if (rs != null && rs.next()) {
 				password = (rs.getString(1)).trim();
 			}
 		} catch(Exception e) {
@@ -250,34 +247,33 @@ public class Db {
 
     // Returns the resultset of the search by keywords and date
     public ResultSet getResultsByDateAndKeywords(long person_id, String fromdate, String todate, String keywords) {
-    	String query = "SELECT sensor_id FROM "
+    	String query = "SELECT sensor_id FROM subscriptions "
+						+ "WHERE person_id = '" + person_id + "' "
+						+ "AND sensor_id LIKE '%" + keywords + "%' "
+						+ "OR sensor_id in "
 	    					+ "("
-	    					+ "SELECT * FROM SENSORS "
+	    					+ "SELECT sensor_id FROM SENSORS "
 	    					+ "WHERE location LIKE '%" + keywords + "%' "
 	    					+ "OR sensor_type LIKE '%" + keywords + "%' "
 	    					+ "OR description LIKE '%" + keywords + "%' "
 	    					+ "UNION "
-	    					+ "SELECT * FROM AUDIO_RECORDINGS "
+	    					+ "SELECT sensor_id FROM AUDIO_RECORDINGS "
 	    					+ "WHERE recording_id LIKE '%" + keywords + "%' "
 	    					+ "OR description LIKE '%" + keywords + "%' "
-	    					+ "OR recorded_data LIKE '%" + keywords + "%' "
-	    					+ "OR sensor_id LIKE '%" + keywords + "%' "
+	    					//+ "OR recorded_data LIKE '%" + keywords + "%' "
 	    					+ "AND date_created BETWEEN '" + fromdate + "' AND '" + todate + "' "
 	    					+ "UNION "	
-	    					+ "SELECT * FROM IMAGES "
+	    					+ "SELECT sensor_id FROM IMAGES "
 	    					+ "WHERE image_id LIKE '%" + keywords + "%' "
 	    					+ "OR description LIKE '%" + keywords + "%' "
-	    					+ "OR recorded_dat LIKE '%" + keywords + "%' "
-	    					+ "OR sensor_id LIKE '%" + keywords + "%' "
+	    					//+ "OR recoreded_data LIKE '%" + keywords + "%' "
 	    					+ "AND date_created BETWEEN '" + fromdate + "' AND '" + todate + "' "
 	    					+ "UNION "
-	    					+ "SELECT * FROM SCALAR_DATA "
+	    					+ "SELECT sensor_id FROM SCALAR_DATA "
 	    					+ "WHERE id LIKE '%" + keywords + "%' "
 	    					+ "OR value LIKE '%" + keywords + "%' "
-	    					+ "OR sensor_id LIKE '%" + keywords + "%' "
-	    					+ "AND date_created BETWEEN '" + fromdate + "' AND '" + todate + "') "
-	    					+ ") "
-    					+ "WHERE sensor_id in (SELECT sensor_id FROM subsriptions WHERE person_id = '" + person_id + "')";
+	    					+ "AND date_created BETWEEN '" + fromdate + "' AND '" + todate + "' "
+	    					+ ") ";
 
         return execute_stmt(query);
     }

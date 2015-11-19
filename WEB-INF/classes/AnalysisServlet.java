@@ -3,10 +3,10 @@ import java.sql.ResultSet;
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.Calendar;
-import util.Db;
 import javax.servlet.*;
 import javax.servlet.http.*;
 
+import util.Db;
 import util.OLAPCommands;
 import util.User;
 
@@ -52,8 +52,8 @@ public class AnalysisServlet extends HttpServlet {
 		
 		out.println("<!DOCTYPE html><html><head><title>"+
 			    "Scientist OLAP Report</title>");
-	    out.println("<center><jsp:include page=\"includes/header.jsp\"/></center>");
-	    out.println("<h3>Sensors Data Analysis, grouped "+tframe+"</h3>");
+	    out.println("<center><jsp:include page=\"includes/header.jsp\"/></center></head>");
+	    out.println("<body><h3>Sensors Data Analysis, grouped "+tframe+"</h3>");
 	    
 		try {
 		    olap = new OLAPCommands(tframe);
