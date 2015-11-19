@@ -132,10 +132,11 @@ public class RegServlet extends HttpServlet {
 					
 				}
 			}
-		database.close_db();
+		
 		} catch (SQLException e) {
 			System.out.println(e.getMessage());
 			}
+		database.close_db();
 	}
 
 	  /**

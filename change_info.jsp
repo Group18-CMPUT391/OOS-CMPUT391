@@ -78,8 +78,12 @@ username, firstname, lastname, address, email, phone and password changing
   </head>
   <body>
     <center>
+    	<%
+    		String type = request.getParameter("updateType");
+    		if (type.equals("info")){
+    	%>
 	    <form name="updateinfo" action="updateinfoservlet" method="POST" >
-	      <table>
+	      <table  border="1" width="30%" cellpadding="5">
 		<tr>
 		  <td colspan="2" align="center">Personal Information</td>
 		</tr>
@@ -155,6 +159,55 @@ username, firstname, lastname, address, email, phone and password changing
 		</tr>
 	      </table>
 	    </form>
+	    <%
+    		}
+    		else if (type.equals("pass")){
+	    %>
+	    <form name="updatepass" action="updatepassservlet" method="POST" >
+	      <table  border="1" width="30%" cellpadding="5">
+		<tr>
+		  <td colspan="2" align="center">Account Information</td>
+		</tr>
+		<tr>
+		  <td>User_name:</td>
+		  <td>
+		  	<input type="username" name="username" value=<%out.write(user.getUser_name());%> />
+		  </td>
+		</tr>
+		<tr>
+		  <td>New Password:</td>
+		  <td>
+		  	<input type="password" name="pass" maxlength="24"
+			     placeholder="new password" />
+		  </td>
+		</tr>
+		<tr>
+		  <td>Confirm New Password:</td>
+		  <td>
+		  	<input type="password" name="pass2" maxlength="24"
+			     placeholder="confirm password" />
+		  </td>
+		</tr>
+		<tr>
+		  <td colspan="2" align="center">
+		    <input type="submit" value="Save changes" />
+		  </td>
+		</tr>
+		<tr>
+		  <td colspan="2" align="center">
+		    <%
+		       if (status != null) {
+		          out.write(status);
+		          session.removeAttribute("status");
+		       }
+		       %> 
+		  </td>
+		</tr>
+	      </table>
+	    </form>
+	    <%} %>
+	    
+	    
     </center>
   </body>
 </html>

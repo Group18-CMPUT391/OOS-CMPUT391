@@ -30,10 +30,6 @@ import net.coobird.thumbnailator.*;
 
 
 
-import util.User;
-import util.Person;
-//import util.Photo;
-
 public class Db {
 	static final String USERNAME = "wkchoi";
 	static final String PASSWORD = "Kingfreak95";

@@ -46,12 +46,12 @@ public class ImageServlet extends HttpServlet {
 				ImageIO.write(bufferedImage, "jpg", out);
 				out.close();
 			}
-			database.close_db();
+			
 			
 		}catch (Exception e) {
 				System.out.println(e.getMessage());
 				}
-		
+		database.close_db();
 	}
 
 	  /**

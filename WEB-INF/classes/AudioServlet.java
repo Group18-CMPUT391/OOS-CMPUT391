@@ -38,12 +38,15 @@ public class AudioServlet extends HttpServlet {
 				AudioInputStream stream = AudioSystem.getAudioInputStream(bais);
 				OutputStream out = response.getOutputStream();
 				AudioSystem.write(stream,AudioFileFormat.Type.WAVE, out);
+				
+				out.flush();
 				out.close();
 			}
 			database.close_db();
 		}catch (Exception e) {
 			System.out.println(e.getMessage());
 			}
+		database.close_db();
 	}
 	
 
