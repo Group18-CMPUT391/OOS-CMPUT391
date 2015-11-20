@@ -42,7 +42,6 @@ public class AudioServlet extends HttpServlet {
 				out.flush();
 				out.close();
 			}
-			database.close_db();
 		}catch (Exception e) {
 			System.out.println(e.getMessage());
 			}

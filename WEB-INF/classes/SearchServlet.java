@@ -6,6 +6,7 @@ import java.sql.*;
 import oracle.jdbc.driver.*;
 import java.text.*;
 import java.net.*;
+import java.util.*;
 
 import util.Db;
 import util.User;
@@ -27,7 +28,7 @@ public class SearchServlet extends HttpServlet {
 		HttpSession session;
 		User user;
 		Db database = new Db();
-        ResultSet rset = null;
+        ResultSet rs = null;
         
         // Set the content type to HTML
  		response.setContentType( "text/html" );
@@ -38,10 +39,10 @@ public class SearchServlet extends HttpServlet {
      		
         database.connect_db();   
         String keywords = request.getParameter("query");
+        String location = request.getParameter("location");
         String fromDate = request.getParameter("fromdate");
         String toDate = request.getParameter("todate");
-        String fromdatesql = null;
-        String todatesql = null;
+        String sensor_type = request.getParameter("sensor_type");
         String pid = "";
         
         // Check if the user is logged in
@@ -53,20 +54,7 @@ public class SearchServlet extends HttpServlet {
  		    return;
  		}
      		
-        /*
-         * Changing format from yyyy-MM-dd to dd-MMM-yy for sql
-         */
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-        SimpleDateFormat sdf1 = new SimpleDateFormat("dd-MMM-yy");
-        
-        try {
-            Date date = sdf.parse(fromDate);
-            Date date1 = sdf.parse(toDate);
-            fromdatesql = sdf1.format(date);
-            todatesql = sdf1.format(date1);
-        } catch (Exception e) {
-            e.getMessage();
-        }
+
         
         out.println("<!DOCTYPE html><html>");
         out.println("<head>");
@@ -87,36 +75,115 @@ public class SearchServlet extends HttpServlet {
         out.println("<body>");
         out.println("<br>");
         
-        /*
-         * The user has to input from and to dates otherwise
-         * only keyword search to get resultset of query
-         */
-        if (!(keywords.equals(""))) {
-            rset = database.getResultsByDateAndKeywords(user.getPerson_id(), fromdatesql, todatesql, keywords);
-            out.println("Your results for '" + keywords + "' between "
-                        + fromDate + " and " + toDate + ":\n");
-        } else {
-            out.println("<b>Please enter a search query</b>");
+        try{
+        	if (!(sensor_type.equals("empty"))) {
+        		rs = database.getResultsSensor(user.getPerson_id(), sensor_type, fromDate, toDate, keywords, location);
+                out.println("<center><b>Your results for '" + keywords + "' between "
+                            + fromDate + " and " + toDate + ":\n<b></center>");
+                
+                if (sensor_type.equals("a")) {
+	            	 out.println("<center><table border=\"1\" width=\"30%\" cellpadding=\"5\"style=\"white-space:nowrap;\">");
+	            	 out.println("<thead style=\"white-space:nowrap;\">"
+									+"<tr><td colspan=\"6\"><center><b>Audio Sensors</b></center></td></tr>"
+									+"<tr><td><b>Recording ID</b></td>"
+									+"<td><b>Sensor ID</b></td>"
+									+"<td><b>Date Created</b></td>"
+									+"<td><b>Length</b></td>"
+									+"<td><b>Description</b></td>"
+									+"<td><b>Audio File (Right Click Save audio as...)</b></td></tr></thead>");
+	            	 
+	            	while(rs.next()){
+	    				out.println("<tr><td>" + String.valueOf(rs.getInt(1))+"</td>"+
+	    						"<td>" + String.valueOf(rs.getInt(2))+"</td>"+
+	    						"<td>" + String.valueOf(rs.getTimestamp(3))+"</td>"+
+	    						"<td>" + String.valueOf(rs.getInt(4))+"</td>"+
+	    						"<td>" + rs.getString(5) + "</td>" + 
+	    						"<td><audio controls><source src=\"/oos-cmput391/audioservlet?id="+rs.getInt(1)+"\" type=\"audio/wav\"></audio></td></tr>");
+	                }
+	            	out.println("</table></center><br>");
+                }
+	           	else if (sensor_type.equals("i")) {
+			          	 out.println("<center><table border=\"1\" width=\"30%\" cellpadding=\"5\"style=\"white-space:nowrap;\">");
+			          	 out.println("<thead style=\"white-space:nowrap;\">"
+										+"<tr><td colspan=\"6\"><center><b>Image Sensors</b></center></td></tr>"
+										+"<tr><td><b>Image ID</b></td>"
+										+"<td><b>Sensor ID</b></td>"
+										+"<td><b>Date Created</b></td>"
+										+"<td><b>Description</b></td>"
+										+"<td><b>Thumbnail</b></td>"
+										+"<td><b>Full Size</b></td></tr></thead>");
+			          	while(rs.next()){
+							out.println("<tr><td>" + String.valueOf(rs.getInt(1))+"</td>"+
+									"<td>" + String.valueOf(rs.getInt(2))+"</td>"+
+									"<td>" + String.valueOf(rs.getTimestamp(3))+"</td>"+
+									"<td>" + rs.getString(4)+"</td>"+
+									"<td><center><image src=\"/oos-cmput391/imageservlet?full=no&id="+
+									rs.getInt(1)+"\"><center></td>"+
+									"<td><center><a href=\"/oos-cmput391/imageservlet?full=yes&id="+rs.getInt(1)+"\">Download Full Size Image!<center></td></tr>");
+			          	}
+	
+						out.println("</table></center>");
+	           	}
+	           	else if (sensor_type.equals("s")) {
+	           		out.println("<center><table border=\"1\" width=\"30%\" cellpadding=\"5\"style=\"white-space:nowrap;\">");
+	           		out.println("<thead style=\"white-space:nowrap;\">"
+	           						+"<tr><td colspan=\"6\"><center><b>Scalar Data</b><br><a href=\"/oos-cmput391/scalarservlet?user=yes&fromdate="
+	           						+fromDate+"&todate="+toDate+"&id="+user.getPerson_id()+"&location="+location+"\">Download CSV File</a></center></td></tr>"
+	           						+"<tr><td><b>ID</b></td>"
+	           						+"<td><b>Sensor ID</b></td>"
+	           						+"<td><b>Date Created</b></td>"
+	           						+"<td><b>Value</b></td></tr></thead>");
+	           		while (rs.next()){
+	           			out.println("<tr><td>" + String.valueOf(rs.getInt(1))+"</td>"+
+	       									"<td>" + String.valueOf(rs.getInt(2))+"</td>"+
+	       									"<td>" + String.valueOf(rs.getTimestamp(3))+"</td>"+
+	       									"<td>" + String.valueOf(rs.getInt(4)) + "</td></tr>");
+	       			}
+	           		out.println("</table></center>");
+	           	}
+        	}
+        	else if (sensor_type.equals("empty")){
+        		rs = database.getResultAll(user.getPerson_id(), fromDate, toDate, keywords, location);
+        		
+        		out.println("<center><table border=\"1\" width=\"30%\" cellpadding=\"5\"style=\"white-space:nowrap;\">");
+	          	 out.println("<thead style=\"white-space:nowrap;\">"
+								+"<tr><td colspan=\"6\"><center><b>Result</b></center></td></tr>"
+								+"<tr><td><b>Image ID</b></td>"
+								+"<td><b>Sensor ID</b></td>"
+								+"<td><b>Date Created</b></td>"
+								+"<td><b>Description/Value</b></td>"
+								+"<td><b>Download</b></td></tr></thead>");
+        		
+        		
+        		while(rs.next()){
+        			if (rs.getString(5).equals("a")){
+        				out.println("<tr><td>" + String.valueOf(rs.getInt(1))+"</td>"+
+	    						"<td>" + String.valueOf(rs.getInt(2))+"</td>"+
+	    						"<td>" + String.valueOf(rs.getTimestamp(3))+"</td>"+
+	    						"<td>" + rs.getString(4) + "</td>" + 
+	    						"<td><audio controls><source src=\"/oos-cmput391/audioservlet?id="+rs.getInt(1)+"\" type=\"audio/wav\"></audio></td></tr>");
+        			}
+        			if (rs.getString(5).equals("i")){
+        				out.println("<tr><td>" + String.valueOf(rs.getInt(1))+"</td>"+
+								"<td>" + String.valueOf(rs.getInt(2))+"</td>"+
+								"<td>" + String.valueOf(rs.getTimestamp(3))+"</td>"+
+								"<td>" + rs.getString(4)+"</td>"+
+								"<td><center><image src=\"/oos-cmput391/imageservlet?full=no&id="+
+								rs.getInt(1)+"\"><br><a href=\"/oos-cmput391/imageservlet?full=yes&id="+rs.getInt(1)+"\">Download Full Size Image!<center></td></tr>");
+        			}
+        			if (rs.getString(5).equals("s")){
+        				out.println("<tr><td>" + String.valueOf(rs.getInt(1))+"</td>"+
+									"<td>" + String.valueOf(rs.getInt(2))+"</td>"+
+									"<td>" + String.valueOf(rs.getTimestamp(3))+"</td>"+
+									"<td>" + rs.getString(4) + "</td></tr>");
+        			}
+        		}
+        		out.println("</table></center><br>");
+        				
+        	}
+        }catch (Exception e) {
+            e.printStackTrace();
         }
-        out.println("<br>");
-
-        /*
-         * Displays the results
-         */
-        try {
-            while(rset.next()){
-                pid = (rset.getObject(2)).toString();
-                // specify the servlet for the image
-                out.println("<a href=\"/oos-cmput391/browsePicture?big"
-                            + pid + "\">");
-                // specify the servlet for the thumbnail
-                out.println("<img src=\"/oos-cmput391/browsePicture?"
-                            + pid + "\"></a>");
-            }
-        } catch (Exception e) {
-            e.getStackTrace();
-        }
-        
         database.close_db();
         out.print("</body>");
         out.print("</html>");

@@ -22,7 +22,12 @@ public class ScalarServlet extends HttpServlet {
 		
 		Db database = new Db();
 		database.connect_db();
-		
+		String id = request.getParameter( "id" );
+		String user = request.getParameter( "user" );
+		String fromdate = request.getParameter( "fromdate" );
+		String todate = request.getParameter( "todate" );
+		String location = request.getParameter( "location" );
+		String query = null;
 		
 		response.setContentType("text/html");
 		response.setHeader("Content-Disposition","attachment;filename= Scalar.csv");
@@ -30,18 +35,29 @@ public class ScalarServlet extends HttpServlet {
 		try{
 			OutputStream out = response.getOutputStream();
 			Writer w = new OutputStreamWriter(out, "UTF-8");
-			String query = "SELECT sensor_id,date_created,value FROM scalar_data";
+			
+			if (user.equals("yes")) {
+				query = "SELECT s.id,s.sensor_id,s.date_created,s.value"
+						+ "FROM scalar_data s"
+						+ "JOIN subscriptions su on s.sensor_id = su.sensor_id"
+						+ "JOIN sensors se on s.sensor_id = se.sensor_id "
+						+ "WHERE su.person_id =" + id
+						+ "AND se.location LIKE '"+location+"' "
+								+ "AND date_created BETWEEN TO_DATE('"+fromdate+"', 'YYYY-MM-DD') "
+										+ "AND TO_DATE('"+todate+"', 'YYYY-MM-DD')"
+												+ "ORDER BY i.image_id";
+			}
+			else {
+				query = "SELECT sensor_id,date_created,value FROM scalar_data";
+			}
+		
 			ResultSet rs = database.execute_stmt(query);
 			while (rs.next()) {
 				String[] dateTime = String.valueOf(rs.getTimestamp(2)).split(" ");
 				String[] date = dateTime[0].split("-");
 				String time = dateTime[1];
 				String dateFormated = date[2] + "/"+ date[1]+ "/"+ date[0] + " " + time;
-				
-				
 
-				//response.setHeader("Content-Disposition","attachment;filename=" + String.valueOf(rs.getInt(1)) + "_" + 
-						//String.valueOf(rs.getInt(2))+ "_" + String.valueOf(rs.getDate(3)) + ".wav" );
 				
 				w.write(rs.getString(1) +","+ dateFormated +","+ String.valueOf(rs.getDouble(3))+"\n");
 			}

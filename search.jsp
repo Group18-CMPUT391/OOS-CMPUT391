@@ -46,11 +46,27 @@ Search page allows to user to enter a search query
 		          </td>
 		        </tr>
 		        <tr>
-		          <th>Date: </th>
+		          <th>Location: </th>
 		          <td>
-		            <input name="fromdate" type="date" placeholder="DD-MM-YYYY" required="required" />
+		            <input name="location" placeholder="Enter location.."></input>
+		          </td>
+		        </tr>
+		        <tr><th>Sensor Type:</th>
+	              	<td>
+	              		<select name="sensor_type">
+	              			<option value="empty"></option>
+	              			<option value="a">Audio</option>
+							<option value="i">Image</option>
+							<option value="s">Scalar Value</option>
+	              		</select>
+	              	</td>
+	            </tr>
+		        <tr>
+		          <th>*Date: </th>
+		          <td>
+		            <input name="fromdate" type="date" required="required" />
 		            to 
-		            <input name="todate" type="date" placeholder="DD-MM-YYYY" required="required" />
+		            <input name="todate" type="date" required="required" />
 		          </td>
 		        </tr>
 		        <tr>
