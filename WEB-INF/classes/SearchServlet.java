@@ -93,8 +93,7 @@ public class SearchServlet extends HttpServlet {
          */
         if (!(keywords.equals(""))) {
             rset = database.getResultsByDateAndKeywords(user.getPerson_id(), fromdatesql, todatesql, keywords);
-            out.println("Your results for '" + keywords + "' between "
-                        + fromDate + " and " + toDate + ":\n");
+            out.println("Your results for '" + keywords + "' between " + fromDate + " and " + toDate + ":\n");
         } else {
             out.println("<b>Please enter a search query</b>");
         }
