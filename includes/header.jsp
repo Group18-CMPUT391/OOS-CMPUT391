@@ -78,7 +78,8 @@ Assume necessary html definitions are already made
 		} else if (user.getRole().equals("d")) {
 	        out.println("<a href=\"/oos-cmput391/sensor.jsp\">upload</a> | ");
 		} else if (user.getRole().equals("s")) {
-	        out.println("<a href=\"/oos-cmput391/sensor.jsp\">subscribe</a> | ");
+	        out.println("<a href=\"/oos-cmput391/sensor.jsp\">sensor</a> | ");
+	        out.println("<a href=\"/oos-cmput391/subscription.jsp\">subscribe</a> | ");
 	        out.println("<a href=\"/oos-cmput391/search.jsp\">search</a> | ");	
 		out.println("<a href=\"/oos-cmput391/data_analysis.jsp\">generate report</a> | ");
 		}

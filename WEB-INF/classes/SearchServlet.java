@@ -128,7 +128,7 @@ public class SearchServlet extends HttpServlet {
 	           		out.println("<center><table border=\"1\" width=\"30%\" cellpadding=\"5\"style=\"white-space:nowrap;\">");
 	           		out.println("<thead style=\"white-space:nowrap;\">"
 	           						+"<tr><td colspan=\"6\"><center><b>Scalar Data</b><br><a href=\"/oos-cmput391/scalarservlet?user=yes&fromdate="
-	           						+fromDate+"&todate="+toDate+"&id="+user.getPerson_id()+"&location="+location+"\">Download CSV File</a></center></td></tr>"
+	           						+fromDate+"&todate="+toDate+"&id="+user.getPerson_id()+"&value="+keywords+"&location="+location+"\">Download CSV File</a></center></td></tr>"
 	           						+"<tr><td><b>ID</b></td>"
 	           						+"<td><b>Sensor ID</b></td>"
 	           						+"<td><b>Date Created</b></td>"
@@ -175,7 +175,10 @@ public class SearchServlet extends HttpServlet {
         				out.println("<tr><td>" + String.valueOf(rs.getInt(1))+"</td>"+
 									"<td>" + String.valueOf(rs.getInt(2))+"</td>"+
 									"<td>" + String.valueOf(rs.getTimestamp(3))+"</td>"+
-									"<td>" + rs.getString(4) + "</td></tr>");
+									"<td>" + rs.getString(4) + "</td>" + 
+									"<td><a href=\"/oos-cmput391/scalarservlet?user=yes&fromdate="
+	           						+fromDate+"&todate="+toDate+"&id="+user.getPerson_id()+"&location="+location+"&value="+keywords+"\">CSV File for current search</a>"
+	           								+ "</center></td></tr>");
         			}
         		}
         		out.println("</table></center><br>");

@@ -250,7 +250,6 @@ public class Db {
     	ResultSet results = null;
     	String query = null;
     	
-    	
     	try {
 			if (sensor_type.equals("a")) {
 				query = "SELECT au.* FROM audio_recordings au "
@@ -277,15 +276,43 @@ public class Db {
 				results = execute_stmt(query);
 			}
 			else if (sensor_type.equals("s")) {
-				query = "SELECT s.id,s.sensor_id,s.date_created,s.value "
-						+ "FROM scalar_data s "
-						+ "JOIN subscriptions su on s.sensor_id = su.sensor_id "
-						+ "JOIN sensors se on s.sensor_id = se.sensor_id "
-						+ "WHERE su.person_id =" + person_id
-						+ "AND se.location LIKE '%"+location+"' "
-								+ "AND date_created BETWEEN TO_DATE('"+fromdate+"', 'YYYY-MM-DD') "
-										+ "AND TO_DATE('"+todate+"', 'YYYY-MM-DD') "
-												+ "ORDER BY i.image_id";
+				if(isNumber( keywords )){
+					query = "SELECT s.id,s.sensor_id,s.date_created,s.value "
+							+ "FROM scalar_data s "
+							+ "JOIN subscriptions su on s.sensor_id = su.sensor_id "
+							+ "JOIN sensors se on s.sensor_id = se.sensor_id "
+							+ "WHERE su.person_id =" + person_id
+							+ "AND s.value =" + Float.parseFloat(keywords)
+							+ "AND se.location LIKE '%"+location+"' "
+									+ "AND date_created BETWEEN TO_DATE('"+fromdate+"', 'YYYY-MM-DD') "
+											+ "AND TO_DATE('"+todate+"', 'YYYY-MM-DD') "
+													+ "ORDER BY s.id";
+					results = execute_stmt(query);
+				}
+				else if(keywords.equals("")) {
+					query = "SELECT s.id,s.sensor_id,s.date_created,s.value "
+							+ "FROM scalar_data s "
+							+ "JOIN subscriptions su on s.sensor_id = su.sensor_id "
+							+ "JOIN sensors se on s.sensor_id = se.sensor_id "
+							+ "WHERE su.person_id =" + person_id
+							+ "AND se.location LIKE '%"+location+"' "
+									+ "AND date_created BETWEEN TO_DATE('"+fromdate+"', 'YYYY-MM-DD') "
+											+ "AND TO_DATE('"+todate+"', 'YYYY-MM-DD') "
+													+ "ORDER BY s.id";
+				}
+				else{
+					query = "SELECT s.id,s.sensor_id,s.date_created,s.value "
+							+ "FROM scalar_data s "
+							+ "JOIN subscriptions su on s.sensor_id = su.sensor_id "
+							+ "JOIN sensors se on s.sensor_id = se.sensor_id "
+							+ "WHERE su.person_id =" + person_id
+							+ "AND s.value =null "
+							+ "AND se.location LIKE '%"+location+"' "
+									+ "AND date_created BETWEEN TO_DATE('"+fromdate+"', 'YYYY-MM-DD') "
+											+ "AND TO_DATE('"+todate+"', 'YYYY-MM-DD') "
+													+ "ORDER BY s.id";
+				}
+				
 				results = execute_stmt(query);
 			}
 		}catch (Exception e) {
@@ -297,9 +324,10 @@ public class Db {
     
     public ResultSet getResultAll(long person_id, String fromdate, String todate, String keywords, String location) {
     	ResultSet results = null;
-    	
+    	String  query = null,query2 = null;
+
     	try{
-    		String query = "SELECT au.recording_id, au.sensor_id,au.date_created,au.description,s.sensor_type "
+    		query = "SELECT au.recording_id, au.sensor_id,au.date_created,au.description,s.sensor_type "
     				+ "FROM audio_recordings au "
     				+ "JOIN subscriptions su on au.sensor_id = su.sensor_id "
     				+ "JOIN sensors s on au.sensor_id = s.sensor_id "
@@ -318,17 +346,42 @@ public class Db {
     				+ "AND su.person_id ="+person_id + ""
     				+ "AND date_created BETWEEN TO_DATE('"+fromdate+"', 'YYYY-MM-DD') "
     				+ "AND TO_DATE('"+todate+"','YYYY-MM-DD') "
-    				+ "UNION ALL "
-    				+ "SELECT sc.id,sc.sensor_id,sc.date_created,CAST(sc.value as varchar(128)),s.sensor_type "
-    				+ "FROM scalar_data sc "
-    				+ "JOIN subscriptions su on sc.sensor_id = su.sensor_id "
-    				+ "JOIN sensors s on sc.sensor_id = s.sensor_id "
-    				+ "WHERE sc.value LIKE '%"+keywords+"' "
-    				+ "AND s.location LIKE '%"+location+"'"
-    				+ "AND su.person_id ="+person_id
-    				+ "AND date_created BETWEEN TO_DATE('"+fromdate+"', 'YYYY-MM-DD') "
-    				+ "AND TO_DATE('"+todate+"','YYYY-MM-DD')";
-    		results = execute_stmt(query);
+    				+ "UNION ALL ";
+    		
+    		if(isNumber( keywords )){
+    			query2 ="SELECT sc.id,sc.sensor_id,sc.date_created,CAST(sc.value as varchar(128)),s.sensor_type "
+        				+ "FROM scalar_data sc "
+        				+ "JOIN subscriptions su on sc.sensor_id = su.sensor_id "
+        				+ "JOIN sensors s on sc.sensor_id = s.sensor_id "
+        				+ "WHERE sc.value = " + Float.parseFloat(keywords)
+        				+ "AND s.location LIKE '%"+location+"'"
+        				+ "AND su.person_id ="+person_id
+        				+ "AND date_created BETWEEN TO_DATE('"+fromdate+"', 'YYYY-MM-DD') "
+        				+ "AND TO_DATE('"+todate+"','YYYY-MM-DD')";
+    		}
+    		else if(keywords.equals("")){
+    			query2 ="SELECT sc.id,sc.sensor_id,sc.date_created,CAST(sc.value as varchar(128)),s.sensor_type "
+	    				+ "FROM scalar_data sc "
+	    				+ "JOIN subscriptions su on sc.sensor_id = su.sensor_id "
+	    				+ "JOIN sensors s on sc.sensor_id = s.sensor_id "
+	    				+ "WHERE s.location LIKE '%"+location+"'"
+	    				+ "AND su.person_id ="+person_id
+	    				+ "AND date_created BETWEEN TO_DATE('"+fromdate+"', 'YYYY-MM-DD') "
+	    				+ "AND TO_DATE('"+todate+"','YYYY-MM-DD')";
+    		}
+    		else {
+    			query2 ="SELECT sc.id,sc.sensor_id,sc.date_created,CAST(sc.value as varchar(128)),s.sensor_type "
+	    				+ "FROM scalar_data sc "
+	    				+ "JOIN subscriptions su on sc.sensor_id = su.sensor_id "
+	    				+ "JOIN sensors s on sc.sensor_id = s.sensor_id "
+	    				+ "WHERE s.location LIKE '%"+location+"'"
+	    				+ "AND su.person_id ="+person_id
+	    				+ "AND s.value =null "
+	    				+ "AND date_created BETWEEN TO_DATE('"+fromdate+"', 'YYYY-MM-DD') "
+	    				+ "AND TO_DATE('"+todate+"','YYYY-MM-DD')";
+    		}
+    		
+    		results = execute_stmt(query + query2);
     		
     	}catch (Exception e) {
 			System.out.println(e.getMessage());
@@ -609,9 +662,6 @@ public String deleteSubscription(String[] sensor_ids,long person_id){
 				}
 		if (count>0){
 			str= String.valueOf(count)+" subscriptions have been added";}
-			
-		
-		
 	return str;
 	}
 	public int checkSubscriptions(long person_id){
@@ -626,16 +676,7 @@ public String deleteSubscription(String[] sensor_ids,long person_id){
 				ret=1;}}
 		catch (SQLException e) {
 			}
-	
-			 
-
-
-		
-				
 		return ret;
-			
-		
-		
 	}
 	public ArrayList<Sensors> printAddSubscriptions(long user_id){
 		int chk=checkSubscriptions(user_id);
@@ -652,11 +693,8 @@ public String deleteSubscription(String[] sensor_ids,long person_id){
 			
 			for(int fl=0;fl<(sensor_id_list.size()-1);fl++){
 				us_id_b=us_id_b+sensor_id_list.get(fl)+" AND sensor_id !=";
-				
 				}
-				
 			us_id_b=us_id_b+sensor_id_list.get(sensor_id_list.size());
-			
 			
 		}
 		catch (Exception e){}
@@ -707,6 +745,14 @@ public String deleteSubscription(String[] sensor_ids,long person_id){
 			}
 		return ret_list; }
 
-
+	
+	public boolean isNumber( String input ){
+		   try{
+			   Double.parseDouble( input );
+		      return true;
+		   }catch( Exception e ){
+		      return false;
+		   }
+		}
 	
 }

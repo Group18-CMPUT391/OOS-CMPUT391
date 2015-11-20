@@ -4,8 +4,7 @@
 <title>Subscription</title>
 <center><jsp:include page="includes/header.jsp" /></center>
 <meta charset="utf-8">
-<link rel="stylesheet"
-	href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+<link rel="stylesheet" href="http://code.jquery.com/ui/1.11.4/themes/start/jquery-ui.css">
 <script src="//code.jquery.com/jquery-1.10.2.js" type="text/javascript"></script>
 <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"
 	type="text/javascript"></script>
@@ -16,9 +15,7 @@
 										width:'auto', 
 										autoOpen: false, 
 										resizable: false,
-										close: function() {
-    										window.location.reload();
-  										} });
+										 });
 				$( "#addSubscriptionClick" ).click(function() {
 					$( "#addSubscription" ).dialog( "open" );
 					return false;
@@ -29,9 +26,7 @@
 										width:'auto', 
 										autoOpen: false, 
 										resizable: false,
-										close: function() {
-											window.location.reload();
-										} });
+										 });
 				$( "#deleteSubscriptionClick" ).click(function() {
 					$( "#deleteSubscription" ).dialog( "open" );
 					return false;
@@ -85,7 +80,7 @@
 
 	<div id="addSubscription" title="Add Subscription">
 
-		<form action="subscriptionservlet?type=addSubscription" method="post"
+		<center><form action="subscriptionservlet?type=addSubscription" method="post"
 			id="addSubscriptionClick" onsubmit="this">
 			<table width="59%" border="1">
 					<thead><tr><th colspan="5">ADD SUBSCRIPTION</th></tr></thead>
@@ -130,10 +125,10 @@
 				<td colspan="2" align="center"><input type="submit"
 					value="Submit" /> <input type="reset" value="Reset" /></td>
 			</tr>
-		</form>
+		</form></center>
 	</div>
 	<div id="deleteSubscription" title="Delete/View Subscription">
-		<form action="subscriptionservlet?type=deleteSubscription"
+		<center><form action="subscriptionservlet?type=deleteSubscription"
 			method="post" id="deleteSubscriptionClick" onsubmit="this">
 			<table width="59%" border="1">
 					<thead><tr><th colspan="5">DELETE/VIEW SUBSCRIPTIONS</th></tr></thead>
@@ -178,7 +173,7 @@
 				<td colspan="2" align="center"><input type="submit"
 					value="Submit" /> <input type="reset" value="Reset" /></td>
 			</tr>
-		</form>
+		</form></center>
 	</div>
 
 	<center>
