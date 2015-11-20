@@ -513,5 +513,142 @@ public class Db {
 			}
 		return scalarList;
 	}
+public String deleteSubscription(String[] sensor_ids,long person_id){	
+
+		int count=0;
+		String str="null";
+		for(int i=0;i<sensor_ids.length;i++){
+
+				long sensor_id=Long.valueOf(sensor_ids[i]);
+				
+				String deletesid = "DELETE FROM subscriptions WHERE sensor_id = " + sensor_id+" AND person_id = "+ person_id;
+		    		int check=execute_update(deletesid);
+				
+				if (check!=0){
+					
+		    			count=count+1;}
+				}
+		if (count>0){
+			str= String.valueOf(count)+" subscriptions have been deleted";}
+			
+		
+		
+	return str;
+
+	}
+	public String newSubscription(String[] sensor_ids,long person_id){
+		int count=0;
+		String str="null";
+		for(int i=0;i<sensor_ids.length;i++){
+
+				long sensor_id=Long.valueOf(sensor_ids[i]);
+				
+				String insertNewSensor = "INSERT INTO subscriptions Values("+sensor_id + "," + person_id + ")";
+		    		int check=execute_update(insertNewSensor);
+				
+				if (check!=0){	
+		    			count=count+1;}
+				}
+		if (count>0){
+			str= String.valueOf(count)+" subscriptions have been added";}
+			
+		
+		
+	return str;
+	}
+	public int checkSubscriptions(long person_id){
+		int ret=-1;
+		String check = "SELECT * FROM subscriptions WHERE person_id="+person_id;
+		try{
+			ResultSet rs=execute_stmt(check);
+			if (!rs.isBeforeFirst()) {    
+ 				ret=0; 
+				}
+			else{
+				ret=1;}}
+		catch (SQLException e) {
+			}
+	
+			 
+
+
+		
+				
+		return ret;
+			
+		
+		
+	}
+	public ArrayList<Sensors> printAddSubscriptions(long user_id){
+		int chk=checkSubscriptions(user_id);
+		ArrayList<Sensors> ret_list=new ArrayList<Sensors>();
+		ArrayList<Long> sensor_id_list=new ArrayList<Long>();
+		String us_id_b= "SELECT sensor_id,location,sensor_type,description FROM sensors WHERE sensor_id != ";
+		String sensor_check="SELECT sensor_id FROM subscriptions WHERE person_id="+user_id;
+		
+		try{
+			ResultSet sensor_chk=execute_stmt(sensor_check);
+			while (sensor_chk.next()){
+				sensor_id_list.add(sensor_chk.getLong("sensor_id"));
+				}
+			
+			for(int fl=0;fl<(sensor_id_list.size()-1);fl++){
+				us_id_b=us_id_b+sensor_id_list.get(fl)+" AND sensor_id !=";
+				
+				}
+				
+			us_id_b=us_id_b+sensor_id_list.get(sensor_id_list.size());
+			
+			
+		}
+		catch (Exception e){}
+
+
+		if(chk==0){
+			us_id_b = "SELECT sensor_id,location,sensor_type,description FROM sensors";
+			try{
+				ResultSet rs_b = execute_stmt(us_id_b);
+				while (rs_b.next()){
+					ret_list.add(new Sensors(rs_b.getLong("sensor_id"),rs_b.getString("location"),rs_b.getString("sensor_type"),rs_b.getString("description")));
+				
+				
+				}
+			}catch (Exception e) {
+				System.out.println(e.getMessage());
+				}
+			}
+		else{
+			
+			try{
+				us_id_b=us_id_b+sensor_id_list.get(sensor_id_list.size()-1);
+				
+				ResultSet rs_b = execute_stmt(us_id_b);
+				while (rs_b.next()){
+					ret_list.add(new Sensors(rs_b.getLong("sensor_id"),rs_b.getString("location"),rs_b.getString("sensor_type"),rs_b.getString("description")));
+				
+				
+				}
+			}catch (Exception e) {
+				System.out.println(e.getMessage());
+				}
+			}
+		
+		return ret_list; }
+	public ArrayList<Sensors> printDeleteSubscriptions(long person_id){
+		int chk=checkSubscriptions(person_id);
+		ArrayList<Sensors> ret_list=new ArrayList<Sensors>();
+		String us_id_b = "SELECT sen.sensor_id,sen.location,sen.sensor_type,sen.description FROM subscriptions sub, sensors sen WHERE sub.person_id ="+String.valueOf(person_id)+ " AND sen.sensor_id =sub.sensor_id";
+
+		try{
+			ResultSet rs_b =execute_stmt(us_id_b);
+			while (rs_b.next()){ 
+				ret_list.add(new Sensors(rs_b.getLong("sensor_id"),rs_b.getString("location"),rs_b.getString("sensor_type"),rs_b.getString("description")));
+			}
+		}catch (Exception e) {
+			System.out.println(e.getMessage());
+			}
+		return ret_list; }
+
+
 	
 }
