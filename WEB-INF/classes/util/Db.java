@@ -28,10 +28,9 @@ import javax.imageio.ImageIO;
 
 import net.coobird.thumbnailator.*;
 
-
 public class Db {
-	static final String USERNAME = "hbtruong";
-	static final String PASSWORD = "qwerty123456";
+	static final String USERNAME = "wkchoi";
+	static final String PASSWORD = "Kingfreak95";
 	// JDBC driver name and database URL
 	static final String DRIVER_NAME = "oracle.jdbc.driver.OracleDriver";
 	static final String DB_URL = "jdbc:oracle:thin:@gwynne.cs.ualberta.ca:1521:CRS";
@@ -263,38 +262,150 @@ public class Db {
 	}
 	
     // Returns the resultset of the search by keywords and date
-    public ResultSet getResultsByDateAndKeywords(long person_id, String fromdate, String todate, String keywords) {
-    	String query = "SELECT sensor_id FROM subscriptions "
-						+ "WHERE person_id = '" + person_id + "' "
-						+ "AND sensor_id LIKE '%" + keywords + "%' "
-						+ "OR sensor_id in "
-	    					+ "("
-	    					+ "SELECT sensor_id FROM SENSORS "
-	    					+ "WHERE location LIKE '%" + keywords + "%' "
-	    					+ "OR sensor_type LIKE '%" + keywords + "%' "
-	    					+ "OR description LIKE '%" + keywords + "%' "
-	    					+ "UNION "
-	    					+ "SELECT sensor_id FROM AUDIO_RECORDINGS "
-	    					+ "WHERE recording_id LIKE '%" + keywords + "%' "
-	    					+ "OR description LIKE '%" + keywords + "%' "
-	    					//+ "OR recorded_data LIKE '%" + keywords + "%' "
-	    					+ "AND date_created BETWEEN '" + fromdate + "' AND '" + todate + "' "
-	    					+ "UNION "	
-	    					+ "SELECT sensor_id FROM IMAGES "
-	    					+ "WHERE image_id LIKE '%" + keywords + "%' "
-	    					+ "OR description LIKE '%" + keywords + "%' "
-	    					//+ "OR recoreded_data LIKE '%" + keywords + "%' "
-	    					+ "AND date_created BETWEEN '" + fromdate + "' AND '" + todate + "' "
-	    					+ "UNION "
-	    					+ "SELECT sensor_id FROM SCALAR_DATA "
-	    					+ "WHERE id LIKE '%" + keywords + "%' "
-	    					+ "OR value LIKE '%" + keywords + "%' "
-	    					+ "AND date_created BETWEEN '" + fromdate + "' AND '" + todate + "' "
-	    					+ ") ";
-
-        return execute_stmt(query);
+    public ResultSet getResultsSensor(long person_id, String sensor_type, String fromdate, String todate, String keywords, String location) {
+    	ResultSet results = null;
+    	String query = null;
+    	
+    	try {
+			if (sensor_type.equals("a")) {
+				query = "SELECT au.* FROM audio_recordings au "
+						+ "JOIN subscriptions su on au.sensor_id = su.sensor_id "
+						+ "JOIN sensors s on au.sensor_id = s.sensor_id "
+						+ "WHERE su.person_id =" + person_id 
+						+ "AND au.description LIKE '%"+keywords+"' "
+								+ "AND s.location LIKE '%"+location+"'"
+										+ "AND au.date_created BETWEEN TO_DATE('"+fromdate+"', 'YYYY-MM-DD')"
+												+ "AND TO_DATE('"+todate+"', 'YYYY-MM-DD')"
+														+ "ORDER BY au.recording_id";
+				results = execute_stmt(query);
+			}
+			else if (sensor_type.equals("i")) {
+				query = "SELECT i.* FROM images i "
+						+ "JOIN subscriptions su on i.sensor_id = su.sensor_id "
+						+ "JOIN sensors s on i.sensor_id = s.sensor_id "
+						+ "WHERE su.person_id =" + person_id 
+						+ "AND i.description LIKE '%"+keywords+"' "
+								+ "AND s.location LIKE '%"+location+"' "
+										+ "AND i.date_created BETWEEN TO_DATE('"+fromdate+"', 'YYYY-MM-DD') "
+												+ "AND TO_DATE('"+todate+"', 'YYYY-MM-DD')"
+														+ "ORDER BY i.image_id";
+				results = execute_stmt(query);
+			}
+			else if (sensor_type.equals("s")) {
+				if(isNumber( keywords )){
+					query = "SELECT s.id,s.sensor_id,s.date_created,s.value "
+							+ "FROM scalar_data s "
+							+ "JOIN subscriptions su on s.sensor_id = su.sensor_id "
+							+ "JOIN sensors se on s.sensor_id = se.sensor_id "
+							+ "WHERE su.person_id =" + person_id
+							+ "AND s.value =" + Float.parseFloat(keywords)
+							+ "AND se.location LIKE '%"+location+"' "
+									+ "AND date_created BETWEEN TO_DATE('"+fromdate+"', 'YYYY-MM-DD') "
+											+ "AND TO_DATE('"+todate+"', 'YYYY-MM-DD') "
+													+ "ORDER BY s.id";
+					results = execute_stmt(query);
+				}
+				else if(keywords.equals("")) {
+					query = "SELECT s.id,s.sensor_id,s.date_created,s.value "
+							+ "FROM scalar_data s "
+							+ "JOIN subscriptions su on s.sensor_id = su.sensor_id "
+							+ "JOIN sensors se on s.sensor_id = se.sensor_id "
+							+ "WHERE su.person_id =" + person_id
+							+ "AND se.location LIKE '%"+location+"' "
+									+ "AND date_created BETWEEN TO_DATE('"+fromdate+"', 'YYYY-MM-DD') "
+											+ "AND TO_DATE('"+todate+"', 'YYYY-MM-DD') "
+													+ "ORDER BY s.id";
+				}
+				else{
+					query = "SELECT s.id,s.sensor_id,s.date_created,s.value "
+							+ "FROM scalar_data s "
+							+ "JOIN subscriptions su on s.sensor_id = su.sensor_id "
+							+ "JOIN sensors se on s.sensor_id = se.sensor_id "
+							+ "WHERE su.person_id =" + person_id
+							+ "AND s.value =null "
+							+ "AND se.location LIKE '%"+location+"' "
+									+ "AND date_created BETWEEN TO_DATE('"+fromdate+"', 'YYYY-MM-DD') "
+											+ "AND TO_DATE('"+todate+"', 'YYYY-MM-DD') "
+													+ "ORDER BY s.id";
+				}
+				
+				results = execute_stmt(query);
+			}
+		}catch (Exception e) {
+			System.out.println(e.getMessage());
+			}
+        return results;
     }
     
+    
+    public ResultSet getResultAll(long person_id, String fromdate, String todate, String keywords, String location) {
+    	ResultSet results = null;
+    	String  query = null,query2 = null;
+
+    	try{
+    		query = "SELECT au.recording_id, au.sensor_id,au.date_created,au.description,s.sensor_type "
+    				+ "FROM audio_recordings au "
+    				+ "JOIN subscriptions su on au.sensor_id = su.sensor_id "
+    				+ "JOIN sensors s on au.sensor_id = s.sensor_id "
+    				+ "WHERE au.description LIKE '%"+keywords+"' "
+    				+ "AND s.location LIKE '%"+location+"' "
+    				+ "AND su.person_id =" +person_id
+    				+ "AND date_created BETWEEN TO_DATE('"+fromdate+"', 'YYYY-MM-DD') "
+    				+ "AND TO_DATE('"+todate+"','YYYY-MM-DD') "
+    				+ "UNION ALL "
+    				+ "SELECT i.image_id as id,i.sensor_id ,i.date_created,i.description, s.sensor_type "
+    				+ "FROM images i "
+    				+ "JOIN subscriptions su on i.sensor_id = su.sensor_id "
+    				+ "JOIN sensors s on i.sensor_id = s.sensor_id "
+    				+ "WHERE i.description LIKE '%"+keywords+"' "
+    				+ "AND s.location LIKE '%"+location+"' "
+    				+ "AND su.person_id ="+person_id + ""
+    				+ "AND date_created BETWEEN TO_DATE('"+fromdate+"', 'YYYY-MM-DD') "
+    				+ "AND TO_DATE('"+todate+"','YYYY-MM-DD') "
+    				+ "UNION ALL ";
+    		
+    		if(isNumber( keywords )){
+    			query2 ="SELECT sc.id,sc.sensor_id,sc.date_created,CAST(sc.value as varchar(128)),s.sensor_type "
+        				+ "FROM scalar_data sc "
+        				+ "JOIN subscriptions su on sc.sensor_id = su.sensor_id "
+        				+ "JOIN sensors s on sc.sensor_id = s.sensor_id "
+        				+ "WHERE sc.value = " + Float.parseFloat(keywords)
+        				+ "AND s.location LIKE '%"+location+"'"
+        				+ "AND su.person_id ="+person_id
+        				+ "AND date_created BETWEEN TO_DATE('"+fromdate+"', 'YYYY-MM-DD') "
+        				+ "AND TO_DATE('"+todate+"','YYYY-MM-DD')";
+    		}
+    		else if(keywords.equals("")){
+    			query2 ="SELECT sc.id,sc.sensor_id,sc.date_created,CAST(sc.value as varchar(128)),s.sensor_type "
+	    				+ "FROM scalar_data sc "
+	    				+ "JOIN subscriptions su on sc.sensor_id = su.sensor_id "
+	    				+ "JOIN sensors s on sc.sensor_id = s.sensor_id "
+	    				+ "WHERE s.location LIKE '%"+location+"'"
+	    				+ "AND su.person_id ="+person_id
+	    				+ "AND date_created BETWEEN TO_DATE('"+fromdate+"', 'YYYY-MM-DD') "
+	    				+ "AND TO_DATE('"+todate+"','YYYY-MM-DD')";
+    		}
+    		else {
+    			query2 ="SELECT sc.id,sc.sensor_id,sc.date_created,CAST(sc.value as varchar(128)),s.sensor_type "
+	    				+ "FROM scalar_data sc "
+	    				+ "JOIN subscriptions su on sc.sensor_id = su.sensor_id "
+	    				+ "JOIN sensors s on sc.sensor_id = s.sensor_id "
+	    				+ "WHERE s.location LIKE '%"+location+"'"
+	    				+ "AND su.person_id ="+person_id
+	    				+ "AND s.value =null "
+	    				+ "AND date_created BETWEEN TO_DATE('"+fromdate+"', 'YYYY-MM-DD') "
+	    				+ "AND TO_DATE('"+todate+"','YYYY-MM-DD')";
+    		}
+    		
+    		results = execute_stmt(query + query2);
+    		
+    	}catch (Exception e) {
+			System.out.println(e.getMessage());
+			}
+    	
+    	return results;
+    }
+
     // Delete a sensor
     public Integer delete_sensor(long sensor_id) {
     	String query = "delete from sensors where sensor_id = " + sensor_id + "'";
@@ -529,5 +640,135 @@ public class Db {
 			}
 		return scalarList;
 	}
+public String deleteSubscription(String[] sensor_ids,long person_id){	
+
+		int count=0;
+		String str="null";
+		for(int i=0;i<sensor_ids.length;i++){
+
+				long sensor_id=Long.valueOf(sensor_ids[i]);
+				
+				String deletesid = "DELETE FROM subscriptions WHERE sensor_id = " + sensor_id+" AND person_id = "+ person_id;
+		    		int check=execute_update(deletesid);
+				
+				if (check!=0){
+					
+		    			count=count+1;}
+				}
+		if (count>0){
+			str= String.valueOf(count)+" subscriptions have been deleted";}
+			
+		
+		
+	return str;
+
+	}
+	public String newSubscription(String[] sensor_ids,long person_id){
+		int count=0;
+		String str="null";
+		for(int i=0;i<sensor_ids.length;i++){
+
+				long sensor_id=Long.valueOf(sensor_ids[i]);
+				
+				String insertNewSensor = "INSERT INTO subscriptions Values("+sensor_id + "," + person_id + ")";
+		    		int check=execute_update(insertNewSensor);
+				
+				if (check!=0){	
+		    			count=count+1;}
+				}
+		if (count>0){
+			str= String.valueOf(count)+" subscriptions have been added";}
+	return str;
+	}
+	public int checkSubscriptions(long person_id){
+		int ret=-1;
+		String check = "SELECT * FROM subscriptions WHERE person_id="+person_id;
+		try{
+			ResultSet rs=execute_stmt(check);
+			if (!rs.isBeforeFirst()) {    
+ 				ret=0; 
+				}
+			else{
+				ret=1;}}
+		catch (SQLException e) {
+			}
+		return ret;
+	}
+	public ArrayList<Sensors> printAddSubscriptions(long user_id){
+		int chk=checkSubscriptions(user_id);
+		ArrayList<Sensors> ret_list=new ArrayList<Sensors>();
+		ArrayList<Long> sensor_id_list=new ArrayList<Long>();
+		String us_id_b= "SELECT sensor_id,location,sensor_type,description FROM sensors WHERE sensor_id != ";
+		String sensor_check="SELECT sensor_id FROM subscriptions WHERE person_id="+user_id;
+		
+		try{
+			ResultSet sensor_chk=execute_stmt(sensor_check);
+			while (sensor_chk.next()){
+				sensor_id_list.add(sensor_chk.getLong("sensor_id"));
+				}
+			
+			for(int fl=0;fl<(sensor_id_list.size()-1);fl++){
+				us_id_b=us_id_b+sensor_id_list.get(fl)+" AND sensor_id !=";
+				}
+			us_id_b=us_id_b+sensor_id_list.get(sensor_id_list.size());
+			
+		}
+		catch (Exception e){}
+
+
+		if(chk==0){
+			us_id_b = "SELECT sensor_id,location,sensor_type,description FROM sensors";
+			try{
+				ResultSet rs_b = execute_stmt(us_id_b);
+				while (rs_b.next()){
+					ret_list.add(new Sensors(rs_b.getLong("sensor_id"),rs_b.getString("location"),rs_b.getString("sensor_type"),rs_b.getString("description")));
+				
+				
+				}
+			}catch (Exception e) {
+				System.out.println(e.getMessage());
+				}
+			}
+		else{
+			
+			try{
+				us_id_b=us_id_b+sensor_id_list.get(sensor_id_list.size()-1);
+				
+				ResultSet rs_b = execute_stmt(us_id_b);
+				while (rs_b.next()){
+					ret_list.add(new Sensors(rs_b.getLong("sensor_id"),rs_b.getString("location"),rs_b.getString("sensor_type"),rs_b.getString("description")));
+				
+				
+				}
+			}catch (Exception e) {
+				System.out.println(e.getMessage());
+				}
+			}
+		
+		return ret_list; }
+	public ArrayList<Sensors> printDeleteSubscriptions(long person_id){
+		int chk=checkSubscriptions(person_id);
+		ArrayList<Sensors> ret_list=new ArrayList<Sensors>();
+		String us_id_b = "SELECT sen.sensor_id,sen.location,sen.sensor_type,sen.description FROM subscriptions sub, sensors sen WHERE sub.person_id ="+String.valueOf(person_id)+ " AND sen.sensor_id =sub.sensor_id";
+
+		try{
+			ResultSet rs_b =execute_stmt(us_id_b);
+			while (rs_b.next()){ 
+				ret_list.add(new Sensors(rs_b.getLong("sensor_id"),rs_b.getString("location"),rs_b.getString("sensor_type"),rs_b.getString("description")));
+			}
+		}catch (Exception e) {
+			System.out.println(e.getMessage());
+			}
+		return ret_list; }
+
+	
+	public boolean isNumber( String input ){
+		   try{
+			   Double.parseDouble( input );
+		      return true;
+		   }catch( Exception e ){
+		      return false;
+		   }
+		}
 	
 }

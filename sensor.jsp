@@ -9,8 +9,8 @@ Web page for Sensor
         <title>Sensors</title>
         <center><jsp:include page="includes/header.jsp"/></center>
         <meta charset="utf-8">
-  		<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
- 			<script src="//code.jquery.com/jquery-1.10.2.js"></script>
+  		<link rel="stylesheet" href="http://code.jquery.com/ui/1.11.4/themes/start/jquery-ui.css">
+ 		<script src="//code.jquery.com/jquery-1.10.2.js"></script>
   		<script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
   		<link rel="stylesheet" href="/resources/demos/style.css">
 			<script type="text/javascript">
@@ -64,18 +64,6 @@ Web page for Sensor
 				
 				
 			});
-			function autoResize(id){
-			    var newheight;
-			    var newwidth;
-
-			    if(document.getElementById){
-			        newheight = document.getElementById(id).contentWindow.document .body.scrollHeight;
-			        newwidth = document.getElementById(id).contentWindow.document .body.scrollWidth;
-			    }
-
-			    document.getElementById(id).height = (newheight) + "px";
-			    document.getElementById(id).width = (newwidth) + "px";
-			}
 		</script>
 	</head>
 	<body>
@@ -111,7 +99,7 @@ Web page for Sensor
 					<thead><tr><th colspan="2">Input New Sensor Information:</th></tr></thead>
 	    				<tbody>
 	    				<tr><td>Sensor ID:</td>
-	    				<td><input type="number" name="sensor_id" required="required" min="0"/></td></tr>
+	    				<td><input type="number" name="sensor_id" required="required" min="1"/></td></tr>
 	    				<tr><td>location:</td>
 	    				<td><input type="text" name="location" required="required" maxlength="64" /></td></tr>
 	    				<tr><td>Sensor Type:</td>
@@ -133,7 +121,7 @@ Web page for Sensor
 					<thead><tr><th colspan="2">Input New Audio Information:</th></tr></thead>
 					<tbody>
 						<tr><td>Recording ID:</td>
-						<td><input type="number" name="recording_id" required="required" min="0"/></td></tr>
+						<td><input type="number" name="recording_id" required="required" min="1"/></td></tr>
 						<tr><td>Sensor ID:</td>
 						<td><select name="sensor_id">
 						<%for(int i =0; i < db.getSensorA_id_list().size(); i++) {
@@ -158,7 +146,7 @@ Web page for Sensor
 					<thead><tr><th colspan="2">Input New Image Information:</th></tr></thead>
 					<tbody>
 						<tr><td>Image ID:</td>
-						<td><input type="number" name="image_id" required="required" min="0"/></td></tr>
+						<td><input type="number" name="image_id" required="required" min="1"/></td></tr>
 						<tr><td>Sensor ID:</td>
 						<td><select name="sensor_id">
 						<%for(int i =0; i < db.getSensorI_id_list().size(); i++) {
@@ -257,7 +245,7 @@ Web page for Sensor
 									<td><b>Date Created</b></td>
 									<td><b>Length</b></td>
 									<td><b>Description</b></td>
-									<td><b>Audio File (Right Click Save audio as... to Save)</b></td></tr></thead>
+									<td><b>Audio File (Right Click Save audio as...)</b></td></tr></thead>
 						<%		
 								for(int i =0; i < db.recording_list().size(); i++) {
 									out.println(db.recording_list().get(i));
@@ -284,7 +272,7 @@ Web page for Sensor
 							else if (sensorSelect.equals("s")) {
 						%>
 								<thead>
-									<tr><td colspan="6"><center><b>Scalar Data</b><br><a href="/oos-cmput391/scalarservlet">Download CSV File</a></center></td></tr>
+									<tr><td colspan="6"><center><b>Scalar Data</b><br><a href="/oos-cmput391/scalarservlet?user=no">Download CSV File</a></center></td></tr>
 									<tr><td><b>ID</b></td>
 									<td><b>Sensor ID</b></td>
 									<td><b>Date Created</b></td>

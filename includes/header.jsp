@@ -29,26 +29,40 @@ Assume necessary html definitions are already made
 
 <meta charset="utf-8">
   <title>jQuery UI Dialog - Default functionality</title>
-  <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+ <link rel="stylesheet" href="http://code.jquery.com/ui/1.11.4/themes/start/jquery-ui.css">
   <script src="//code.jquery.com/jquery-1.10.2.js"></script>
   <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
   <link rel="stylesheet" href="/resources/demos/style.css">
 
 <script>
 	$(document).ready(function(){
-	$( "#register" ).dialog({ autoOpen: false });
-	$( "#click" ).click(function() {
-	$( "#register" ).dialog( "open" );
-	});
+		$( "#register" ).dialog({ height:'auto', 
+								  width:'auto',		
+								  autoOpen: false });
+		$( "#regclick" ).click(function() {
+			$( "#register" ).dialog( "open" );
+		});
+		$( "#account" ).dialog({ height:'auto', 
+			  					 width:'auto',		
+			 	 				 autoOpen: false });
+		$( "#accountclick" ).click(function() {
+			$( "#account" ).dialog( "open" );
+		});
 	});
 </script>
 
 
 <p>
-	<div id="register" title="Registering a User">
-		<a href="/oos-cmput391/new_user.jsp" >This is a New User</a> <br>
-		<a href="/oos-cmput391/existing_user.jsp">This is an Existing User</a>
+	<div id="register" title="Register User">
+		<a href="/oos-cmput391/register.jsp?usrType=new">This is a New User</a> <br>
+		<a href="/oos-cmput391/register.jsp?usrType=existing">This is an Existing User</a>
 	</div> 
+	<div id="account" title="Change User Information">
+		<a href="/oos-cmput391/change_info.jsp?updateType=pass" >Change Username and Password</a> <br>
+		<a href="/oos-cmput391/change_info.jsp?updateType=info">Change Personal Information</a>
+	</div> 
+	
+	
 	<a href="/oos-cmput391/index.jsp">home</a> | 
 	
 	<%
@@ -60,16 +74,17 @@ Assume necessary html definitions are already made
 	    	}
 	
 		if (user.getRole().equals("a")) {
-			out.println("<a href=\"#\" id=\"click\">register</a> | ");
+			out.println("<a href=\"#\" id=\"regclick\">register</a> | ");
 		} else if (user.getRole().equals("d")) {
 	        out.println("<a href=\"/oos-cmput391/sensor.jsp\">upload</a> | ");
 		} else if (user.getRole().equals("s")) {
-	        out.println("<a href=\"/oos-cmput391/sensor.jsp\">subscribe</a> | ");
+	        out.println("<a href=\"/oos-cmput391/sensor.jsp\">sensor</a> | ");
+	        out.println("<a href=\"/oos-cmput391/subscription.jsp\">subscribe</a> | ");
 	        out.println("<a href=\"/oos-cmput391/search.jsp\">search</a> | ");	
 		out.println("<a href=\"/oos-cmput391/data_analysis.jsp\">generate report</a> | ");
 		}
 
-		out.println("<a href=\"/oos-cmput391/account_settings.jsp\">account settings</a> | ");
+		out.println("<a href=\"#\" id=\"accountclick\">account settings</a> | ");
 		out.println("<a href=\"/oos-cmput391/logout.jsp\">logout</a>"); 
 	%>
 </p>
