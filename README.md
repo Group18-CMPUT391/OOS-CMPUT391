@@ -6,13 +6,9 @@ Ocean Observation System is a JSP HTML5 website that is connected to Oracle sql 
 
 ***
 ### Installation
-***Step 1:***
+***Step 1:***Since this site uses TomCat please place the souce code in the webbapps folder in TomCat. 
 
-Since this site uses TomCat please place the souce code in the webbapps folder in TomCat. 
-
-***Step 2:***
-
-Once this is done please makes sure you edit Db.java to your database information.
+***Step 2:***Once this is done please makes sure you edit Db.java to your database information.
 ```java
 oos-cmput391/WEB-INF/classes/util/Db.java
 
@@ -23,9 +19,7 @@ oos-cmput391/WEB-INF/classes/util/Db.java
 35    static final String DB_URL = "jdbc:oracle:thin:@gwynne.cs.ualberta.ca:1521:CRS";
 ```
 
-***Step 3:***
-(Note this is optional) 
-Edit your class path to include all of the following files:
+***Step 3:***(Note this is optional) Edit your class path to include all of the following files:
 ````sh
 oos-cmput391/WEB-INF/lib/commons-fileupload-1.3.1.jar
 oos-cmput391/WEB-INF/lib/commons-io-2.4.jar
