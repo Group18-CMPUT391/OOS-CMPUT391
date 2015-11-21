@@ -17,7 +17,6 @@ all:
 	make subscription
 	make updateInfo
 	make UpdatePass
-
 analysis:
 	javac $(custsource) $(custclass) AnalysisServlet.java	
 audio:
