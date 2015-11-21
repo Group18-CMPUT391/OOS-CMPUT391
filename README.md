@@ -1,16 +1,40 @@
 # Ocean Observation System
 
-Ocean Observation System is a JSP HTML5 website that is connected to Oracle sql Database. This is connected through JDBC.
+Ocean Observation System is a JSP HTML5 website that is connected to Oracle sql Database. This is connected through JDBC.The webserver is connected by TomCat.
 
 >An Ocean Observation System (OOS) is a computer information system that stores and processes different types of data for an ocean observatory. Those data are produced by a wide range of different sensors, placed at different locations. The sensor types include underwater cameras that capture images, underwater microphones that captures sound data, and a number of different sensors for scalar measurement of water temperature, oxygen concentration, salinity, conductivity, and others. Images and sound data are collected at irregular time points (when requested by a scientist or triggered by a motion sensor); scalar data is collected every hour.
 
-
+***
 ### Installation
-***First step:***
+***Step 1:***
 
-```sh
-$ node app
+Since this site uses TomCat please place the souce code in the webbapps folder in TomCat. 
+
+***Step 2:***
+
+Once this is done please makes sure you edit Db.java to your database information.
+```java
+oos-cmput391/oos-cmput391/WEB-INF/classes/util/Db.java
+
+32    static final String USERNAME = "Username";
+33    static final String PASSWORD = "*****";
+34    // JDBC driver name and database URL
+35    static final String DRIVER_NAME = "oracle.jdbc.driver.OracleDriver";
+35    static final String DB_URL = "jdbc:oracle:thin:@gwynne.cs.ualberta.ca:1521:CRS";
 ```
+
+***Step 3:***
+
+Edit your class path to include all of the following files:
+````sh
+oos-cmput391/oos-cmput391/WEB-INF
+````
+
+
+
+
+
+
 ### Sources Used
 
 
