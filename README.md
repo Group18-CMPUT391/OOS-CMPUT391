@@ -8,7 +8,7 @@ Ocean Observation System is a JSP HTML5 website that is connected to Oracle sql 
 ***
 
 ##Moduals
-######login module
+###login module
 
 ## Installation
 ***Step 1:*** Since this site uses TomCat please place the souce code in the webbapps folder in TomCat. 
