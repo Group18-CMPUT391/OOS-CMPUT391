@@ -15,18 +15,24 @@ public class AnalysisServlet extends HttpServlet {
     private OLAPCommands olap;
     private String tframe;
     
+	public void doPost( HttpServletRequest request, 
+		HttpServletResponse response )
+		throws ServletException, IOException {
+		// Invoke doGet to process this request
+		doGet( request, response );
+	}
+	
     public void doGet(HttpServletRequest request, HttpServletResponse response)
     			throws ServletException, IOException {
 		HttpSession session;
 		User user;
-		long sensor_id;
-    	String location;
-    	String daily;
-    	String weekly;
-    	String monthly;
+		String selected_sensor = null;
+		long sensor_id = 0;
+    	String selected_year = null;
     	String yearly;
+    	ArrayList<String> years = new ArrayList<String>() ;
     	ResultSet rs;
-    	Double min, max, avg;
+    	Double min = 0.0, max = 0.0, avg = 0.0;
     	
     	// Set the content type to HTML
 		response.setContentType( "text/html" );
@@ -34,7 +40,7 @@ public class AnalysisServlet extends HttpServlet {
 		PrintWriter out = response.getWriter();
 		// Get the session (Create a new one if required)
 		session = request.getSession(true);
-	
+		
 		// Check if the user is logged in
 		user = (User) session.getAttribute("user");
 		if (user == null) {
@@ -44,47 +50,63 @@ public class AnalysisServlet extends HttpServlet {
 		    return;
 		}
 		
-		try {
-		    tframe = (String) request.getParameter("tframe");
-		} catch (Exception e) {}
-		// handle displaying statistical values
-		
-		
 		out.println("<!DOCTYPE html><html><head><title>"+
 			    "Scientist OLAP Report</title>");
 	    out.println("<center><jsp:include page=\"includes/header.jsp\"/></center></head>");
-	    out.println("<body><h3>Sensors Data Analysis, grouped "+tframe+"</h3>");
+	    out.println("<body><h3>Sensors Data Analysis</h3>");
 	    
-		try {
-		    olap = new OLAPCommands(tframe);
-		    rs = olap.getAnalysis(user.getPerson_id());
-		    
-			while(rs != null && rs.next()) {
-				sensor_id = rs.getLong("sensor_id");
-				location = rs.getString("location");
-				daily = String.valueOf(rs.getTimestamp(3));
-				weekly = String.valueOf(rs.getTimestamp(4));
-				monthly = String.valueOf(rs.getTimestamp(5));
-				yearly = String.valueOf(rs.getTimestamp(6));
-				avg = rs.getDouble(7);
-				min = rs.getDouble(8);
-				max = rs.getDouble(9);
-				
-				out.println(sensor_id + "|" + location + "|" + daily + "|" + avg + "|" + min + "|" + max);
-			}
+	    // Check diferrent submits
+	    String submit = (String) request.getParameter("submit");
+		
+	    if (submit.equals("1")) {
+			/*try {
+			    tframe = (String) request.getParameter("tframe");
+			} catch (Exception e) {}
+			
+			*/
 
-		    
-		    if (tframe == null)
-		    	tframe.equals(tframe); // just to trigger that exception, SO BAD
+	    	selected_sensor = (String) request.getParameter("selected_sensor");
+	    	try {
+	 		    olap = new OLAPCommands();
+	 		    rs = olap.getAnalysisYearly(user.getPerson_id(), selected_sensor);
+
+	 			while(rs != null && rs.next()) {
+	 				sensor_id = rs.getLong("sensor_id");
+	 				yearly = rs.getString("yearly");
+
+	 				years.add(yearly);
 	
-		    
+	 				avg = rs.getDouble("average");
+	 				min = rs.getDouble("min");
+	 				max = rs.getDouble("max");
+	 				
+	 			}
+	 		    
+	 		} catch (Exception e) {
+	 		    e.printStackTrace();
+	 		}
+	    	
+	    	session.setAttribute("selected_sensor", selected_sensor);
+			session.setAttribute("avg", avg);
+			session.setAttribute("min", min);
+			session.setAttribute("max", max);
+			
+	    	session.setAttribute("years", years);
+			response.sendRedirect("/oos-cmput391/data_analysis.jsp");
 
-		    //out.println(olap.getSensorsScalarDaily());
-		} catch (Exception e) {
-		    //e.printStackTrace();
-		    // can only be the null pointer exception that I purposely trigger
+	    } else if (submit.equals("2")) {
+	    	selected_year = (String) request.getParameter("selected_year");
+	    	
+	    	session.setAttribute("selected_year", selected_year);
+			response.sendRedirect("/oos-cmput391/data_analysis.jsp");
+	    	
+			
+
+		} else if (submit.equals("3")) {
+			
 		}
 		
 		out.println("</body></html>");
+		
     }
 }

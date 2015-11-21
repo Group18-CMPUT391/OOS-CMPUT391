@@ -76,7 +76,6 @@ public class Db {
 		}
 		return null;
 	}
-	
 
 	public Integer execute_update(String query) {
 		try {
@@ -95,8 +94,7 @@ public class Db {
 	    long person_id = 0;
 	    String date_registered = null;
 		
-	    String query = "select * from users "
-			+ "where user_name = '" + user_name + "'";
+	    String query = "select * from users where user_name = '" + user_name + "'";
 		ResultSet rs = execute_stmt(query);
 		try {
 			if (rs != null && rs.next()) {
@@ -131,7 +129,7 @@ public class Db {
 
 	// Change password
 	public int updatePassword(String username, String password) {
-		String query = "update users set password = '"+password+
+		String query = "update users set password = '"+password +
 		    "' where user_name = '" + username + "'";
 		return execute_update(query);
 	}
@@ -244,7 +242,25 @@ public class Db {
 		return execute_update(query);
 	}
 
-
+	// Get all sensors' id of user
+	public List<String> getSensors(long person_id) {
+		List<String> sensors = new ArrayList<String>();
+		String sensor;
+		
+		String query = "SELECT sensor_id FROM subscriptions WHERE person_id = " + person_id;
+		ResultSet rs = execute_stmt(query);
+		try {
+			while (rs != null && rs.next()) {
+				sensor = rs.getString("sensor_id");
+				sensors.add(sensor);
+			}
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+		
+		return sensors;
+	}
+	
     // Returns the resultset of the search by keywords and date
     public ResultSet getResultsSensor(long person_id, String sensor_type, String fromdate, String todate, String keywords, String location) {
     	ResultSet results = null;
