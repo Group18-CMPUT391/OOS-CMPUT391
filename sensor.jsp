@@ -177,7 +177,8 @@ Web page for Sensor
 			<div id="fullsize" title="Fullsize Image">
 			</div>
 	<center><table>	
-		<tr><td valign="top">	
+		<tr><td valign="top">
+		<% if (user.getRole().equals("a")) {%>
 			<table border=\"1\" width=\"30%\" cellpadding=\"5\">
 				<thead>
 					<tr>
@@ -190,6 +191,23 @@ Web page for Sensor
 						<center><a href="#" id="sensorClick">New Sensor</a></center>
 						</td>
 					</tr>
+					<tr><td colspan="2" align="center">
+				 					<%if (error != null) {
+				   					out.println(error); 
+				   					session.removeAttribute("err");
+				   				}%>
+		    		</td></tr> 				
+				</tbody>
+			</table>
+		<%	} 
+			else {%>
+			<table border=\"1\" width=\"30%\" cellpadding=\"5\">
+				<thead>
+					<tr>
+						<th>Select Sensor Type to Add: </th>
+					</tr>
+				</thead>
+				<tbody>
 					<tr>
 						<td>
 							<center><a href="#" id="audioClick">Audio</a></center>
@@ -213,6 +231,7 @@ Web page for Sensor
 		    		</td></tr> 				
 				</tbody>
 			</table>
+			<%} %>
 		</td>
 		<td valign="top">
 			<table border="1" width="30%" cellpadding="5" style="white-space:nowrap;">

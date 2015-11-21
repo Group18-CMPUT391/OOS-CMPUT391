@@ -57,56 +57,56 @@ public class AnalysisServlet extends HttpServlet {
 	    
 	    // Check diferrent submits
 	    String submit = (String) request.getParameter("submit");
-		
-	    if (submit.equals("1")) {
+	    selected_sensor = (String) request.getParameter("selected_sensor");
+	    selected_year = (String) request.getParameter("selected_year");
+	    
+	    try {
+ 		    olap = new OLAPCommands();
+ 		    rs = olap.getAnalysisYearly(user.getPerson_id(), selected_sensor);
+
+ 			while(rs != null && rs.next()) {
+ 				sensor_id = rs.getLong("sensor_id");
+ 				yearly = rs.getString("yearly");
+
+ 				
+ 				years.add(yearly);
+
+ 				avg = rs.getDouble("average");
+ 				min = rs.getDouble("min");
+ 				max = rs.getDouble("max");
+ 				
+ 			}
+ 		    
+ 		} catch (Exception e) {
+ 		    e.printStackTrace();
+ 		}
+	    
+	    
+	    if(submit != null && !submit.isEmpty()) {
 			/*try {
 			    tframe = (String) request.getParameter("tframe");
 			} catch (Exception e) {}
 			
 			*/
 
-	    	selected_sensor = (String) request.getParameter("selected_sensor");
-	    	try {
-	 		    olap = new OLAPCommands();
-	 		    rs = olap.getAnalysisYearly(user.getPerson_id(), selected_sensor);
-
-	 			while(rs != null && rs.next()) {
-	 				sensor_id = rs.getLong("sensor_id");
-	 				yearly = rs.getString("yearly");
-
-	 				years.add(yearly);
-	
-	 				avg = rs.getDouble("average");
-	 				min = rs.getDouble("min");
-	 				max = rs.getDouble("max");
-	 				
-	 			}
-	 		    
-	 		} catch (Exception e) {
-	 		    e.printStackTrace();
-	 		}
-	    	
 	    	session.setAttribute("selected_sensor", selected_sensor);
 			session.setAttribute("avg", avg);
 			session.setAttribute("min", min);
 			session.setAttribute("max", max);
 			
 	    	session.setAttribute("years", years);
-			response.sendRedirect("/oos-cmput391/data_analysis.jsp");
-
-	    } else if (submit.equals("2")) {
-	    	selected_year = (String) request.getParameter("selected_year");
-	    	
-	    	session.setAttribute("selected_year", selected_year);
-			response.sendRedirect("/oos-cmput391/data_analysis.jsp");
-	    	
+			//response.sendRedirect("/oos-cmput391/data_analysis.jsp");
 			
+	    	if (submit.equals("2")) {
+		    	session.setAttribute("selected_year", selected_year);
+		    	} 	
+	    	response.sendRedirect("/oos-cmput391/data_analysis.jsp");
+	    }
 
-		} else if (submit.equals("3")) {
-			
-		}
+
 		
 		out.println("</body></html>");
 		
+		olap.close_OLAP();
     }
 }

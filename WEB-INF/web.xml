@@ -96,4 +96,13 @@
         <url-pattern>/scalarservlet</url-pattern>
     </servlet-mapping>
     
+    <servlet>
+        <servlet-name>subscriptionservlet</servlet-name>
+        <servlet-class>SubscriptionServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>subscriptionservlet</servlet-name>
+        <url-pattern>/subscriptionservlet</url-pattern>
+    </servlet-mapping>
+    
 </web-app>

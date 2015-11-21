@@ -453,8 +453,9 @@ public class Db {
 		return "Audio File was not Added.";
     }
     
-    public String addScalarData (int sensor_id, String[] date_created, double value) {
+    public String addScalarData (int sensor_id, String[] date_created, float value) {
 		
+    	
 		String dateTimeLocal = null;
 		String[] time = date_created[1].split(":");
 		if (time.length != 3) {
@@ -465,10 +466,7 @@ public class Db {
 		}
 		
 		try {
-			SimpleDateFormat format = new SimpleDateFormat( "DD/MM/YYYY HH:mm:ss" );
-			java.util.Date date_time = format.parse(dateTimeLocal );
-			java.sql.Timestamp sqlDate = new java.sql.Timestamp( date_time.getTime());
-		
+
 			String maxID = "SELECT max(id) FROM scalar_data";
 			
 			ResultSet rs = execute_stmt(maxID);
@@ -476,11 +474,10 @@ public class Db {
 			int id = rs.getInt(1);
 			id++;
 			
-			PreparedStatement statement = conn.prepareStatement("INSERT INTO scalar_data VALUES(" + id +
-					"," + sensor_id +",?,"+ value +")"); 
-			statement.setTimestamp(1,sqlDate);
-			statement.executeQuery();
-			statement.executeUpdate("commit");
+			String insert = ("INSERT INTO scalar_data VALUES(" + id + "," + sensor_id +", "
+					+ "TO_DATE('"+dateTimeLocal+"', 'DD/MM/YYYY HH24:MI:SS'),"+ value +")"); 
+			execute_update(insert);
+
 			return "Scalar Data file Added";
 			
 		}catch (Exception e) {

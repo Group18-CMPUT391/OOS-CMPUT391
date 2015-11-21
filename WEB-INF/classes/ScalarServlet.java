@@ -82,8 +82,8 @@ public class ScalarServlet extends HttpServlet {
 			while (rs.next()) {
 				String[] dateTime = String.valueOf(rs.getTimestamp(2)).split(" ");
 				String[] date = dateTime[0].split("-");
-				String time = dateTime[1];
-				String dateFormated = date[2] + "/"+ date[1]+ "/"+ date[0] + " " + time;
+				String[] time = dateTime[1].split(".");
+				String dateFormated = date[2] + "/"+ date[1]+ "/"+ date[0] + " " + time[0];
 
 				
 				w.write(rs.getString(1) +","+ dateFormated +","+ String.valueOf(rs.getDouble(3))+"\n");

@@ -41,7 +41,8 @@ updateInfo:
 	javac $(custsource) $(custclass) UpdateInfoServlet.java	
 UpdatePass:
 	javac $(custsource) $(custclass) UpdatePassServlet.java	
-	
+short:
+	javac $(custsource) $(custclass) *.java
 	
 clean:
 	rm -rf *.class

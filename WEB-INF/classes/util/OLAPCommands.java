@@ -27,7 +27,6 @@ public class OLAPCommands {
     			+ "SELECT S1.sensor_id, S2.date_created, S2.value " 
     			+ "FROM subscriptions S1, scalar_data S2 "
     			+ "WHERE S1.person_id = " + person_id + " " 
-    			+ "AND S1.sensor_id = " + Integer.parseInt(sensor_id) + " "
     			+ "AND S1.sensor_id = S2.sensor_id "
     			+ "ORDER BY S1.sensor_id, S2.date_created, S2.value ";
     	database.execute_stmt(fact_table);
@@ -46,7 +45,21 @@ public class OLAPCommands {
     	*/
     	
     	ResultSet rs = database.execute_stmt(year_query);
-    	    	
     	return rs;
+    	
+    }
+    
+    public ResultSet getSIDScalar(long person_id){
+    	String query = "SELECT su.sensor_id, su.sensor_id, se.sensor_type "
+    			+ "FROM subscriptions su, sensors se "
+    			+ "WHERE su.sensor_id = se.sensor_id "
+    			+ "AND se.sensor_type ='s' "
+    			+ "AND su.person_id =" + person_id;
+    	ResultSet rs = database.execute_stmt(query);
+    	return rs;
+    }
+    
+    public void close_OLAP() {
+    	database.close_db();
     }
 }

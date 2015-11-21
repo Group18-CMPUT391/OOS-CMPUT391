@@ -122,12 +122,16 @@ public class SensorServlet extends HttpServlet {
 				BufferedReader reader = new BufferedReader(new InputStreamReader(fileContent));
 				String line = null;
 				int var_id = 1;
+				if (reader.readLine() == null){
+					session.setAttribute("err", "File is Empty");
+					response.sendRedirect("/oos-cmput391/sensor.jsp");
+				}
 				while( (line = reader.readLine())!= null ){
 					
 					String [] tokens = line.split(",");
 		    		int var_sensor_id = Integer.parseInt(tokens[0]);
 		    		String var_date_created = tokens[1];
-		    		double var_value = Integer.parseInt(tokens[2]);
+		    		float var_value = Float.parseFloat(tokens[2]);
 		    		
 		    		String querrymessage = db.addScalarData (var_sensor_id, var_date_created.split(" "),var_value);
 		    		session.setAttribute("err", querrymessage);

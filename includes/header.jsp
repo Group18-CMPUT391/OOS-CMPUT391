@@ -55,15 +55,17 @@ Assume necessary html definitions are already made
 <p>
 	<div id="register" title="Register User">
 		<a href="/oos-cmput391/register.jsp?usrType=new">This is a New User</a> <br>
-		<a href="/oos-cmput391/register.jsp?usrType=existing">This is an Existing User</a>
+		<a href="/oos-cmput391/register.jsp?usrType=existing">This is an Existing User</a> <br>
+		<a href="/oos-cmput391/sensor.jsp">Manage Sensors</a>
 	</div> 
 	<div id="account" title="Change User Information">
 		<a href="/oos-cmput391/change_info.jsp?updateType=pass" >Change Username and Password</a> <br>
 		<a href="/oos-cmput391/change_info.jsp?updateType=info">Change Personal Information</a>
+		
 	</div> 
 	
 	
-	<a href="/oos-cmput391/index.jsp">home</a> | 
+	<a href="/oos-cmput391/index.jsp">Home</a> | 
 	
 	<%
 		if (user == null) {
@@ -74,18 +76,18 @@ Assume necessary html definitions are already made
 	    	}
 	
 		if (user.getRole().equals("a")) {
-			out.println("<a href=\"#\" id=\"regclick\">register</a> | ");
+			out.println("<a href=\"#\" id=\"regclick\">User and Sensor Management</a> | ");
 		} else if (user.getRole().equals("d")) {
-	        out.println("<a href=\"/oos-cmput391/sensor.jsp\">upload</a> | ");
+	        out.println("<a href=\"/oos-cmput391/sensor.jsp\">Upload</a> | ");
 		} else if (user.getRole().equals("s")) {
-	        out.println("<a href=\"/oos-cmput391/sensor.jsp\">sensor</a> | ");
-	        out.println("<a href=\"/oos-cmput391/subscription.jsp\">subscribe</a> | ");
-	        out.println("<a href=\"/oos-cmput391/search.jsp\">search</a> | ");	
-		out.println("<a href=\"/oos-cmput391/data_analysis.jsp\">generate report</a> | ");
+	        out.println("<a href=\"/oos-cmput391/sensor.jsp\">Sensor</a> | ");
+	        out.println("<a href=\"/oos-cmput391/subscription.jsp\">Subscribe</a> | ");
+	        out.println("<a href=\"/oos-cmput391/search.jsp\">Search</a> | ");	
+		out.println("<a href=\"/oos-cmput391/data_analysis.jsp\">Generate Report</a> | ");
 		}
 
-		out.println("<a href=\"#\" id=\"accountclick\">account settings</a> | ");
-		out.println("<a href=\"/oos-cmput391/logout.jsp\">logout</a>"); 
+		out.println("<a href=\"#\" id=\"accountclick\">Account Settings</a> | ");
+		out.println("<a href=\"/oos-cmput391/logout.jsp\">Logout</a>"); 
 	%>
 </p>
 
