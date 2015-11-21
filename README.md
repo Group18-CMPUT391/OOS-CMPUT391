@@ -14,7 +14,7 @@ Since this site uses TomCat please place the souce code in the webbapps folder i
 
 Once this is done please makes sure you edit Db.java to your database information.
 ```java
-oos-cmput391/oos-cmput391/WEB-INF/classes/util/Db.java
+oos-cmput391/WEB-INF/classes/util/Db.java
 
 32    static final String USERNAME = "Username";
 33    static final String PASSWORD = "*****";
@@ -24,13 +24,13 @@ oos-cmput391/oos-cmput391/WEB-INF/classes/util/Db.java
 ```
 
 ***Step 3:***
-
+(Note this is optional) 
 Edit your class path to include all of the following files:
 ````sh
-oos-cmput391/oos-cmput391/WEB-INF/lib/commons-fileupload-1.3.1.jar
-oos-cmput391/oos-cmput391/WEB-INF/lib/commons-io-2.4.jar
-oos-cmput391/oos-cmput391/WEB-INF/lib/ojdbc6.jar
-oos-cmput391/oos-cmput391/WEB-INF/lib/thumbnailator-0.4.8.jar
+oos-cmput391/WEB-INF/lib/commons-fileupload-1.3.1.jar
+oos-cmput391/WEB-INF/lib/commons-io-2.4.jar
+oos-cmput391/WEB-INF/lib/ojdbc6.jar
+oos-cmput391/WEB-INF/lib/thumbnailator-0.4.8.jar
 
 ````
 
