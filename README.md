@@ -30,6 +30,7 @@ oos-cmput391/WEB-INF/classes/util/Db.java
 
 ***Step 3:*** (Note this is optional) Edit your class path to include all of the following files:
 ````sh
+oos-cmput391/WEB-INF/lib/servlet-api.jar
 oos-cmput391/WEB-INF/lib/commons-fileupload-1.3.1.jar
 oos-cmput391/WEB-INF/lib/commons-io-2.4.jar
 oos-cmput391/WEB-INF/lib/ojdbc6.jar
