@@ -16,7 +16,7 @@ oos-cmput391/WEB-INF/classes/util/Db.java
 33    static final String PASSWORD = "*****";
 34    // JDBC driver name and database URL
 35    static final String DRIVER_NAME = "oracle.jdbc.driver.OracleDriver";
-35    static final String DB_URL = "jdbc:oracle:thin:@gwynne.cs.ualberta.ca:1521:CRS";
+36    static final String DB_URL = "jdbc:oracle:thin:@gwynne.cs.ualberta.ca:1521:CRS";
 ```
 
 ***Step 3:*** (Note this is optional) Edit your class path to include all of the following files:
