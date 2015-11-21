@@ -3,7 +3,7 @@
 Ocean Observation System is a JSP HTML5 website that is connected to Oracle sql Database. This is connected through JDBC.The webserver is connected by TomCat.
 
 >An Ocean Observation System (OOS) is a computer information system that stores and processes different types of data for an ocean observatory. Those data are produced by a wide range of different sensors, placed at different locations. The sensor types include underwater cameras that capture images, underwater microphones that captures sound data, and a number of different sensors for scalar measurement of water temperature, oxygen concentration, salinity, conductivity, and others. Images and sound data are collected at irregular time points (when requested by a scientist or triggered by a motion sensor); scalar data is collected every hour.
-##Modules
+
 
 ***
 
