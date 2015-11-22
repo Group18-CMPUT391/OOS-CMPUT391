@@ -29,7 +29,7 @@ public class AnalysisServlet extends HttpServlet {
 		String selected_sensor = null;
 		long sensor_id = 0;
     	String selected_year = null;
-    	String yearly;
+    	//String yearly;
     	ArrayList<String> years = new ArrayList<String>() ;
     	ResultSet rs;
     	Double min = 0.0, max = 0.0, avg = 0.0;
@@ -49,11 +49,6 @@ public class AnalysisServlet extends HttpServlet {
 		    response.sendRedirect("/oos-cmput391/login.jsp");
 		    return;
 		}
-		
-		out.println("<!DOCTYPE html><html><head><title>"+
-			    "Scientist OLAP Report</title>");
-	    out.println("<center><jsp:include page=\"includes/header.jsp\"/></center></head>");
-	    out.println("<body><h3>Sensors Data Analysis</h3>");
 	    
 	    // Check diferrent submits
 	    String submit = (String) request.getParameter("submit");
@@ -66,10 +61,10 @@ public class AnalysisServlet extends HttpServlet {
 
  			while(rs != null && rs.next()) {
  				sensor_id = rs.getLong("sensor_id");
- 				yearly = rs.getString("yearly");
+ 				//yearly = rs.getString("yearly");
 
  				
- 				years.add(yearly);
+ 				//years.add(yearly);
 
  				avg = rs.getDouble("average");
  				min = rs.getDouble("min");
@@ -94,12 +89,12 @@ public class AnalysisServlet extends HttpServlet {
 			session.setAttribute("min", min);
 			session.setAttribute("max", max);
 			
-	    	session.setAttribute("years", years);
-			//response.sendRedirect("/oos-cmput391/data_analysis.jsp");
+	    	//session.setAttribute("years", years);
 			
 	    	if (submit.equals("2")) {
 		    	session.setAttribute("selected_year", selected_year);
-		    	} 	
+		    } 	
+	    	
 	    	response.sendRedirect("/oos-cmput391/data_analysis.jsp");
 	    }
 

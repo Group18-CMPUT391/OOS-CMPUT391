@@ -30,16 +30,19 @@ Search page allows to user to enter a search query
 	    
 	    String selected_sensor = (String) session.getAttribute("selected_sensor");
 	    String selected_year = (String) session.getAttribute("selected_year");
-	    ArrayList<String> years = (ArrayList<String>) session.getAttribute("years");
+	    ArrayList<String> years = new ArrayList<String>();
 	    ArrayList<String> sensors = new ArrayList<String>();
 	    
 	    if (years != null) {
 			submit ="2";
 	    }
 	    ResultSet rs = olap.getSIDScalar(user.getPerson_id());
+
 	    while(rs != null && rs.next()) {
 	    	sensors.add(String.valueOf(rs.getLong("sensor_id")));
 	    }
+	    
+	    years = olap.getYearsScalar(selected_sensor);
 %>
 
 <html>
@@ -51,7 +54,7 @@ Search page allows to user to enter a search query
   </head>
   <body>
 	<center>
- 			<%out.println("<form name='choosesubmit1' id=\"submit\" action='analysisservlet?submit="+submit+"' method='POST'>");%>
+ 			<%out.println("<form name='choosesubmit1' action='analysisservlet?submit="+submit+"' method='POST'>");%>
 	 			<table>
  					<tr><th>Select sensor</th>
  						<td><select name="selected_sensor">
@@ -79,7 +82,7 @@ Search page allows to user to enter a search query
 					</table><%} %>
 				<br>
 				
- 					<%	if (years != null) {%>
+ 					<%	if (selected_sensor != null) {%>
 							<%out.println("<form name='choosesubmit1' action='analysisservlet?submit="+submit+"' method='POST'>");%>
 								<table>
 									<tr><th>Select year</th>
@@ -117,4 +120,5 @@ Search page allows to user to enter a search query
 		   e.printStackTrace();
 	}
 	database.close_db(); 
+	olap.close_OLAP();
 %>

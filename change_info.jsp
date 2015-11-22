@@ -12,7 +12,6 @@ username, firstname, lastname, address, email, phone and password changing
 	Person person = null;
 	Db database = new Db();
 	database.connect_db();
-	
 	String status = null;
 	
 	String first_name = null;
@@ -31,7 +30,7 @@ username, firstname, lastname, address, email, phone and password changing
 	
 	// Cannot access this page unless logged in
 	if (user == null) {
-	   String errormsg = "Please log in before accessing account information";
+	   String errormsg = "Please log in before accessing account information!";
 	   session.setAttribute("status", errormsg);
 	   response.sendRedirect("/oos-cmput391/login.jsp");
 	   
@@ -47,26 +46,6 @@ username, firstname, lastname, address, email, phone and password changing
 		email = person.getEmail();
 		phone = person.getPhone();
 	}
-	
-	/*email = (String) session.getAttribute("email");
-	first_name = (String) session.getAttribute("firstname");
-	last_name = (String) session.getAttribute("lastname");
-	address = (String) session.getAttribute("address");
-	phone = (String) session.getAttribute("phone");
-	if (email==null) {
-	    redirectURL = "/c391proj/getUserInfo";
-	}
-	
-	// cannot access this page unless logged in
-	if (username == null) {
-	   String errormsg = "Please log in before accessing account information";
-	   session.setAttribute("err", errormsg);
-	   redirectURL = "/c391proj/login.jsp";
-	}
-	
-	if (redirectURL != null) {
-	    response.sendRedirect(redirectURL);
-	}*/
 %>
 
 <html>
@@ -205,9 +184,7 @@ username, firstname, lastname, address, email, phone and password changing
 		</tr>
 	      </table>
 	    </form>
-	    <%} %>
-	    
-	    
+	    <%} database.close_db() %>
     </center>
   </body>
 </html>
