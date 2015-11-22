@@ -28,9 +28,10 @@ import javax.imageio.ImageIO;
 
 import net.coobird.thumbnailator.*;
 
+
 public class Db {
-	static final String USERNAME = "wkchoi";
-	static final String PASSWORD = "Kingfreak95";
+	static final String USERNAME = "hbtruong";
+	static final String PASSWORD = "qwerty123456";
 	// JDBC driver name and database URL
 	static final String DRIVER_NAME = "oracle.jdbc.driver.OracleDriver";
 	static final String DB_URL = "jdbc:oracle:thin:@gwynne.cs.ualberta.ca:1521:CRS";
@@ -59,6 +60,7 @@ public class Db {
 		return 0;
 	}
 
+	// Close connection
 	public void close_db() {
 		try {
 			stmt.close();
@@ -68,6 +70,7 @@ public class Db {
 		}
 	}
 
+	// Execute a query and return a ResultSet 
 	public ResultSet execute_stmt(String query) {
 		try {
 			return stmt.executeQuery(query);
@@ -77,6 +80,7 @@ public class Db {
 		return null;
 	}
 
+	// Execute an update and return 1 if success
 	public Integer execute_update(String query) {
 		try {
 			return stmt.executeUpdate(query);
@@ -743,6 +747,7 @@ public String deleteSubscription(String[] sensor_ids,long person_id){
 			}
 		
 		return ret_list; }
+	
 	public ArrayList<Sensors> printDeleteSubscriptions(long person_id){
 		int chk=checkSubscriptions(person_id);
 		ArrayList<Sensors> ret_list=new ArrayList<Sensors>();

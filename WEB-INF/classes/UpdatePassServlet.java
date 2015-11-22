@@ -8,6 +8,7 @@ import util.Db;
 import util.User;
 
 
+// Servlet for changing info in Users table
 public class UpdatePassServlet extends HttpServlet {
    
 	/**

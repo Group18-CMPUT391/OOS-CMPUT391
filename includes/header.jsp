@@ -53,7 +53,7 @@ Assume necessary html definitions are already made
 
 
 <p>
-	<div id="register" title="Register User">
+	<div id="register" title="Administrator">
 		<a href="/oos-cmput391/register.jsp?usrType=new">This is a New User</a> <br>
 		<a href="/oos-cmput391/register.jsp?usrType=existing">This is an Existing User</a> <br>
 		<a href="/oos-cmput391/sensor.jsp">Manage Sensors</a>

@@ -8,7 +8,6 @@ all:
 	make analysis
 	make audio
 	make image
-	make list
 	make login
 	make register
 	make scalar
@@ -23,8 +22,6 @@ audio:
 	javac $(custsource) $(custclass) AudioServlet.java	
 image:
 	javac $(custsource) $(custclass) ImageServlet.java
-list:
-	javac $(custsource) $(custclass) list.java	
 login:
 	javac $(custsource) $(custclass) LoginServlet.java	
 register:
