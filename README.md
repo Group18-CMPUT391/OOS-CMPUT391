@@ -21,6 +21,7 @@ Ocean Observation System is a JSP HTML5 website that is connected to Oracle sql 
 The login module is contains two parts, the login section and personal/password change section.
 
 In the login section the user is given inputs to input a username and password. Depending on what type the user is they are given certain areas of the website to view. For example the if the user is administrator then they are given the view to create and change users, but this view is not available to the scientist or data manager.
+
 ###Search Module
 
 This module allows the user to search from the database for sensors that they are subscribed to between different dates. The first field is the inputing keywords for searching audio and image description or seaching scalar values. The second is searching location of sensors. The sensor type field allow the search of different sensors. Finally the last field is setting the range of dates you are searching between. 
@@ -28,12 +29,14 @@ This module allows the user to search from the database for sensors that they ar
 They can either input keyword/value, sensor type or location or all of them.
 
 This is all done in one page, the search page.
+
 ###Sensor and User Management Module
 ###Subscribe Module
 
-This module available only to the scientist allows the scientist to subscribe to different sensor datas. They do not subscribe to sensors directly. Once in the subsription page the scientist has two option add subscription and delete/view subscription. The add subscrition will list subscritions that are available to be subscribed. Once a data has been subscribbed to the data will be removed from view. Delete/view subscriptions lists the scientist's subscriptions and once the scientist unsubscibs the data will disappear.
+This module available only to the scientist allows the scientist to subscribe to different sensor datas. They do not subscribe to sensors directly. Once in the subsription page the scientist has two option add subscription and delete/view subscription. The add subscrition will list subscritions that are available to be subscribed. Once a data has been subscribbed to the data will be removed from view. Delete/view subscriptions lists the scientist's subscriptions and once the scientist unsubscibs the data will disappear. The scientist can click on the sensor page to see more detail.
 ###Uploading Module
 
+This modual is only for the data manager. He will click on the 
 
 ## Installation
 ***Step 1:*** Since this site uses TomCat please place the souce code in the webbapps folder in TomCat. 
@@ -101,4 +104,5 @@ Used the example code from class
 * Dialog box: https://jqueryui.com/dialog/
 * Files to database: http://www.codejava.net/coding/upload-files-to-database-servlet-jsp-mysql
 * Inputstream for html file upload: http://stackoverflow.com/questions/5730532/values-of-input-text-fields-in-a-html-multipart-form
+* Submit checkbox check: http://stackoverflow.com/questions/22557055/submit-form-only-if-at-least-one-checkbox-is-checked
 * Write text lines to Outputstream: http://www.tutorialspoint.com/java/io/outputstreamwriter_write_string.htm
