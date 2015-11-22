@@ -18,6 +18,10 @@ Ocean Observation System is a JSP HTML5 website that is connected to Oracle sql 
 ##Modules
 ###login module
 ###search module
+
+This module allows the user to search from the database for sensors that they are subscribed to between different dates. The first field is the
+
+They can either input keyword/value, sensor type or location or all of them.
 ###sensor and user management module
 ###subscribe module
 ###uploading module
@@ -79,7 +83,7 @@ http://[serverURL]/oos-cmput391/
 ```
 
 ## Sources Used
-
+Dialog box: https://jqueryui.com/dialog/
 
 
 
