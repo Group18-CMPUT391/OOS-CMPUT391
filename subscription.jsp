@@ -29,8 +29,24 @@
 										 });
 				$( "#deleteSubscriptionClick" ).click(function() {
 					$( "#deleteSubscription" ).dialog( "open" );
+					
 					return false;
 				});
+				$( "#deleteSub" ).submit(function (e) {
+			        //check atleat 1 checkbox is checked
+			        if (!$('.select').is(':checked')) {
+			            //prevent the default form submit if it is not checked
+			            e.preventDefault();
+			        }
+			    })
+			    $( "#addSub" ).submit(function (e) {
+			        //check atleat 1 checkbox is checked
+			        if (!$('.selects').is(':checked')) {
+			            //prevent the default form submit if it is not checked
+			            e.preventDefault();
+			        }
+			    })
+				
 				
 				
 			});
@@ -81,7 +97,7 @@
 	<div id="addSubscription" title="Add Subscription">
 
 		<center><form action="subscriptionservlet?type=addSubscription" method="post"
-			id="addSubscriptionClick" onsubmit="this">
+			id="addSub" onsubmit="this">
 			<table width="59%" border="1">
 					<thead><tr><th colspan="5">ADD SUBSCRIPTION</th></tr></thead>
 				<tr>	
@@ -96,7 +112,7 @@
 				ArrayList<Sensors> result_set=db.printAddSubscriptions(user_id);
 				for(int i=0;i<result_set.size();++i){
 					out.println("<tr>"); %>
-				<td><input type="checkbox" name="addcheckbox" value=<%=String.valueOf(result_set.get(i).getSensor_id())%> /></td>
+				<td><input type="checkbox" class="selects" name="addcheckbox" value=<%=String.valueOf(result_set.get(i).getSensor_id())%> /></td>
 					<%
 							
 					out.println("<td>"+String.valueOf(result_set.get(i).getSensor_id())+"</td>");
@@ -129,7 +145,7 @@
 	</div>
 	<div id="deleteSubscription" title="Delete/View Subscription">
 		<center><form action="subscriptionservlet?type=deleteSubscription"
-			method="post" id="deleteSubscriptionClick" onsubmit="this">
+			method="post" id="deleteSub" onsubmit="this">
 			<table width="59%" border="1">
 					<thead><tr><th colspan="5">DELETE/VIEW SUBSCRIPTIONS</th></tr></thead>
 				<tr>
@@ -144,7 +160,7 @@
 				ArrayList<Sensors> result_set1=db.printDeleteSubscriptions(user_id);
 				for(int j=0;j<result_set1.size();++j){
 					out.println("<tr>"); %>
-				<td><input type="checkbox" name="deletecheckbox" value= <%=String.valueOf(result_set1.get(j).getSensor_id())%>></td>
+				<td><input type="checkbox" class="select" name="deletecheckbox" value= <%=String.valueOf(result_set1.get(j).getSensor_id())%>></td>
 					<%		
 					out.println("<td>"+String.valueOf(result_set1.get(j).getSensor_id())+"</td>");
 

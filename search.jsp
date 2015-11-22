@@ -11,10 +11,12 @@ Search page allows to user to enter a search query
 	database.connect_db();
 		
 	String status = null;
+	 String error = null; 
 	
 	try {
 	   status = (String) session.getAttribute("status");
 	   user = (User) session.getAttribute("user");
+	   error = (String) session.getAttribute("err");  
 	   //username = (String) session.getAttribute("username");
 	} catch (NullPointerException e) {
 	   e.printStackTrace();
@@ -79,5 +81,9 @@ Search page allows to user to enter a search query
 		    </form>
 		</div>
 	</div>
+	<center><%if (error != null) {
+				out.println(error); 
+				session.removeAttribute("err");
+			  }%></center>
   </body>
 </html>

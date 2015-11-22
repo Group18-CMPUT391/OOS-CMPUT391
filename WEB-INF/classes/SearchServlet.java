@@ -76,114 +76,136 @@ public class SearchServlet extends HttpServlet {
         out.println("<br>");
         
         try{
-        	if (!(sensor_type.equals("empty"))) {
-        		rs = database.getResultsSensor(user.getPerson_id(), sensor_type, fromDate, toDate, keywords, location);
-                out.println("<center><b>Your results for '" + keywords + "' between "
-                            + fromDate + " and " + toDate + ":\n<b></center>");
-                
-                if (sensor_type.equals("a")) {
-	            	 out.println("<center><table border=\"1\" width=\"30%\" cellpadding=\"5\"style=\"white-space:nowrap;\">");
-	            	 out.println("<thead style=\"white-space:nowrap;\">"
-									+"<tr><td colspan=\"6\"><center><b>Audio Sensors</b></center></td></tr>"
-									+"<tr><td><b>Recording ID</b></td>"
-									+"<td><b>Sensor ID</b></td>"
-									+"<td><b>Date Created</b></td>"
-									+"<td><b>Length</b></td>"
-									+"<td><b>Description</b></td>"
-									+"<td><b>Audio File (Right Click Save audio as...)</b></td></tr></thead>");
-	            	 
-	            	while(rs.next()){
-	    				out.println("<tr><td>" + String.valueOf(rs.getInt(1))+"</td>"+
-	    						"<td>" + String.valueOf(rs.getInt(2))+"</td>"+
-	    						"<td>" + String.valueOf(rs.getTimestamp(3))+"</td>"+
-	    						"<td>" + String.valueOf(rs.getInt(4))+"</td>"+
-	    						"<td>" + rs.getString(5) + "</td>" + 
-	    						"<td><audio controls><source src=\"/oos-cmput391/audioservlet?id="+rs.getInt(1)+"\" type=\"audio/wav\"></audio></td></tr>");
-	                }
-	            	out.println("</table></center><br>");
-                }
-	           	else if (sensor_type.equals("i")) {
-			          	 out.println("<center><table border=\"1\" width=\"30%\" cellpadding=\"5\"style=\"white-space:nowrap;\">");
-			          	 out.println("<thead style=\"white-space:nowrap;\">"
-										+"<tr><td colspan=\"6\"><center><b>Image Sensors</b></center></td></tr>"
-										+"<tr><td><b>Image ID</b></td>"
-										+"<td><b>Sensor ID</b></td>"
-										+"<td><b>Date Created</b></td>"
-										+"<td><b>Description</b></td>"
-										+"<td><b>Thumbnail</b></td>"
-										+"<td><b>Full Size</b></td></tr></thead>");
-			          	while(rs.next()){
-							out.println("<tr><td>" + String.valueOf(rs.getInt(1))+"</td>"+
-									"<td>" + String.valueOf(rs.getInt(2))+"</td>"+
-									"<td>" + String.valueOf(rs.getTimestamp(3))+"</td>"+
-									"<td>" + rs.getString(4)+"</td>"+
-									"<td><center><image src=\"/oos-cmput391/imageservlet?full=no&id="+
-									rs.getInt(1)+"\"><center></td>"+
-									"<td><center><a href=\"/oos-cmput391/imageservlet?full=yes&id="+rs.getInt(1)+"\">Download Full Size Image!<center></td></tr>");
-			          	}
-	
-						out.println("</table></center>");
-	           	}
-	           	else if (sensor_type.equals("s")) {
-	           		out.println("<center><table border=\"1\" width=\"30%\" cellpadding=\"5\"style=\"white-space:nowrap;\">");
-	           		out.println("<thead style=\"white-space:nowrap;\">"
-	           						+"<tr><td colspan=\"6\"><center><b>Scalar Data</b><br><a href=\"/oos-cmput391/scalarservlet?user=yes&fromdate="
-	           						+fromDate+"&todate="+toDate+"&id="+user.getPerson_id()+"&value="+keywords+"&location="+location+"\">Download CSV File</a></center></td></tr>"
-	           						+"<tr><td><b>ID</b></td>"
-	           						+"<td><b>Sensor ID</b></td>"
-	           						+"<td><b>Date Created</b></td>"
-	           						+"<td><b>Value</b></td></tr></thead>");
-	           		while (rs.next()){
-	           			out.println("<tr><td>" + String.valueOf(rs.getInt(1))+"</td>"+
-	       									"<td>" + String.valueOf(rs.getInt(2))+"</td>"+
-	       									"<td>" + String.valueOf(rs.getTimestamp(3))+"</td>"+
-	       									"<td>" + String.valueOf(rs.getInt(4)) + "</td></tr>");
-	       			}
-	           		out.println("</table></center>");
-	           	}
+        	
+        	//Check if first date is less than second date in the search field 
+        	SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+        	if(formatter.parse(fromDate).after(formatter.parse(toDate)) || 
+        			formatter.parse(fromDate).equals(formatter.parse(toDate))){
+        		
+        		session.setAttribute("err", "The first data has to be smaller than the second date.");
+				response.sendRedirect("/oos-cmput391/search.jsp");
         	}
-        	else if (sensor_type.equals("empty")){
-        		rs = database.getResultAll(user.getPerson_id(), fromDate, toDate, keywords, location);
+        	else {
+        		//search with sensor type
+        		if (!(sensor_type.equals("empty"))) {
+            		rs = database.getResultsSensor(user.getPerson_id(), sensor_type, fromDate, toDate, keywords, location);
+                    out.println("<center><b>Your results for '" + keywords + "' between "
+                                + fromDate + " and " + toDate + ":\n<b></center>");
+                    
+                    //Results for audio recordings
+                    if (sensor_type.equals("a")) {
+    	            	 out.println("<center><table border=\"1\" width=\"30%\" cellpadding=\"5\"style=\"white-space:nowrap;\">");
+    	            	 out.println("<thead style=\"white-space:nowrap;\">"
+    									+"<tr><td colspan=\"6\"><center><b>Audio Sensors</b></center></td></tr>"
+    									+"<tr><td><b>Recording ID</b></td>"
+    									+"<td><b>Sensor ID</b></td>"
+    									+"<td><b>Date Created</b></td>"
+    									+"<td><b>Length</b></td>"
+    									+"<td><b>Description</b></td>"
+    									+"<td><b>Audio File (Right Click Save audio as...)</b></td></tr></thead>");
+    	            	 
+    	            	while(rs.next()){
+    	    				out.println("<tr><td>" + String.valueOf(rs.getInt(1))+"</td>"+
+    	    						"<td>" + String.valueOf(rs.getInt(2))+"</td>"+
+    	    						"<td>" + String.valueOf(rs.getTimestamp(3))+"</td>"+
+    	    						"<td>" + String.valueOf(rs.getInt(4))+"</td>"+
+    	    						"<td>" + rs.getString(5) + "</td>" + 
+    	    						"<td><audio controls><source src=\"/oos-cmput391/audioservlet?id="+rs.getInt(1)+"\" type=\"audio/wav\"></audio></td></tr>");
+    	                }
+    	            	out.println("</table></center><br>");
+                    }
+                    
+                    //Results for images
+    	           	else if (sensor_type.equals("i")) {
+    			          	 out.println("<center><table border=\"1\" width=\"30%\" cellpadding=\"5\"style=\"white-space:nowrap;\">");
+    			          	 out.println("<thead style=\"white-space:nowrap;\">"
+    										+"<tr><td colspan=\"6\"><center><b>Image Sensors</b></center></td></tr>"
+    										+"<tr><td><b>Image ID</b></td>"
+    										+"<td><b>Sensor ID</b></td>"
+    										+"<td><b>Date Created</b></td>"
+    										+"<td><b>Description</b></td>"
+    										+"<td><b>Thumbnail</b></td>"
+    										+"<td><b>Full Size</b></td></tr></thead>");
+    			          	while(rs.next()){
+    							out.println("<tr><td>" + String.valueOf(rs.getInt(1))+"</td>"+
+    									"<td>" + String.valueOf(rs.getInt(2))+"</td>"+
+    									"<td>" + String.valueOf(rs.getTimestamp(3))+"</td>"+
+    									"<td>" + rs.getString(4)+"</td>"+
+    									"<td><center><image src=\"/oos-cmput391/imageservlet?full=no&id="+
+    									rs.getInt(1)+"\"><center></td>"+
+    									"<td><center><a href=\"/oos-cmput391/imageservlet?full=yes&id="+rs.getInt(1)+"\">Download Full Size Image!<center></td></tr>");
+    			          	}
+    	
+    						out.println("</table></center>");
+    	           	}
+                    
+                    //Results for scalar data
+    	           	else if (sensor_type.equals("s")) {
+    	           		out.println("<center><table border=\"1\" width=\"30%\" cellpadding=\"5\"style=\"white-space:nowrap;\">");
+    	           		out.println("<thead style=\"white-space:nowrap;\">"
+    	           						+"<tr><td colspan=\"6\"><center><b>Scalar Data</b><br><a href=\"/oos-cmput391/scalarservlet?user=yes&fromdate="
+    	           						+fromDate+"&todate="+toDate+"&id="+user.getPerson_id()+"&value="+keywords+"&location="+location+"\">Download CSV File</a></center></td></tr>"
+    	           						+"<tr><td><b>ID</b></td>"
+    	           						+"<td><b>Sensor ID</b></td>"
+    	           						+"<td><b>Date Created</b></td>"
+    	           						+"<td><b>Value</b></td></tr></thead>");
+    	           		while (rs.next()){
+    	           			out.println("<tr><td>" + String.valueOf(rs.getInt(1))+"</td>"+
+    	       									"<td>" + String.valueOf(rs.getInt(2))+"</td>"+
+    	       									"<td>" + String.valueOf(rs.getTimestamp(3))+"</td>"+
+    	       									"<td>" + String.valueOf(rs.getInt(4)) + "</td></tr>");
+    	       			}
+    	           		out.println("</table></center>");
+    	           	}
+            	}
         		
-        		out.println("<center><table border=\"1\" width=\"30%\" cellpadding=\"5\"style=\"white-space:nowrap;\">");
-	          	 out.println("<thead style=\"white-space:nowrap;\">"
-								+"<tr><td colspan=\"6\"><center><b>Result</b></center></td></tr>"
-								+"<tr><td><b>Image ID</b></td>"
-								+"<td><b>Sensor ID</b></td>"
-								+"<td><b>Date Created</b></td>"
-								+"<td><b>Description/Value</b></td>"
-								+"<td><b>Download</b></td></tr></thead>");
-        		
-        		
-        		while(rs.next()){
-        			if (rs.getString(5).equals("a")){
-        				out.println("<tr><td>" + String.valueOf(rs.getInt(1))+"</td>"+
-	    						"<td>" + String.valueOf(rs.getInt(2))+"</td>"+
-	    						"<td>" + String.valueOf(rs.getTimestamp(3))+"</td>"+
-	    						"<td>" + rs.getString(4) + "</td>" + 
-	    						"<td><audio controls><source src=\"/oos-cmput391/audioservlet?id="+rs.getInt(1)+"\" type=\"audio/wav\"></audio></td></tr>");
-        			}
-        			if (rs.getString(5).equals("i")){
-        				out.println("<tr><td>" + String.valueOf(rs.getInt(1))+"</td>"+
-								"<td>" + String.valueOf(rs.getInt(2))+"</td>"+
-								"<td>" + String.valueOf(rs.getTimestamp(3))+"</td>"+
-								"<td>" + rs.getString(4)+"</td>"+
-								"<td><center><image src=\"/oos-cmput391/imageservlet?full=no&id="+
-								rs.getInt(1)+"\"><br><a href=\"/oos-cmput391/imageservlet?full=yes&id="+rs.getInt(1)+"\">Download Full Size Image!<center></td></tr>");
-        			}
-        			if (rs.getString(5).equals("s")){
-        				out.println("<tr><td>" + String.valueOf(rs.getInt(1))+"</td>"+
-									"<td>" + String.valueOf(rs.getInt(2))+"</td>"+
-									"<td>" + String.valueOf(rs.getTimestamp(3))+"</td>"+
-									"<td>" + rs.getString(4) + "</td>" + 
-									"<td><a href=\"/oos-cmput391/scalarservlet?user=yes&fromdate="
-	           						+fromDate+"&todate="+toDate+"&id="+user.getPerson_id()+"&location="+location+"&value="+keywords+"\">CSV File for current search</a>"
-	           								+ "</center></td></tr>");
-        			}
-        		}
-        		out.println("</table></center><br>");
-        				
+        		//Searching without sensor type
+            	else if (sensor_type.equals("empty")){
+            		rs = database.getResultAll(user.getPerson_id(), fromDate, toDate, keywords, location);
+            		
+            		out.println("<center><table border=\"1\" width=\"30%\" cellpadding=\"5\"style=\"white-space:nowrap;\">");
+    	          	 out.println("<thead style=\"white-space:nowrap;\">"
+    								+"<tr><td colspan=\"6\"><center><b>Result</b></center></td></tr>"
+    								+"<tr><td><b>Image ID</b></td>"
+    								+"<td><b>Sensor ID</b></td>"
+    								+"<td><b>Date Created</b></td>"
+    								+"<td><b>Description/Value</b></td>"
+    								+"<td><b>Download</b></td></tr></thead>");
+            		
+            		
+            		while(rs.next()){
+            			if (rs.getString(5).equals("a")){
+            				out.println("<tr><td>" + String.valueOf(rs.getInt(1))+"</td>"+
+    	    						"<td>" + String.valueOf(rs.getInt(2))+"</td>"+
+    	    						"<td>" + String.valueOf(rs.getTimestamp(3))+"</td>"+
+    	    						"<td>" + rs.getString(4) + "</td>" + 
+    	    						"<td><audio controls><source src=\"/oos-cmput391/audioservlet?id="+rs.getInt(1)+"\" type=\"audio/wav\"></audio></td></tr>");
+            			}
+            			if (rs.getString(5).equals("i")){
+            				out.println("<tr><td>" + String.valueOf(rs.getInt(1))+"</td>"+
+    								"<td>" + String.valueOf(rs.getInt(2))+"</td>"+
+    								"<td>" + String.valueOf(rs.getTimestamp(3))+"</td>"+
+    								"<td>" + rs.getString(4)+"</td>"+
+    								"<td><center><image src=\"/oos-cmput391/imageservlet?full=no&id="+
+    								rs.getInt(1)+"\"><br><a href=\"/oos-cmput391/imageservlet?full=yes&id="+rs.getInt(1)+"\">Download Full Size Image!<center></td></tr>");
+            			}
+            			if (rs.getString(5).equals("s")){
+            				out.println("<tr><td>" + String.valueOf(rs.getInt(1))+"</td>"+
+    									"<td>" + String.valueOf(rs.getInt(2))+"</td>"+
+    									"<td>" + String.valueOf(rs.getTimestamp(3))+"</td>"+
+    									"<td>" + rs.getString(4) + "</td>" + 
+    									"<td><a href=\"/oos-cmput391/scalarservlet?user=yes&fromdate="
+    	           						+fromDate+"&todate="+toDate+"&id="+user.getPerson_id()+"&location="+location+"&value="+keywords+"\">CSV File for current search</a>"
+    	           								+ "</center></td></tr>");
+            			}
+            		}
+            		out.println("</table></center><br>");
+            				
+            	}
         	}
+        	
+        	
+        	
         }catch (Exception e) {
             e.printStackTrace();
         }

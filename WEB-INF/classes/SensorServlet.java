@@ -87,11 +87,15 @@ public class SensorServlet extends HttpServlet {
 			}
 			
 			String type = request.getParameter( "type" );
+			
+			//Add new seonsor
 			if (type.equals("sensor")) {
 				String querrymessage = db.newSensor(sensor_id, location, sensor_type, description);
 				session.setAttribute("err", querrymessage);
 				response.sendRedirect("/oos-cmput391/sensor.jsp");
 			}
+			
+			//Add new audio recordings
 			else if (type.equals("audio_recordings")) {
 				if(ext.equalsIgnoreCase("wav")){
 					String querrymessage = db.uploadAudio (recording_id, sensor_id, 
@@ -103,8 +107,9 @@ public class SensorServlet extends HttpServlet {
 					session.setAttribute("err", "This is not a wav file");
 					response.sendRedirect("/oos-cmput391/sensor.jsp");
 				}
-				
 			}
+			
+			//Add new images
 			else if (type.equals("images")) {
 				if(ext.equalsIgnoreCase("jpg")){
 					String querrymessage = db.uploadImage (image_id, sensor_id, 
@@ -118,6 +123,8 @@ public class SensorServlet extends HttpServlet {
 				}
 				
 			}
+			
+			//Batch add scalar data
 			else if (type.equals("scalar")) {
 				BufferedReader reader = new BufferedReader(new InputStreamReader(fileContent));
 				String line = null;
@@ -138,8 +145,6 @@ public class SensorServlet extends HttpServlet {
 					response.sendRedirect("/oos-cmput391/sensor.jsp");
 		    		var_id++;
 				}
-				//sens.createCSV();
-				
 			}
 
 		}catch (Exception e) {

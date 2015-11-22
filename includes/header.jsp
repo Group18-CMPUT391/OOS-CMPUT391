@@ -69,8 +69,8 @@ Assume necessary html definitions are already made
 	
 	<%
 		if (user == null) {
-	        out.println("<a href=\"/oos-cmput391/login.jsp\">login</a> | ");
-			out.println("<a href=\"https://github.com/Group18-CMPUT391/oos-cmput391/wiki/Self-Help-Wiki\">help</a>");
+	        out.println("<a href=\"/oos-cmput391/login.jsp\" class = \"btn btn-primary\">login</a> | ");
+			out.println("<a href=\"/oos-cmput391/README.md.html\">help</a>");
 			
 			return;
 	    	}
