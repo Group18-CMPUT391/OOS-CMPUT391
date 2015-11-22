@@ -73,7 +73,10 @@ $ starttomcat
 
 Note: Only available in the university of Alerta computer labs. (to stop <kbd>ctrl</kbd>+<kbd>C</kbd> in the terminal where tomcat is)
 
-***Step 6:*** the locate
+***Step 6:*** Now you can go to web and view the site
+```sh
+http://[serverURL]/oos-cmput391/
+```
 
 ## Sources Used
 
