@@ -91,6 +91,7 @@ Used the example code from class
 * Create thumbnail (thumbnailer lib): https://github.com/coobird/thumbnailator/wiki/Examples
 * Dialog box: https://jqueryui.com/dialog/
 * Files to database: http://www.codejava.net/coding/upload-files-to-database-servlet-jsp-mysql
+* Inputstream for html file upload: http://stackoverflow.com/questions/5730532/values-of-input-text-fields-in-a-html-multipart-form
 
 
 
