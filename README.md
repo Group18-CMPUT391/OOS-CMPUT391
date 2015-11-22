@@ -48,8 +48,10 @@ oos-cmput391/WEB-INF/lib/thumbnailator-0.4.8.jar
 
 ````
 
-***Step 4:*** In the classe folder run the make file to compile all the java codes. The classes folder is located in oos-cmput391/WEB-INF/classes 
-
+***Step 4:*** In the classe folder run the make file to compile all the java codes. The classes folder is located in 
+````sh
+oos-cmput391/WEB-INF/classes 
+````
 ````sh
 make all
 ````
