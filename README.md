@@ -31,12 +31,17 @@ They can either input keyword/value, sensor type or location or all of them.
 This is all done in one page, the search page.
 
 ###Sensor and User Management Module
+
+This modual allows only the admin to add delete sensors and also admin is the only one that can mange users. The admin can create/delete users and also to change the password for the user.
+
 ###Subscribe Module
 
 This module available only to the scientist allows the scientist to subscribe to different sensor datas. They do not subscribe to sensors directly. Once in the subsription page the scientist has two option add subscription and delete/view subscription. The add subscrition will list subscritions that are available to be subscribed. Once a data has been subscribbed to the data will be removed from view. Delete/view subscriptions lists the scientist's subscriptions and once the scientist unsubscibs the data will disappear. The scientist can click on the sensor page to see more detail.
+
 ###Uploading Module
 
-This modual is only for the data manager. He will click on the 
+This modual is only for the data manager. He or she will click on the sensor page and to the left he will be able to see the different types of sensors that he/she can add. Although this page is available to the scientist and the admin
+the left table will change depending on who accesses that page.
 
 ## Installation
 ***Step 1:*** Since this site uses TomCat please place the souce code in the webbapps folder in TomCat. 
