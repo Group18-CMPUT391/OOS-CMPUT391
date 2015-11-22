@@ -55,19 +55,23 @@ oos-cmput391/WEB-INF/classes
 $ make all
 ```
 
-***Step 5:*** Start Tomcat (to stop <kbd>Alt</kbd>+<kbd>F2</kbd>)
+***Step 5:*** Start Tomcat 
 ```sh
 $ catalina start 
+$ catalina stop
 ```
 Note : You may need to run the server from the location catalina is installed and in that case you would run it. 
+(to stop <kbd>ctrl</kbd>+<kbd>C</kbd> in the terminal where tomcat is and then call the shutdown)
 ```sh
 $ ./catalina.sh start
+$ ./catalina.sh stop
 ```
 or
 ```sh
 $ starttomcat
 ```
-Note: Only available in the university of Alerta computer labs.
+
+Note: Only available in the university of Alerta computer labs. (to stop <kbd>ctrl</kbd>+<kbd>C</kbd> in the terminal where tomcat is)
 
 ***Step 6:*** the locate
 
