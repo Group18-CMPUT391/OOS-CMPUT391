@@ -14,6 +14,15 @@
         <servlet-name>loginservlet</servlet-name>
         <url-pattern>/loginservlet</url-pattern>
     </servlet-mapping>
+
+    <servlet>
+        <servlet-name>deleteservlet</servlet-name>
+        <servlet-class>DeleteServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>deleteservlet</servlet-name>
+        <url-pattern>/deleteservlet</url-pattern>
+    </servlet-mapping>
     
     <servlet>
         <servlet-name>regservlet</servlet-name>

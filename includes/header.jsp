@@ -77,6 +77,7 @@ Assume necessary html definitions are already made
 	
 		if (user.getRole().equals("a")) {
 			out.println("<a href=\"#\" id=\"regclick\">User and Sensor Management</a> | ");
+			out.println("<a href=\"/oos-cmput391/admin_delete.jsp\">Admin Delete</a> | ");
 		} else if (user.getRole().equals("d")) {
 	        out.println("<a href=\"/oos-cmput391/sensor.jsp\">Upload</a> | ");
 		} else if (user.getRole().equals("s")) {

@@ -778,6 +778,219 @@ public class Db {
 			}
 		return ret_list; }
 
+	public ArrayList<Sensors> printSensors(){
+		ArrayList<Sensors> ret_list=new ArrayList<Sensors>();
+		String us_id_b = "SELECT * FROM sensors";
+
+		try{
+			ResultSet rs_b =execute_stmt(us_id_b);
+			while (rs_b.next()){ 
+				ret_list.add(new Sensors(rs_b.getLong("sensor_id"),rs_b.getString("location"),rs_b.getString("sensor_type"),rs_b.getString("description")));
+			}
+		}catch (Exception e) {
+			System.out.println(e.getMessage());
+			}
+		return ret_list; }
+
+	public ArrayList<User> printUsers(){
+		ArrayList<User> ret_list=new ArrayList<User>();
+		String us_id_b = "SELECT * from users";
+
+		try{
+			ResultSet rs_b =execute_stmt(us_id_b);
+			while (rs_b.next()){ 
+				ret_list.add(new User(rs_b.getString("user_name"),rs_b.getString("password"),rs_b.getString("role"),rs_b.getLong("person_id"),String.valueOf(rs_b.getDate("date_registered"))));
+			}
+		}catch (Exception e) {
+			System.out.println(e.getMessage());
+			}
+		return ret_list; }
+
+	public int checkSubscriptionsSensor(long sensor_id){
+		int ret=-1;
+		String check = "SELECT * FROM subscriptions WHERE sensor_id="+sensor_id;
+		try{
+			ResultSet rs=execute_stmt(check);
+			if (!rs.isBeforeFirst()) {    
+ 				ret=0; 
+				}
+			else{
+				ret=1;}}
+		catch (SQLException e) {
+			return -2;
+			}
+	
+			 
+
+
+		
+				
+		return ret;
+			
+		
+		
+	}
+	public int checkAudio(long sensor_id){
+		int ret=-1;
+		String check = "SELECT * FROM audio_recordings WHERE sensor_id="+sensor_id;
+		try{
+			ResultSet rs=execute_stmt(check);
+			if (!rs.isBeforeFirst()) {    
+ 				ret=0; 
+				}
+			else{
+				ret=1;}}
+		catch (SQLException e) {
+			return -2;
+			}
+	
+			 
+
+
+		
+				
+		return ret;
+			
+		
+		
+	}
+
+	public int checkScalar(long sensor_id){
+		int ret=-1;
+		String check = "SELECT * FROM scalar_data WHERE sensor_id="+sensor_id;
+		try{
+			ResultSet rs=execute_stmt(check);
+			if (!rs.isBeforeFirst()) {    
+ 				ret=0; 
+				}
+			else{
+				ret=1;}}
+		catch (SQLException e) {
+			return -2;
+			}
+	
+			 
+
+
+		
+				
+		return ret;
+			
+		
+		
+	}
+	public int checkImage(long sensor_id){
+		int ret=-1;
+		String check = "SELECT * FROM images WHERE sensor_id="+sensor_id;
+		try{
+			ResultSet rs=execute_stmt(check);
+			if (!rs.isBeforeFirst()) {    
+ 				ret=0; 
+				}
+			else{
+				ret=1;}}
+		catch (SQLException e) {
+			return -2;
+			}
+	
+			 
+
+
+		
+				
+		return ret;
+			
+		
+		
+	}
+
+
+
+
+	public String deleteUser(String[] userbox){
+		String str="";
+		for(int i=0;i<userbox.length;i++){
+			try{
+				
+				int chksubs=checkSubscriptions(Long.valueOf(userbox[i]));
+				if (chksubs>0){
+					String deletesid = "DELETE FROM subscriptions WHERE person_id = " +Long.valueOf(userbox[i]);
+		    			int check=execute_update(deletesid);}
+				String delete_user="DELETE FROM users WHERE person_id= "+Long.valueOf(userbox[i]);
+				String delete_person="DELETE FROM persons WHERE person_id= "+Long.valueOf(userbox[i]);
+				execute_update(delete_user);
+				execute_update(delete_person);
+
+			}catch (Exception e) {
+				System.out.println(e.getMessage());
+				}		
+		
+		
+		str= String.valueOf(userbox.length)+" users have been deleted";}
+			
+		
+		
+	return str;
+
+
+	}
+	public String deleteSensors(String[] sensorbox){
+		int sub_count=0;
+		int sens_count=0;
+		String str="null";
+		int count=0;
+		ArrayList<Long> sensor_ids=new ArrayList<Long>();
+		for(int i=0;i<sensorbox.length;i++){
+			sensor_ids.add(Long.valueOf(sensorbox[i]));
+			int chksubs=checkSubscriptionsSensor(Long.valueOf(sensorbox[i]));
+			if (chksubs>0){
+				String deletesid = "DELETE FROM subscriptions WHERE sensor_id = " +Long.valueOf(sensorbox[i]);
+		    		int check=execute_update(deletesid);}
+		try{
+			for (int j=0;j<sensor_ids.size();j++){
+				String type_list="SELECT sensor_id,sensor_type FROM sensors WHERE sensor_id="+sensor_ids.get(j);
+				ResultSet rs_type=execute_stmt(type_list);
+				while (rs_type.next()){
+					if(rs_type.getString("sensor_type").equals("i")){
+						int check_image=checkImage(sensor_ids.get(j));
+						if (check_image>0){
+							String delete_image="DELETE FROM images WHERE sensor_id="+sensor_ids.get(j);
+							int img_check=execute_update(delete_image);}
+						String delete_sens="DELETE FROM sensors WHERE sensor_id="+sensor_ids.get(j);
+						count=execute_update(delete_sens);
+						continue;}
+					else if(rs_type.getString("sensor_type").equals("s")){
+						int check_scalar=checkScalar(sensor_ids.get(j));
+						if(check_scalar>0){
+							String delete_scalar="DELETE FROM scalar_data WHERE sensor_id="+sensor_ids.get(j);
+							int img_check=execute_update(delete_scalar);}
+						String delete_sens="DELETE FROM sensors WHERE sensor_id="+sensor_ids.get(j);
+						count=execute_update(delete_sens);
+						continue;}
+					else if(rs_type.getString("sensor_type").equals("a")){
+						int check_audio=checkAudio(sensor_ids.get(j));
+						if(check_audio>0){
+							String delete_audio="DELETE FROM audio_recordings WHERE sensor_id="+sensor_ids.get(j);
+							int img_check=execute_update(delete_audio);}
+						String delete_sens="DELETE FROM sensors WHERE sensor_id="+sensor_ids.get(j);
+						count=execute_update(delete_sens);
+						continue;}
+				}
+				
+			}
+			}catch (Exception e) {
+				System.out.println(e.getMessage());
+				}}		
+		
+		
+		str= String.valueOf(sensorbox.length)+" sensors have been deleted";
+			
+		
+		
+	return str;
+
+	}
+
 	//Check's if String is a number
 	public boolean isNumber( String input ){
 		   try{
