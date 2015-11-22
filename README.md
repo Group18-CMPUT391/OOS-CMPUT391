@@ -27,34 +27,47 @@ Ocean Observation System is a JSP HTML5 website that is connected to Oracle sql 
 ***Step 1:*** Since this site uses TomCat please place the souce code in the webbapps folder in TomCat. 
 
 ***Step 2:*** Once this is done please makes sure you edit Db.java to your database information.
-````sh
+```sh
 oos-cmput391/WEB-INF/classes/util/Db.java
-````
-````java
+```
+```java
 32    static final String USERNAME = "Username";
 33    static final String PASSWORD = "*****";
 34    // JDBC driver name and database URL
 35    static final String DRIVER_NAME = "oracle.jdbc.driver.OracleDriver";
 36    static final String DB_URL = "jdbc:oracle:thin:@gwynne.cs.ualberta.ca:1521:CRS";
-````
+```
 
 ***Step 3:*** (Note this is optional) Edit your class path to include all of the following files:
-````sh
+```sh
 oos-cmput391/WEB-INF/lib/servlet-api.jar
 oos-cmput391/WEB-INF/lib/commons-fileupload-1.3.1.jar
 oos-cmput391/WEB-INF/lib/commons-io-2.4.jar
 oos-cmput391/WEB-INF/lib/ojdbc6.jar
 oos-cmput391/WEB-INF/lib/thumbnailator-0.4.8.jar
+```
 
-````
-
-***Step 4:*** In the classe folder run the make file to compile all the java codes. The classes folder is located in 
-````sh
+***Step 4:*** In the classe folder run the make file to compile all the java codes. The classes folder is located in: 
+```sh
 oos-cmput391/WEB-INF/classes 
-````
-````sh
-make all
-````
+```
+```sh
+$ make all
+```
+
+***Step 5:*** Start Tomcat
+```sh
+$ catalina start 
+```
+Note : You may need to run the surver from the location catalina is installed and in that case you would run it. 
+```sh
+./catalina.sh start
+```
+or
+```sh
+$ starttomcat
+```
+Note: Only available in the university of Alerta computer labs.
 ## Sources Used
 
 
