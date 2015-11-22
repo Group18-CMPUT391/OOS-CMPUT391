@@ -4,7 +4,7 @@ import java.io.*;
 import java.util.*; 
 import util.Db;
 
-   
+
 public class LoginServlet extends HttpServlet {
 	private HttpSession session;
 	private String username;

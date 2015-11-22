@@ -52,8 +52,7 @@ Search page allows to user to enter a search query
     </center>
   </head>
   <body>
-	<div style="text-align:center">
-  		<div style="display:inline-block">
+	<center>
  			<%out.println("<form name='choosesubmit1' action='analysisservlet?submit="+submit+"' method='POST'>");%>
 	 			<table>
  					<tr><th>Select sensor</th>
@@ -101,8 +100,7 @@ Search page allows to user to enter a search query
 			<%	session.removeAttribute("selected_sensor");
 			  	session.removeAttribute("years");
 			  	session.removeAttribute("selected_year");%>
-		</div>
-	</div>
+	</center>
   </body>
 </html>
 

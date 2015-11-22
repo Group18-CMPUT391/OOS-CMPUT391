@@ -59,6 +59,7 @@ public class Db {
 		return 0;
 	}
 
+	// Close connection
 	public void close_db() {
 		try {
 			stmt.close();
@@ -68,6 +69,7 @@ public class Db {
 		}
 	}
 
+	// Execute a query and return a ResultSet 
 	public ResultSet execute_stmt(String query) {
 		try {
 			return stmt.executeQuery(query);
@@ -77,6 +79,7 @@ public class Db {
 		return null;
 	}
 
+	// Execute an update and return 1 if success
 	public Integer execute_update(String query) {
 		try {
 			return stmt.executeUpdate(query);
