@@ -13,12 +13,28 @@ Web page for registering a new user
    } catch(NullPointerException e) {
       e.printStackTrace();
    }
+   Db db = new Db();
+   db.connect_db();
 %>  
-
+<%@ page import="util.*" %>
+<%@ page import="java.sql.*" %>
+<%@ page import="java.io.*" %>
+<%@page import="java.util.*" %>
 <html>
     <head>
         <title>Registration</title>
         <center><jsp:include page="includes/header.jsp"/></center>
+        <script type="text/javascript">
+			$(document).ready(function(){
+				$( "#deleteSub" ).submit(function (e) {
+			        //check atleat 1 checkbox is checked
+			        if (!$('.select').is(':checked')) {
+			            //prevent the default form submit if it is not checked
+			            e.preventDefault();
+			        }
+			    })
+			});
+		</script>
     </head>
     <body>
     	<%
@@ -152,7 +168,54 @@ Web page for registering a new user
             </table>
             </center>
         </form>
-        <%} %>
+        <%}
+    	  else if (type.equals("delete")) {%>
+    	  		<center><form action="deleteservlet?type=deleteUser" method="post"
+					id="deleteSub" onsubmit="this">
+					<table width="59%" border="1">
+							<thead><tr><th colspan="6">Delete User</th></tr></thead>
+						<tr>	
+							<th></th>
+							<th>User Name</th>
+							<th>Password</th>
+							<th>Role</th>
+							<th>Person ID</th>
+							<th>Date Registered</th>
+		
+						</tr>
+						<%
+						ArrayList<User> result_set=db.printUsers();
+						for(int i=0;i<result_set.size();++i){
+							out.println("<tr>"); %>
+						<td><input type="checkbox" name="usercheckbox" value=<%=String.valueOf(result_set.get(i).getPerson_id())%> /></td>
+							<%
+									
+							out.println("<td>"+String.valueOf(result_set.get(i).getUser_name())+"</td>");
+												
+							out.println("<td>"+String.valueOf(result_set.get(i).getPassword())+"</td>");
+												
+							out.println("<td>"+String.valueOf(result_set.get(i).getRole())+"</td>");
+					
+							out.println("<td>"+String.valueOf(result_set.get(i).getPerson_id())+"</td>");					
+							out.println("<td>"+String.valueOf(result_set.get(i).getDate_registered())+"</td>");
+							out.println("</tr>");
+						} 
+							
+				 	if (error != null) {
+				   					out.println(error); 
+				   					session.removeAttribute("err");
+									
+				   				}%>
+		
+					</table>
+					<tr>
+						<td colspan="2" align="center"><input type="submit"
+							value="Submit" /> <input type="reset" value="Reset" /></td>
+					</tr>
+				</form></center>
+    		  
+    	 <% }
+    	  %>
        
     </body>
 </html>

@@ -917,9 +917,9 @@ public class Db {
 					String deletesid = "DELETE FROM subscriptions WHERE person_id = " +Long.valueOf(userbox[i]);
 		    			int check=execute_update(deletesid);}
 				String delete_user="DELETE FROM users WHERE person_id= "+Long.valueOf(userbox[i]);
-				String delete_person="DELETE FROM persons WHERE person_id= "+Long.valueOf(userbox[i]);
+				//String delete_person="DELETE FROM persons WHERE person_id= "+Long.valueOf(userbox[i]);
 				execute_update(delete_user);
-				execute_update(delete_person);
+				//execute_update(delete_person);
 
 			}catch (Exception e) {
 				System.out.println(e.getMessage());

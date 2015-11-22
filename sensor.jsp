@@ -61,16 +61,30 @@ Web page for Sensor
 					$( "#sensor" ).dialog( "open" );
 					return false;
 				});
-				
-				
+				$( "#deleteSensor" ).dialog({ height:'auto', 
+					width:'auto', 
+					autoOpen: false, 
+					resizable: false,
+					 });
+				$( "#deleteSensorClick" ).click(function() {
+					$( "#deleteSensor" ).dialog( "open" );
+					return false;
+				});
+				$( "#deleteSub" ).submit(function (e) {
+			        //check atleat 1 checkbox is checked
+			        if (!$('.select').is(':checked')) {
+			            //prevent the default form submit if it is not checked
+			            e.preventDefault();
+			        }
+			    })
 			});
 		</script>
 	</head>
 	<body>
-	<%@ page import="util.Db" %>
+	<%@ page import="util.*" %>
     <%@ page import="java.sql.*" %>
     <%@ page import="java.io.*" %>
-    <%@ page import="util.User" %>
+    <%@ page import="java.util.*" %>
 	<% 
 	User user = null;
 	try {
@@ -176,19 +190,71 @@ Web page for Sensor
 			</div>
 			<div id="fullsize" title="Fullsize Image">
 			</div>
+			<div id="deleteSensor" title="Delete Sensors">
+				<center><form action="deleteservlet?type=deleteSensor"
+					method="post" id="deleteSub" onsubmit="this">
+					<table width="59%" border="1" style="white-space:nowrap;border-collapse:collapse;">
+						<thead><tr><th colspan="5">Delete Sensors</th></tr></thead>
+					<tr>
+						<th></th>
+						<th>Sensor ID</th>
+						<th>Location</th>
+						<th>Sensor Type</th>
+						<th>Description</th>
+	
+					</tr>
+					<%
+					ArrayList<Sensors> result_set1=db.printSensors();
+					for(int j=0;j<result_set1.size();++j){
+						out.println("<tr>"); %>
+					<td><input type="checkbox" name="sensorcheckbox" value= <%=String.valueOf(result_set1.get(j).getSensor_id())%>></td>
+						<%		
+						out.println("<td>"+String.valueOf(result_set1.get(j).getSensor_id())+"</td>");
+											
+						out.println("<td>"+String.valueOf(result_set1.get(j).getLocation())+"</td>");
+											
+						out.println("<td>"+String.valueOf(result_set1.get(j).getSensor_type())+"</td>");
+				
+											
+						out.println("<td>"+String.valueOf(result_set1.get(j).getDescription())+"</td>");
+						out.println("</tr>");
+					} 
+						
+			 	if (error != null) {
+			   					out.println(error); 
+			   					session.removeAttribute("err");
+								
+			   				}%>
+	
+	
+				</table>
+				<tr>
+					<td colspan="2" align="center"><input type="submit"
+						value="Submit" /> <input type="reset" value="Reset" /></td>
+				</tr>
+			</form></center>
+		</div>
+			
+			
+			
 	<center><table>	
 		<tr><td valign="top">
 		<% if (user.getRole().equals("a")) {%>
 			<table border=\"1\" width=\"30%\" cellpadding=\"5\">
 				<thead>
 					<tr>
-						<th>Select Sensor Type to Add: </th>
+						<th>ADD/DELETE Sensors: </th>
 					</tr>
 				</thead>
 				<tbody>
 					<tr>
 						<td>
 						<center><a href="#" id="sensorClick">New Sensor</a></center>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<center><a href="#" id="deleteSensorClick">Delete Sensors</a></center>
 						</td>
 					</tr>
 					<tr><td colspan="2" align="center">

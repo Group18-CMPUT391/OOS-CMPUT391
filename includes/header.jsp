@@ -56,6 +56,7 @@ Assume necessary html definitions are already made
 	<div id="register" title="Administrator">
 		<a href="/oos-cmput391/register.jsp?usrType=new">This is a New User</a> <br>
 		<a href="/oos-cmput391/register.jsp?usrType=existing">This is an Existing User</a> <br>
+		<a href="/oos-cmput391/register.jsp?usrType=delete">Delete User</a> <br>
 		<a href="/oos-cmput391/sensor.jsp">Manage Sensors</a>
 	</div> 
 	<div id="account" title="Change User Information">
@@ -69,15 +70,14 @@ Assume necessary html definitions are already made
 	
 	<%
 		if (user == null) {
-	        out.println("<a href=\"/oos-cmput391/login.jsp\" class = \"btn btn-primary\">login</a> | ");
-			out.println("<a href=\"/oos-cmput391/README.md.html\">help</a>");
+	        out.println("<a href=\"/oos-cmput391/login.jsp\" class = \"btn btn-primary\">Login</a> | ");
+			out.println("<a href=\"/oos-cmput391/README.md.html\">Help</a>");
 			
 			return;
 	    	}
 	
 		if (user.getRole().equals("a")) {
 			out.println("<a href=\"#\" id=\"regclick\">User and Sensor Management</a> | ");
-			out.println("<a href=\"/oos-cmput391/admin_delete.jsp\">Admin Delete</a> | ");
 		} else if (user.getRole().equals("d")) {
 	        out.println("<a href=\"/oos-cmput391/sensor.jsp\">Upload</a> | ");
 		} else if (user.getRole().equals("s")) {
