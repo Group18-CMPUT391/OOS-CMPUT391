@@ -27,7 +27,7 @@ This module allows the user to search from the database for sensors that they ar
 
 They can either input keyword/value, sensor type or location or all of them.
 
-This is all done in one page the search page.
+This is all done in one page, the search page.
 ###Sensor and User Management Module
 ###Subscribe Module
 ###Uploading Module
