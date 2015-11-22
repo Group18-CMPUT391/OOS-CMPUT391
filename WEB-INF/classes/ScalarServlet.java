@@ -37,6 +37,7 @@ public class ScalarServlet extends HttpServlet {
 			Writer w = new OutputStreamWriter(out, "UTF-8");
 			
 			if (user.equals("yes")) {
+				//Searching for value by checking id the keyword/value field is a number 
 				if(database.isNumber( value )){
 					query = "SELECT s.sensor_id,s.date_created,s.value "
 							+ "FROM scalar_data s "
@@ -49,6 +50,7 @@ public class ScalarServlet extends HttpServlet {
 													+ "AND TO_DATE('"+todate+"', 'YYYY-MM-DD') "
 															+ "ORDER BY s.sensor_id";
 				}
+				//Searching without value
 				else if(value.equals(" ")){
 					query = "SELECT s.sensor_id,s.date_created,s.value "
 							+ "FROM scalar_data s "
@@ -60,6 +62,7 @@ public class ScalarServlet extends HttpServlet {
 											+ "AND TO_DATE('"+todate+"', 'YYYY-MM-DD') "
 													+ "ORDER BY s.sensor_id";
 				}
+				//Searching for keyword instead of value to have to set value to null
 				else {
 					query = "SELECT s.sensor_id,s.date_created,s.value "
 							+ "FROM scalar_data s "
@@ -75,10 +78,12 @@ public class ScalarServlet extends HttpServlet {
 				
 			}
 			else {
+				//Generate complete list of scalar data
 				query = "SELECT sensor_id,date_created,value FROM scalar_data ORDER BY sensor_id";
 			}
 		
 			ResultSet rs = database.execute_stmt(query);
+			//Write the result set to a text file outputstram using write 
 			while (rs.next()) {
 				String[] dateTime = String.valueOf(rs.getTimestamp(2)).split(" ");
 				String[] date = dateTime[0].split("-");

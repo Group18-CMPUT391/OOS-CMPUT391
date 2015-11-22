@@ -26,6 +26,8 @@ public class ImageServlet extends HttpServlet {
 		String id = request.getParameter( "id" );
 		String full = request.getParameter( "full" );
 		Blob blob;
+		
+		//Generate image in jpg format depeding on the blob searched in the DB
 		try {
 			String query = "SELECT * FROM images WHERE image_id =" + id;
 			ResultSet rs = database.execute_stmt(query);
@@ -33,7 +35,7 @@ public class ImageServlet extends HttpServlet {
 			while(rs.next()) {
 				response.setContentType("image/jpg");
 				response.setHeader("Content-Disposition","attachment;filename=" + String.valueOf(rs.getInt(1)) + "_" + 
-						String.valueOf(rs.getInt(2))+ "_" + String.valueOf(rs.getDate(3)) + ".jpg" );
+						String.valueOf(rs.getInt(2))+ "_" + String.valueOf(rs.getDate(3)) + ".jpg" ); //save in jpg
 				if (full.equals("yes")){
 					bytes = rs.getBytes(6);
 				}

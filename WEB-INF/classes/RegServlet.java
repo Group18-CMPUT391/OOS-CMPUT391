@@ -55,23 +55,27 @@ public class RegServlet extends HttpServlet {
 			ResultSet rs;
 
 			if (nuser.equals("yes")){
+				// get person information from email to check if the person exists
 				String checkmail = "SELECT email FROM persons WHERE email = '" + email + "'" ;
 				rs = database.execute_stmt(checkmail);
-
+				
 				if (rs.next()){
 					session.setAttribute("err","Email " + email + " is already in the system.");
 					response.sendRedirect("/oos-cmput391/new_user.jsp");
 				}
+				
+				//If email not exist then new person. Add new person
 				else {
 					String checkuname = "SELECT user_name FROM users WHERE user_name = '" + uname + "'" ;
 					rs = database.execute_stmt(checkuname);
 
-					
+					//Checks username, so no conflicting username
 					if (rs.next()){
 						session.setAttribute("err","User " + uname + " Is already in the system.");
 						response.sendRedirect("/oos-cmput391/existing_user.jsp");
 						
 					}
+					//add a new person and user 
 					else {
 						String maxID = "SELECT max(person_id) FROM persons";
 						rs = database.execute_stmt(maxID);
@@ -94,7 +98,9 @@ public class RegServlet extends HttpServlet {
 					
 				}
 			}
+			//existing user
 			else if (nuser.equals("no")) {
+				//Check conflicting username
 				String checkuname = "SELECT user_name FROM users WHERE user_name = '" + uname + "'" ;
 				rs = database.execute_stmt(checkuname);
 
@@ -104,10 +110,13 @@ public class RegServlet extends HttpServlet {
 					response.sendRedirect("/oos-cmput391/existing_user.jsp");
 					
 				}
+				//Adding new user
 				else {
+					//Check if email exist
 					String checkmail2 = "SELECT email FROM persons WHERE email = '" + email + "'" ;
 					rs = database.execute_stmt(checkmail2);
-
+					
+					//If email exist add user
 					if (rs.next()){
 						String getID = "SELECT person_id FROM persons WHERE email = '" + email + "'" ;
 						rs = database.execute_stmt(getID);

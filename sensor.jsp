@@ -200,7 +200,7 @@ Web page for Sensor
 				</tbody>
 			</table>
 		<%	} 
-			else {%>
+			else if (user.getRole().equals("d")) {%>
 			<table border=\"1\" width=\"30%\" cellpadding=\"5\">
 				<thead>
 					<tr>

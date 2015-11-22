@@ -28,10 +28,9 @@ import javax.imageio.ImageIO;
 
 import net.coobird.thumbnailator.*;
 
-
 public class Db {
-	static final String USERNAME = "hbtruong";
-	static final String PASSWORD = "qwerty123456";
+	static final String USERNAME = "wkchoi";
+	static final String PASSWORD = "Kingfreak95";
 	// JDBC driver name and database URL
 	static final String DRIVER_NAME = "oracle.jdbc.driver.OracleDriver";
 	static final String DB_URL = "jdbc:oracle:thin:@gwynne.cs.ualberta.ca:1521:CRS";
@@ -341,7 +340,7 @@ public class Db {
         return results;
     }
     
-    
+    //get result for all the sensor data that the user has subscribed to
     public ResultSet getResultAll(long person_id, String fromdate, String todate, String keywords, String location) {
     	ResultSet results = null;
     	String  query = null,query2 = null;
@@ -425,7 +424,7 @@ public class Db {
     	execute_update(query_person);
     }
     
-    
+    //Upload an audio file in "wav" form to the DB
     public String uploadAudio (int recording_id, int sensor_id, String[] date_created, 
 			int length, String description, InputStream recorded_data) {
 			
@@ -457,6 +456,7 @@ public class Db {
 		return "Audio File was not Added.";
     }
     
+    //Batch add scalar data to the DB
     public String addScalarData (int sensor_id, String[] date_created, float value) {
 		
     	
@@ -490,6 +490,7 @@ public class Db {
 		return "Scalar Data file was not Added";
 	}
     
+    //Creates new sensors in the DB
     public String newSensor (int sensor_id, String location, String sensor_type, String description) {
 		
 		try {
@@ -510,6 +511,7 @@ public class Db {
 		return " ";
 	}
     
+    //Upload and image in "jpg" form to the DB
 	public String uploadImage (int image_id, int sensor_id, String[] date_created,
 			String description, InputStream recorded_data) {
 		
@@ -557,6 +559,7 @@ public class Db {
 		return "Image File was not Added";
 	}
 	
+	//Get list of sensors ID that are audio from the DB and store it in a list
 	public List<String> getSensorA_id_list() {
 		List<String> sensor_id = new ArrayList<String>();
 		try{
@@ -571,6 +574,7 @@ public class Db {
 		return sensor_id;
 	}
 	
+	//Get all sensors ID that are images and stores it in a list
 	public List<String> getSensorI_id_list() {
 		List<String> sensor_id = new ArrayList<String>();
 		try{
@@ -585,6 +589,7 @@ public class Db {
 		return sensor_id;
 	}
 	
+	//Get all sensors data that are audio and stores it in a list
 	public List<String> recording_list() {
 		List<String> recordingList = new ArrayList<String>();
 		try{
@@ -604,6 +609,7 @@ public class Db {
 		return recordingList;
 	}
 	
+	//Get all sensors data that are images and stores it in a list
 	public List<String> image_list() {
 		List<String> imageList = new ArrayList<String>();
 		
@@ -625,6 +631,7 @@ public class Db {
 		return imageList;
 	}
 	
+	//Get all sensors data that are scalar data and stores it in a list
 	public List<String> scalar_list() {
 		List<String> scalarList = new ArrayList<String>();
 		try{
@@ -641,7 +648,9 @@ public class Db {
 			}
 		return scalarList;
 	}
-public String deleteSubscription(String[] sensor_ids,long person_id){	
+
+	//Removes a scientist's subscription
+	public String deleteSubscription(String[] sensor_ids,long person_id){	
 
 		int count=0;
 		String str="null";
@@ -664,6 +673,8 @@ public String deleteSubscription(String[] sensor_ids,long person_id){
 	return str;
 
 	}
+	
+	//Scientist subscription method
 	public String newSubscription(String[] sensor_ids,long person_id){
 		int count=0;
 		String str="null";
@@ -681,6 +692,8 @@ public String deleteSubscription(String[] sensor_ids,long person_id){
 			str= String.valueOf(count)+" subscriptions have been added";}
 	return str;
 	}
+	
+	//Check the scientist's subscriptions
 	public int checkSubscriptions(long person_id){
 		int ret=-1;
 		String check = "SELECT * FROM subscriptions WHERE person_id="+person_id;
@@ -695,6 +708,7 @@ public String deleteSubscription(String[] sensor_ids,long person_id){
 			}
 		return ret;
 	}
+	//Get a list of subscriptions a scientist can subscribe to
 	public ArrayList<Sensors> printAddSubscriptions(long user_id){
 		int chk=checkSubscriptions(user_id);
 		ArrayList<Sensors> ret_list=new ArrayList<Sensors>();
@@ -748,6 +762,7 @@ public String deleteSubscription(String[] sensor_ids,long person_id){
 		
 		return ret_list; }
 	
+	//Get a list of subscriptions a scientist has
 	public ArrayList<Sensors> printDeleteSubscriptions(long person_id){
 		int chk=checkSubscriptions(person_id);
 		ArrayList<Sensors> ret_list=new ArrayList<Sensors>();
@@ -763,7 +778,7 @@ public String deleteSubscription(String[] sensor_ids,long person_id){
 			}
 		return ret_list; }
 
-	
+	//Check's if String is a number
 	public boolean isNumber( String input ){
 		   try{
 			   Double.parseDouble( input );
