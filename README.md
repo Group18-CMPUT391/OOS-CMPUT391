@@ -10,8 +10,8 @@ Ocean Observation System is a JSP HTML5 website that is connected to Oracle sql 
 |  - [Login Module](#login-module)|
 |  - [Search Module](#search-module)|
 |  - [Sensor and User Management Module](#sensor-and-user-management-module)|
-|  - [Subscribe Module](#)|
-|  - [Uploading Module](#)|
+|  - [Subscribe Module](#subscribe-module)|
+|  - [Uploading Module](#uploading-module)|
 |[Installation](#installation)|
 |[Sources Used](#sources-used)|
 
