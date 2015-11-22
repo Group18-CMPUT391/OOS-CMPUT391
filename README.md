@@ -35,10 +35,15 @@ This is all done in one page, the search page.
 This modual allows only the admin to add delete sensors and also admin is the only one that can mange users. The admin can create/delete users and also to change the password for the user.
 
 When the admin click "User and Sensor Management" a popup box will apear and 4 choices will be available :
-1. This is a New User 
-2. This is an Existing User 
-3. Delete User 
-4. Manage Sensors
+
+###### This is a New User 
+
+This will bring you to a page where you can
+
+
+###### This is an Existing User 
+###### Delete User 
+###### Manage Sensors
 
 
 ### Subscribe Module
