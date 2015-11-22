@@ -93,7 +93,7 @@ Used the example code from class
 * Dialog box: https://jqueryui.com/dialog/
 * Files to database: http://www.codejava.net/coding/upload-files-to-database-servlet-jsp-mysql
 * Inputstream for html file upload: http://stackoverflow.com/questions/5730532/values-of-input-text-fields-in-a-html-multipart-form
-* Blob to image to display on jsp: http://stackoverflow.com/questions/2438375/how-to-convert-bufferedimage-to-image-to-display-on-jsp
+* Write text lines to Outputstream: http://www.tutorialspoint.com/java/io/outputstreamwriter_write_string.htm
 
 
 
