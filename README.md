@@ -30,6 +30,8 @@ They can either input keyword/value, sensor type or location or all of them.
 This is all done in one page, the search page.
 ###Sensor and User Management Module
 ###Subscribe Module
+
+This module available only to the scientist allows the scientist to subscribe to different sensor datas. They do not subscribe to sensors directly. Once in the subsription page the scientist has two option add subscription and delete/view subscription. The add subscrition will list subscritions that are available to be subscribed. Once a data has been subscribbed to the data will be removed from view. Delete/view subscriptions lists the scientist's subscriptions and once the scientist unsubscibs the data will disappear.
 ###Uploading Module
 
 
