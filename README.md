@@ -83,6 +83,7 @@ http://[serverURL]/oos-cmput391/
 ```
 
 ## Sources Used
+Audio Stream to file: https://forum.processing.org/two/discussion/4339/how-to-save-a-wav-file-using-audiosystem-and-audioinputstream-of-javasound
 Dialog box: https://jqueryui.com/dialog/
 
 
