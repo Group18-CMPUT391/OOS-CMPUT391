@@ -55,19 +55,22 @@ oos-cmput391/WEB-INF/classes
 $ make all
 ```
 
-***Step 5:*** Start Tomcat
+***Step 5:*** Start Tomcat (to stop <kbd>Alt</kbd>+<kbd>F2</kbd>)
 ```sh
 $ catalina start 
 ```
-Note : You may need to run the surver from the location catalina is installed and in that case you would run it. 
+Note : You may need to run the server from the location catalina is installed and in that case you would run it. 
 ```sh
-./catalina.sh start
+$ ./catalina.sh start
 ```
 or
 ```sh
 $ starttomcat
 ```
 Note: Only available in the university of Alerta computer labs.
+
+***Step 6:*** the locate
+
 ## Sources Used
 
 
