@@ -17,6 +17,10 @@ Ocean Observation System is a JSP HTML5 website that is connected to Oracle sql 
 
 ##Modules
 ###Login Module
+
+The login module is contains two parts, the login section and personal/password change section.
+
+In the login section the user is given inputs to input a username and password. Depending on what type the user is they are given certain areas of the website to view. For example the if the user is administrator then they are given the view to create and change users, but this view is not available to the Scientist or data manager.
 ###Search Module
 
 This module allows the user to search from the database for sensors that they are subscribed to between different dates. The first field is the inputing keywords for searching audio and image description or seaching scalar values. The second is searching location of sensors. The sensor type field allow the search of different sensors. Finally the last field is setting the range of dates you are searching between. 
