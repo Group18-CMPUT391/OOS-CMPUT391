@@ -61,7 +61,7 @@ public class RegServlet extends HttpServlet {
 				
 				if (rs.next()){
 					session.setAttribute("err","Email " + email + " is already in the system.");
-					response.sendRedirect("/oos-cmput391/new_user.jsp");
+					response.sendRedirect("/oos-cmput391/register.jsp");
 				}
 				
 				//If email not exist then new person. Add new person
@@ -72,7 +72,7 @@ public class RegServlet extends HttpServlet {
 					//Checks username, so no conflicting username
 					if (rs.next()){
 						session.setAttribute("err","User " + uname + " Is already in the system.");
-						response.sendRedirect("/oos-cmput391/existing_user.jsp");
+						response.sendRedirect("/oos-cmput391/register.jsp");
 						
 					}
 					//add a new person and user 
@@ -92,7 +92,7 @@ public class RegServlet extends HttpServlet {
 
 				    	
 				    	session.setAttribute("err","Added User " + uname + " to the system.");
-						response.sendRedirect("/oos-cmput391/new_user.jsp");
+						response.sendRedirect("/oos-cmput391/register.jsp");
 					}
 					
 					
@@ -107,7 +107,7 @@ public class RegServlet extends HttpServlet {
 				
 				if (rs.next()){
 					session.setAttribute("err","User " + uname + " Is already in the system.");
-					response.sendRedirect("/oos-cmput391/existing_user.jsp");
+					response.sendRedirect("/oos-cmput391/register.jsp");
 					
 				}
 				//Adding new user
@@ -130,12 +130,12 @@ public class RegServlet extends HttpServlet {
 
 					    	
 					    	session.setAttribute("err","Added User " + uname + " to the system.");
-							response.sendRedirect("/oos-cmput391/existing_user.jsp");
+							response.sendRedirect("/oos-cmput391/register.jsp");
 				    	}
 					}
 					else {
 						session.setAttribute("err","Email " + email + " is not in the system.");
-						response.sendRedirect("/oos-cmput391/existing_user.jsp");
+						response.sendRedirect("/oos-cmput391/register.jsp");
 					}
 					
 					

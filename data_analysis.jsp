@@ -36,9 +36,7 @@ Search page allows to user to enter a search query
 	    if (years != null) {
 			submit ="2";
 	    }
-	    out.println (user.getPerson_id());
 	    ResultSet rs = olap.getSIDScalar(user.getPerson_id());
-
 	    while(rs != null && rs.next()) {
 	    	sensors.add(String.valueOf(rs.getLong("sensor_id")));
 	    }
@@ -53,13 +51,22 @@ Search page allows to user to enter a search query
   </head>
   <body>
 	<center>
- 			<%out.println("<form name='choosesubmit1' action='analysisservlet?submit="+submit+"' method='POST'>");%>
+ 			<%out.println("<form name='choosesubmit1' id=\"submit\" action='analysisservlet?submit="+submit+"' method='POST'>");%>
 	 			<table>
  					<tr><th>Select sensor</th>
- 						<td><select name="selected_sensor"><% for (String sensor : sensors) {
- 																out.println("<option value=\""+ sensor + "\">" + sensor + "</option>");
-															  }%>
-							</select></td><td><input type='submit' value='Submit'/></td></tr>
+ 						<td><select name="selected_sensor">
+ 								<% for (String sensor : sensors) {
+ 										out.println("<option value=\""+ sensor + "\">" + sensor + "</option>");
+								   }%>
+							</select>
+						</td><td>
+						<%if (sensors.isEmpty()) {%>
+							<input type='button' value='Submit'/></td></tr>
+						<%}
+						  else{%>
+							<input type='submit' value='Submit'/></td></tr>
+						<%}%>
+						
 				</table></form>
 				<%if (selected_sensor != null) {%>
 					<table border="1" width="30%" cellpadding="5">

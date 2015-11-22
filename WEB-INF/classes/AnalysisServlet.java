@@ -106,7 +106,6 @@ public class AnalysisServlet extends HttpServlet {
 
 		
 		out.println("</body></html>");
-		
 		olap.close_OLAP();
     }
 }
