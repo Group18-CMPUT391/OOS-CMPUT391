@@ -7,6 +7,7 @@ Search page allows to user to enter a search query
 <%@ page import="util.User" %> 
 <%@ page import="java.util.ArrayList" %>
 <%@ page import="java.sql.ResultSet" %>
+<%@ page import="java.sql.Date" %>
 
 <% 
 	User user = null;
@@ -30,7 +31,7 @@ Search page allows to user to enter a search query
 	    
 	    String selected_sensor = (String) session.getAttribute("selected_sensor");
 	    String selected_year = (String) session.getAttribute("selected_year");
-	    ArrayList<String> years = (ArrayList<String>) session.getAttribute("years");
+	    ArrayList<String> years = new ArrayList<String>();
 	    ArrayList<String> sensors = new ArrayList<String>();
 	    
 	    if (years != null) {
@@ -42,6 +43,10 @@ Search page allows to user to enter a search query
 	    while(rs != null && rs.next()) {
 	    	sensors.add(String.valueOf(rs.getLong("sensor_id")));
 	    }
+	    out.println(sensors.toString());
+	    years = olap.getYearsScalar();
+	    out.println(years.toString());
+
 %>
 
 <html>
@@ -72,7 +77,7 @@ Search page allows to user to enter a search query
 					</table><%} %>
 				<br>
 				
- 					<%	if (years != null) {%>
+ 					<%	if (selected_sensor != null) {%>
 							<%out.println("<form name='choosesubmit1' action='analysisservlet?submit="+submit+"' method='POST'>");%>
 								<table>
 									<tr><th>Select year</th>
@@ -110,4 +115,5 @@ Search page allows to user to enter a search query
 		   e.printStackTrace();
 	}
 	database.close_db(); 
+	olap.close_OLAP();
 %>
