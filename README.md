@@ -6,27 +6,27 @@ Ocean Observation System is a JSP HTML5 website that is connected to Oracle sql 
 
 - [Table of Contents]
 	- [Modules](#modules)
-		- [login module](#login-module)
-		- [search module](#search-module)
-		- [sensor and user management module](#sensor-and-user-management-module)
-		- [subscribe module](#)
-		- [uploading module](#)
+		- [Login Module](#login-module)
+		- [Search Module](#search-module)
+		- [Sensor and User Management Module](#sensor-and-user-management-module)
+		- [Subscribe Module](#)
+		- [Uploading Module](#)
 		
 	- [Installation](#installation)
 	- [Sources Used](#sources-used)
 
 ##Modules
-###login module
-###search module
+###Login Module
+###Search Module
 
 This module allows the user to search from the database for sensors that they are subscribed to between different dates. The first field is the inputing keywords for searching audio and image description or seaching scalar values. The second is searching location of sensors. The sensor type field allow the search of different sensors. Finally the last field is setting the range of dates you are searching between. 
 
 They can either input keyword/value, sensor type or location or all of them.
 
 This is all done in one page the search page.
-###sensor and user management module
-###subscribe module
-###uploading module
+###Sensor and User Management Module
+###Subscribe Module
+###Uploading Module
 
 
 ## Installation
