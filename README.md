@@ -87,7 +87,7 @@ http://[serverURL]/oos-cmput391/
 Used the example code from class
 * Audio Stream to file: https://forum.processing.org/two/discussion/4339/how-to-save-a-wav-file-using-audiosystem-and-audioinputstream-of-javasound
 * Bufferedimage to blob: http://stackoverflow.com/questions/7645068/how-can-i-convert-a-bufferedimage-object-into-an-inputstream-or-a-blob
-* create thumbnail (thumbnailer lib): https://github.com/coobird/thumbnailator/wiki/Examples
+* Create thumbnail (thumbnailer lib): https://github.com/coobird/thumbnailator/wiki/Examples
 * Dialog box: https://jqueryui.com/dialog/
 * Files to database: http://www.codejava.net/coding/upload-files-to-database-servlet-jsp-mysql
 
