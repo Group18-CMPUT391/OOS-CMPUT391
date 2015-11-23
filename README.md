@@ -38,13 +38,21 @@ When the admin click "User and Sensor Management" a popup box will apear and 4 c
 
 ###### This is a New User 
 
-This will bring you to a page where you can
+This will bring admin to a page where there will be a table that have inputs for the admin to add new person. The phone number will check if you entered 10 digits number and the email will check for proper email. This will check if email is not in system.
 
 
 ###### This is an Existing User 
+
+This is adding a new user to an existing person. The admin will input an existing email and username and password. This will check if email exist and that the username does not conflict.
+
 ###### Delete User 
+
+This page will populate a list of users that can be deleted. The admin will select a user by clicking the checkbox. Clicking submit will remove the user from the table and website.
+
 ###### Manage Sensors
 
+This will bring the user to the sensor page. There will be a table to the left to allow the admin to create or delete sensors.
+Clicking "Delete/View sensors" will give a list of sensors and also the ability to delete sensors. The "New Sensor" will give the admin the ablility to add new sensors.
 
 ### Subscribe Module
 
