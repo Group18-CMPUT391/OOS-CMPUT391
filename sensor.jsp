@@ -254,7 +254,7 @@ Web page for Sensor
 					</tr>
 					<tr>
 						<td>
-							<center><a href="#" id="deleteSensorClick">Delete Sensors</a></center>
+							<center><a href="#" id="deleteSensorClick">Delete/View Sensors</a></center>
 						</td>
 					</tr>
 					<tr><td colspan="2" align="center">

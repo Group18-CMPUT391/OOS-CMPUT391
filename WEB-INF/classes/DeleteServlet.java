@@ -22,6 +22,7 @@ public class DeleteServlet extends HttpServlet {
 	    String user_name;
 	    String password;
 
+	    
 		// Set the content type to HTML
 		response.setContentType( "text/html" );
 		// Get the output stream from the response object
@@ -40,7 +41,7 @@ public class DeleteServlet extends HttpServlet {
 		
 		long user_id = user.getPerson_id();
 		String type = request.getParameter("type");
-
+		
 		try{
 			Db db = new Db();
 			db.connect_db();
@@ -69,10 +70,10 @@ public class DeleteServlet extends HttpServlet {
 				String []checkbox1 = request.getParameterValues("sensorcheckbox");
 				String querrymessage= db.deleteSensors(checkbox1);
 				session.setAttribute("err", querrymessage);
-				response.sendRedirect("/oos-cmput391/register.jsp?type=deleteSensor");
-			}
-			db.close_db();
-		}		
+				response.sendRedirect("/oos-cmput391/sensor.jsp");
+								}
+				db.close_db();}		
+
 		catch (Exception e) {
 			System.out.println(e.getMessage());
 		}
