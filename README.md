@@ -46,9 +46,9 @@ This will bring admin to a page where there will be a table that have inputs for
 
 This is adding a new user to an existing person. The admin will input an existing email and username and password. This will check if email exist and that the username does not conflict.
 
-###### Delete User 
+###### Manage User 
 
-This page will populate a list of users that can be deleted. The admin will select a user by clicking the checkbox. Clicking submit will remove the user from the table and website.
+This page will populate a list of users that can be deleted or updated. The admin will select a user by clicking the checkbox correspoding to that user. Selecting "Updating Password" will bring the user to a page where they can change their password. "Updating Personal" gives the option to edit the personal information for that user. "Delete" will just remove the user from the system and they will disapear from the list. Note the current administrator will not appear on the list; This is to protect from deleting all admin. If the admin wants to edit his or her info they can click "Account Settings" at the top of the page to change admin's own information.
 
 ###### Manage Sensors
 
