@@ -51,6 +51,8 @@ This page will populate a list of users that can be deleted. The admin will sele
 
 ###### Manage Sensors
 
+This will bring the user to the sensor page. There will be a table to the left to allow the admin to create or delete sensors.
+Clicking "Delete/View sensors" will give a list of sensors and also the ability to delete sensors. The "New Sensor" will give the admin the ablility to add new sensors.
 
 ### Subscribe Module
 
