@@ -35,6 +35,19 @@ Web page for registering a new user
 			    })
 			});
 		</script>
+		
+		<%
+			User user = null;
+			try {
+				user = (User) session.getAttribute("user");
+			} catch (NullPointerException e) {
+				e.printStackTrace();
+			}
+		   if (user == null) {
+		   	  session.setAttribute("status", "Please login to access page");
+		   	  response.sendRedirect("/oos-cmput391/login.jsp");
+		   }
+		%>
     </head>
     <body>
     	<%
@@ -187,7 +200,7 @@ Web page for registering a new user
 						ArrayList<User> result_set=db.printUsers();
 						for(int i=0;i<result_set.size();++i){
 							out.println("<tr>"); %>
-						<td><input type="checkbox" name="usercheckbox" value=<%=String.valueOf(result_set.get(i).getPerson_id())%> /></td>
+						<td><input type="checkbox" class="select" name="usercheckbox" value=<%=String.valueOf(result_set.get(i).getPerson_id())%> /></td>
 							<%
 									
 							out.println("<td>"+String.valueOf(result_set.get(i).getUser_name())+"</td>");

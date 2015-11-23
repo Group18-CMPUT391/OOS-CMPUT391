@@ -4,7 +4,7 @@ INSERT INTO persons VALUES(3,'Akram', 'Hassen', '345 Street', 'ah@gmail.com', '7
 
 INSERT INTO users VALUES('h','h','a', 1, TO_DATE('2015-10-10','YYYY-MM-DD'));
 INSERT INTO users VALUES('w','w','s', 2, TO_DATE('2015-10-10','YYYY-MM-DD'));
-INSERT INTO users VALUES('A','a','d', 3, TO_DATE('2015-10-10','YYYY-MM-DD'));
+INSERT INTO users VALUES('a','a','d', 3, TO_DATE('2015-10-10','YYYY-MM-DD'));
 
 INSERT INTO sensors VALUES(10,'China','a', 'this is a description');
 INSERT INTO sensors VALUES(11,'Canada','i', 'this is a description');

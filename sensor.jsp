@@ -207,7 +207,7 @@ Web page for Sensor
 					ArrayList<Sensors> result_set1=db.printSensors();
 					for(int j=0;j<result_set1.size();++j){
 						out.println("<tr>"); %>
-					<td><input type="checkbox" name="sensorcheckbox" value= <%=String.valueOf(result_set1.get(j).getSensor_id())%>></td>
+					<td><input type="checkbox" class="select" name="sensorcheckbox" value= <%=String.valueOf(result_set1.get(j).getSensor_id())%>></td>
 						<%		
 						out.println("<td>"+String.valueOf(result_set1.get(j).getSensor_id())+"</td>");
 											
