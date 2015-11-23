@@ -117,8 +117,9 @@
 
 			</table>
 			<tr>
-				<td colspan="2" align="center"><input type="submit"
-					value="Submit" /> <input type="reset" value="Reset" /></td>
+				<td colspan="2" align="center">
+				<input type="submit" value="Submit" /> 
+				<input type="reset" value="Reset" /></td>
 			</tr>
 		</form></center>
 	</div>

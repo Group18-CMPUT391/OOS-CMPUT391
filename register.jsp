@@ -4,17 +4,28 @@ Web page for registering a new user
 
 
 <!DOCTYPE html>
+<%@ page import="util.User" %> 
 
 <%  
-   String error = null;  
-   String username = null;
-   try{  
-      error = (String) session.getAttribute("err");  
-   } catch(NullPointerException e) {
-      e.printStackTrace();
-   }
-   Db db = new Db();
-   db.connect_db();
+	   String error = null;  
+	   String username = null;
+	   User user = null;
+	   try{  
+		   user = (User) session.getAttribute("user");
+	       error = (String) session.getAttribute("err");  
+	       
+	        // Cannot access this page unless logged in
+			if (user == null) {
+			   String errormsg = "Please log in before accessing account information!";
+			   session.setAttribute("status", errormsg);
+			   response.sendRedirect("/oos-cmput391/login.jsp");
+			}
+	   } catch(NullPointerException e) {
+	      e.printStackTrace();
+	   }
+	   
+	   Db db = new Db();
+	   db.connect_db();
 %>  
 <%@ page import="util.*" %>
 <%@ page import="java.sql.*" %>
@@ -122,7 +133,7 @@ Web page for registering a new user
             <table border="1" width="30%" cellpadding="5">
                 <thead>
                     <tr>
-                        <th colspan="2">Registration Information for Exising User:</th>
+                        <th colspan="2">Registration Information for Existing User:</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -173,7 +184,7 @@ Web page for registering a new user
     	  		<center><form action="deleteservlet?type=deleteUser" method="post"
 					id="deleteSub" onsubmit="this">
 					<table width="59%" border="1">
-							<thead><tr><th colspan="6">Delete User</th></tr></thead>
+							<thead><tr><th colspan="6">Manage User</th></tr></thead>
 						<tr>	
 							<th></th>
 							<th>User Name</th>
@@ -187,7 +198,7 @@ Web page for registering a new user
 						ArrayList<User> result_set=db.printUsers();
 						for(int i=0;i<result_set.size();++i){
 							out.println("<tr>"); %>
-						<td><input type="checkbox" name="usercheckbox" value=<%=String.valueOf(result_set.get(i).getPerson_id())%> /></td>
+						<td><input type="checkbox" class="select" name="usercheckbox" value=<%=String.valueOf(result_set.get(i).getPerson_id())%> /></td>
 							<%
 									
 							out.println("<td>"+String.valueOf(result_set.get(i).getUser_name())+"</td>");
@@ -201,21 +212,23 @@ Web page for registering a new user
 							out.println("</tr>");
 						} 
 							
-				 	if (error != null) {
-				   					out.println(error); 
-				   					session.removeAttribute("err");
-									
-				   				}%>
+				 		if (error != null) {
+		   					out.println(error); 
+		   					session.removeAttribute("err");
+				   		}%>
 		
 					</table>
 					<tr>
-						<td colspan="2" align="center"><input type="submit"
-							value="Submit" /> <input type="reset" value="Reset" /></td>
+						<td colspan="2" align="center">
+							<input type="submit" name="update" value="Update Password" />
+							<input type="submit" name="update" value="Update Personal" />
+							<input type="submit" name="update" value="Delete" /> 
+							<input type="reset" value="Reset" />
+						</td>
 					</tr>
 				</form></center>
     		  
-    	 <% }
-    	  %>
+    	 <% } db.close_db(); %>
        
     </body>
 </html>
