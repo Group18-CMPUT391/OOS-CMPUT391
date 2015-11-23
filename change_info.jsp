@@ -10,6 +10,7 @@ username, firstname, lastname, address, email, phone and password changing
 <% 
 	User user = null;
 	Person person = null;
+	long person_id;
 	Db database = new Db();
 	database.connect_db();
 	String status = null;
@@ -37,9 +38,17 @@ username, firstname, lastname, address, email, phone and password changing
 	   return; // Important
 	}
 	
+	// Admin or individual
+	String selected = request.getParameter("selected");
+	if (selected == null) {
+		person_id = user.getPerson_id();
+	} else {
+		person_id = Long.parseLong(selected);
+	}
+			
 	// Prepopulate the fields with user information
 	if (user != null) {
-		person = database.getPerson(user.getPerson_id());
+		person = database.getPerson(person_id);
 		first_name = person.getFirst_name();
 		last_name = person.getLast_name();
 		address = person.getAddress();
@@ -60,8 +69,9 @@ username, firstname, lastname, address, email, phone and password changing
     	<%
     		String type = request.getParameter("updateType");
     		if (type.equals("info")){
-    	%>
-	    <form name="updateinfo" action="updateinfoservlet" method="POST" >
+    	
+	    out.println("<form name=\"updateinfo\" action=\"updateinfoservlet \"method=\"POST\" >");
+	    %>
 	      <table  border="1" width="30%" cellpadding="5">
 		<tr>
 		  <td colspan="2" align="center">Personal Information</td>
@@ -123,6 +133,7 @@ username, firstname, lastname, address, email, phone and password changing
 		</tr>
 		<tr>
 		  <td colspan="2" align="center">
+		  	<%out.println("<input type=\"hidden\" name=\"person_id\" value=\""+person_id+"\" >");%>
 		    <input type="submit" value="Save changes" />
 		  </td>
 		</tr>
@@ -150,7 +161,7 @@ username, firstname, lastname, address, email, phone and password changing
 		<tr>
 		  <td>User_name:</td>
 		  <td>
-		  	<input type="username" name="username" value=<%out.write(user.getUser_name());%> />
+		  	<input type="username" name="username" value=<%out.write(database.getUser_name(person_id));%> />
 		  </td>
 		</tr>
 		<tr>
@@ -169,6 +180,7 @@ username, firstname, lastname, address, email, phone and password changing
 		</tr>
 		<tr>
 		  <td colspan="2" align="center">
+		  	<%out.println("<input type=\"hidden\" name=\"person_ids\" value=\""+person_id+"\" >");%>
 		    <input type="submit" value="Save changes" />
 		  </td>
 		</tr>
@@ -184,7 +196,7 @@ username, firstname, lastname, address, email, phone and password changing
 		</tr>
 	      </table>
 	    </form>
-	    <%} database.close_db() %>
+	    <%} database.close_db(); %>
     </center>
   </body>
 </html>

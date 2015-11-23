@@ -12,6 +12,7 @@ Ocean Observation System is a JSP HTML5 website that is connected to Oracle sql 
 |  - [Sensor and User Management Module](#sensor-and-user-management-module)|
 |  - [Subscribe Module](#subscribe-module)|
 |  - [Uploading Module](#uploading-module)|
+|  - [Data Analysis Module](#data-analysis-module)|
 |[Installation](#installation)|
 |[Sources Used](#sources-used)|
 
@@ -62,6 +63,8 @@ This module available only to the scientist allows the scientist to subscribe to
 
 This modual is only for the data manager. He or she will click on the sensor page and to the left he will be able to see the different types of sensors that he/she can add. Although this page is available to the scientist and the admin
 the left table will change depending on who accesses that page.
+
+###Data Analysis Module
 
 ## Installation
 ***Step 1:*** Since this site uses TomCat please place the souce code in the webbapps folder in TomCat. 

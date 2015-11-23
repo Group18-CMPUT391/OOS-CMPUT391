@@ -30,6 +30,7 @@ public class UpdatePassServlet extends HttpServlet {
 	    String message = "";
 	    Db database;
 	    User user;
+	    long person_id;
 	    String user_name;
 	    String password;
 
@@ -50,12 +51,13 @@ public class UpdatePassServlet extends HttpServlet {
 		    return;
 		}
 
-		// Getters user
-		user_name = user.getUser_name();
-		password = user.getPassword();
-		
 		database = new Db();
 		database.connect_db();
+
+		person_id = Long.parseLong(request.getParameter("person_ids"));
+
+		user_name = database.getUser_name(person_id);
+		password = database.getPassword(user_name);
 
 		// GETs from form's input
 		String n_user_name = request.getParameter("username");
@@ -82,6 +84,10 @@ public class UpdatePassServlet extends HttpServlet {
 	    database.close_db();
 		session.setAttribute("status", message);
 	    session.setAttribute("user", user);
-		response.sendRedirect("/oos-cmput391/change_pass.jsp");
+		if (request.getParameter("person_ids") != null) {
+		    response.sendRedirect("/oos-cmput391/change_info.jsp?updateType=pass&selected=" + person_id);
+	    } else {
+	    	response.sendRedirect("/oos-cmput391/change_info.jsp?updateType=pass");
+	    }
 	}
 }

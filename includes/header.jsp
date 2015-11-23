@@ -56,12 +56,12 @@ Assume necessary html definitions are already made
 	<div id="register" title="Administrator">
 		<a href="/oos-cmput391/register.jsp?usrType=new">This is a New User</a> <br>
 		<a href="/oos-cmput391/register.jsp?usrType=existing">This is an Existing User</a> <br>
-		<a href="/oos-cmput391/register.jsp?usrType=delete">Delete User</a> <br>
+		<a href="/oos-cmput391/register.jsp?usrType=delete">Manage Users</a> <br>
 		<a href="/oos-cmput391/sensor.jsp">Manage Sensors</a>
 	</div> 
 	<div id="account" title="Change User Information">
 		<a href="/oos-cmput391/change_info.jsp?updateType=pass" >Change Username and Password</a> <br>
-		<a href="/oos-cmput391/change_info.jsp?updateType=info">Change Personal Information</a>
+		<a href="/oos-cmput391/change_info.jsp?updateType=info" >Change Personal Information</a>
 		
 	</div> 
 	
@@ -84,7 +84,7 @@ Assume necessary html definitions are already made
 	        out.println("<a href=\"/oos-cmput391/sensor.jsp\">Sensor</a> | ");
 	        out.println("<a href=\"/oos-cmput391/subscription.jsp\">Subscribe</a> | ");
 	        out.println("<a href=\"/oos-cmput391/search.jsp\">Search</a> | ");	
-		out.println("<a href=\"/oos-cmput391/data_analysis.jsp\">Generate Report</a> | ");
+			out.println("<a href=\"/oos-cmput391/data_analysis.jsp\">Generate Report</a> | ");
 		}
 
 		out.println("<a href=\"#\" id=\"accountclick\">Account Settings</a> | ");

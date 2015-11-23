@@ -29,8 +29,8 @@ import javax.imageio.ImageIO;
 import net.coobird.thumbnailator.*;
 
 public class Db {
-	static final String USERNAME = "wkchoi";
-	static final String PASSWORD = "Kingfreak95";
+	static final String USERNAME = "hbtruong";
+	static final String PASSWORD = "qwerty123456";
 	// JDBC driver name and database URL
 	static final String DRIVER_NAME = "oracle.jdbc.driver.OracleDriver";
 	static final String DB_URL = "jdbc:oracle:thin:@gwynne.cs.ualberta.ca:1521:CRS";
@@ -113,6 +113,21 @@ public class Db {
 		}
 		
 		return user;
+	}
+	
+	// Get user_name from person_id
+	public String getUser_name(long person_id) {
+		String user_name = "";
+		String query = "select user_name from users where person_id = " + person_id;
+		ResultSet rs = execute_stmt(query);
+		try {
+			if (rs != null && rs.next()) {
+				user_name = (rs.getString(1)).trim();
+			}
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+		return user_name;
 	}
 	
 	// Get password from username

@@ -57,12 +57,10 @@ public class UpdateInfoServlet extends HttpServlet {
 		    return;
 		}
 
-		// Getters user
-		user_name = user.getUser_name();
-		person_id = user.getPerson_id();
-		
 		database = new Db();
 		database.connect_db();
+		
+		person_id = Long.parseLong(request.getParameter("person_id"));
 		person = database.getPerson(person_id);
 		
 		// Getters person
@@ -109,6 +107,11 @@ public class UpdateInfoServlet extends HttpServlet {
 	    database.close_db();
 		session.setAttribute("status", message);
 	    session.setAttribute("user", user);
-		response.sendRedirect("/oos-cmput391/change_info.jsp");
+	    
+	    if (request.getParameter("person_id") != null) {
+	    	response.sendRedirect("/oos-cmput391/change_info.jsp?updateType=info&selected=" + person_id);
+	    } else {
+	    	response.sendRedirect("/oos-cmput391/change_info.jsp?updateType=info");
+	    }
 	}
 }

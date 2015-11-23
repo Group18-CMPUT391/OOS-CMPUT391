@@ -32,26 +32,41 @@ public class DeleteServlet extends HttpServlet {
 	
 		// Check if the user is logged in
 		user = (User) session.getAttribute("user");
-
-		long user_id= user.getPerson_id();
-		String type=request.getParameter("type");
+		if (user == null) {
+			String errormsg = "Please login before accessing account info";
+		    session.setAttribute("status", errormsg);
+		    response.sendRedirect("/oos-cmput391/login.jsp");
+		    return;
+		}
 		
+		long user_id = user.getPerson_id();
+		String type = request.getParameter("type");
 		
 		try{
-				Db db = new Db();
-				db.connect_db();
+			Db db = new Db();
+			db.connect_db();
 			if (type.equals("deleteUser")){
-				String []checkbox = request.getParameterValues("usercheckbox");
-				
-				
-				String querrymessage =db.deleteUser(checkbox);
-				session.setAttribute("err", querrymessage);
-				
-				response.sendRedirect("/oos-cmput391/register.jsp?usrType=delete");
-							}
+				String update = request.getParameter("update");
+
+				if (update.equals("Update Password")) {
+					String []checkbox = request.getParameterValues("usercheckbox");
+					if (checkbox.length == 1) {
+						response.sendRedirect("/oos-cmput391/change_info.jsp?updateType=pass&selected=" + checkbox[0]);
+					}
+				} else if (update.equals("Update Personal")) {
+					String []checkbox = request.getParameterValues("usercheckbox");
+					if (checkbox.length == 1) {
+						response.sendRedirect("/oos-cmput391/change_info.jsp?updateType=info&selected=" + checkbox[0]);
+					}
+				} else if (update.equals("Delete")) {
+					String []checkbox = request.getParameterValues("usercheckbox");
+					System.out.println("ddd");
+					String querrymessage =db.deleteUser(checkbox);
+					session.setAttribute("err", querrymessage);
+					response.sendRedirect("/oos-cmput391/register.jsp?usrType=delete");
+				}
+			}
 			else if (type.equals("deleteSensor")){
-			
-			
 				String []checkbox1 = request.getParameterValues("sensorcheckbox");
 				String querrymessage= db.deleteSensors(checkbox1);
 				session.setAttribute("err", querrymessage);
