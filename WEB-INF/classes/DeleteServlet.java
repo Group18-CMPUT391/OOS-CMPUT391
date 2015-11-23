@@ -47,7 +47,7 @@ public class DeleteServlet extends HttpServlet {
 				String querrymessage =db.deleteUser(checkbox);
 				session.setAttribute("err", querrymessage);
 				
-				response.sendRedirect("/oos-cmput391/admin_delete.jsp?type=deleteUser");
+				response.sendRedirect("/oos-cmput391/register.jsp?usrType=delete");
 							}
 			else if (type.equals("deleteSensor")){
 			
@@ -55,7 +55,7 @@ public class DeleteServlet extends HttpServlet {
 				String []checkbox1 = request.getParameterValues("sensorcheckbox");
 				String querrymessage= db.deleteSensors(checkbox1);
 				session.setAttribute("err", querrymessage);
-				response.sendRedirect("/oos-cmput391/admin_delete.jsp?type=deleteSensor");
+				response.sendRedirect("/oos-cmput391/sensor.jsp");
 								}
 				db.close_db();}		
 

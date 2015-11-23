@@ -68,8 +68,8 @@ Web page for registering a new user
                     </tr>
                      <tr>
                         <td>Phone Number:</td>
-                        <td><input type="tel" name="phone" 
-                        required="required" /></td>
+                        <td><input type="number" name="phone" 
+                        required="required" minlength="10" maxlength="10"/></td>
                     </tr>
                     <tr>
                         <td>Email:</td>
@@ -215,6 +215,7 @@ Web page for registering a new user
 				</form></center>
     		  
     	 <% }
+    	 db.close_db();
     	  %>
        
     </body>
