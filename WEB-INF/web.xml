@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<web-app xmlns="http://java.sun.com/xml/ns/j2ee"
+ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+ xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee
+ http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd"
+ version="2.4">
+
+
+    <servlet>
+        <servlet-name>loginservlet</servlet-name>
+        <servlet-class>LoginServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>loginservlet</servlet-name>
+        <url-pattern>/loginservlet</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>deleteservlet</servlet-name>
+        <servlet-class>DeleteServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>deleteservlet</servlet-name>
+        <url-pattern>/deleteservlet</url-pattern>
+    </servlet-mapping>
+    
+    <servlet>
+        <servlet-name>regservlet</servlet-name>
+        <servlet-class>RegServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>regservlet</servlet-name>
+        <url-pattern>/regservlet</url-pattern>
+    </servlet-mapping>
+    
+    <servlet>
+        <servlet-name>sensorservlet</servlet-name>
+        <servlet-class>SensorServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>sensorservlet</servlet-name>
+        <url-pattern>/sensorservlet</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>updateinfoservlet</servlet-name>
+        <servlet-class>UpdateInfoServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>updateinfoservlet</servlet-name>
+        <url-pattern>/updateinfoservlet</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>updatepassservlet</servlet-name>
+        <servlet-class>UpdatePassServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>updatepassservlet</servlet-name>
+        <url-pattern>/updatepassservlet</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>searchservlet</servlet-name>
+        <servlet-class>SearchServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>searchservlet</servlet-name>
+        <url-pattern>/searchservlet</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>analysisservlet</servlet-name>
+        <servlet-class>AnalysisServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>analysisservlet</servlet-name>
+        <url-pattern>/analysisservlet</url-pattern>
+    </servlet-mapping>
+    
+    <servlet>
+        <servlet-name>imageservlet</servlet-name>
+        <servlet-class>ImageServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>imageservlet</servlet-name>
+        <url-pattern>/imageservlet</url-pattern>
+    </servlet-mapping>
+    
+    <servlet>
+        <servlet-name>audioservlet</servlet-name>
+        <servlet-class>AudioServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>audioservlet</servlet-name>
+        <url-pattern>/audioservlet</url-pattern>
+    </servlet-mapping>
+    
+    <servlet>
+        <servlet-name>scalarservlet</servlet-name>
+        <servlet-class>ScalarServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>scalarservlet</servlet-name>
+        <url-pattern>/scalarservlet</url-pattern>
+    </servlet-mapping>
+    
+    <servlet>
+        <servlet-name>subscriptionservlet</servlet-name>
+        <servlet-class>SubscriptionServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>subscriptionservlet</servlet-name>
+        <url-pattern>/subscriptionservlet</url-pattern>
+    </servlet-mapping>
+    
+</web-app>

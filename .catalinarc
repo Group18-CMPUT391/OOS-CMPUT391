@@ -1,0 +1,10 @@
+CLASSPATH=/oracle/jdbc/lib/ojdbc6.jar:$HOME/catalina/webapps/oos-cmput391/WEB-INF/lib/commons-fileupload-1.3.1.jar:$HOME/catalina/webapps/oos-cmput391/WEB-INF/lib/commons-io-2.4.jar
+
+#JAVA_HOME=/usr/local/java
+#LD_LIBRARY_PATH /home/oracle/8.1.7/lib:/usr/java/jre/lib/sparc
+CATALINA_HOME=/usr/local/catalina
+CATALINA_BASE=$HOME/catalina
+export CLASSPATH
+3export JAVA_HOME
+#export LD_LIBRARY_PATH
+export CATALINA_HOME

@@ -1,0 +1,31 @@
+INSERT INTO persons VALUES(1,'Huy', 'Truong', '321 China', 'ht@gmail.com', '7808880000');
+INSERT INTO persons VALUES(2,'Wayne', 'Choi', '3243 Calgary', 'wc@gmail.com', '7807770000');
+INSERT INTO persons VALUES(3,'Akram', 'Hassen', '345 Street', 'ah@gmail.com', '7806660000');
+
+INSERT INTO users VALUES('h','h','a', 1, TO_DATE('2015-10-10','YYYY-MM-DD'));
+INSERT INTO users VALUES('w','w','s', 2, TO_DATE('2015-10-10','YYYY-MM-DD'));
+INSERT INTO users VALUES('a','a','d', 3, TO_DATE('2015-10-10','YYYY-MM-DD'));
+
+INSERT INTO sensors VALUES(10,'China','a', 'this is a description');
+INSERT INTO sensors VALUES(11,'Canada','i', 'this is a description');
+INSERT INTO sensors VALUES(12,'Edmonton','s', 'this is a description');
+INSERT INTO sensors VALUES(13,'Ocean','s', 'this is a description');
+INSERT INTO sensors VALUES(14,'Ocean','s', 'this is a description');
+
+INSERT INTO scalar_data VALUES(1,12,TO_DATE('01/11/2015 08:45:45','DD/MM/YYYY HH24:MI:SS'), 122.2);
+INSERT INTO scalar_data VALUES(2,13,TO_DATE('04/12/2015 12:11:12','DD/MM/YYYY HH24:MI:SS'), 2.7);
+INSERT INTO scalar_data VALUES(3,12,TO_DATE('06/10/2013 23:23:23','DD/MM/YYYY HH24:MI:SS'), 11.2);
+INSERT INTO scalar_data VALUES(4,13,TO_DATE('01/08/2013 10:11:22','DD/MM/YYYY HH24:MI:SS'), 4.55);
+INSERT INTO scalar_data VALUES(5,12,TO_DATE('03/11/2011 02:14:12','DD/MM/YYYY HH24:MI:SS'), 71.55);
+INSERT INTO scalar_data VALUES(6,13,TO_DATE('03/02/2014 17:16:15','DD/MM/YYYY HH24:MI:SS'), 53.7);
+INSERT INTO scalar_data VALUES(7,12,TO_DATE('25/10/2013 22:00:44','DD/MM/YYYY HH24:MI:SS'), 23.6);
+INSERT INTO scalar_data VALUES(8,12,TO_DATE('24/10/2013 21:11:25','DD/MM/YYYY HH24:MI:SS'), 24.0);
+INSERT INTO scalar_data VALUES(9,12,TO_DATE('23/10/2013 05:11:34','DD/MM/YYYY HH24:MI:SS'), 3.89);
+INSERT INTO scalar_data VALUES(10,12,TO_DATE('10/10/2013 09:30:04','DD/MM/YYYY HH24:MI:SS'), 10.8);
+INSERT INTO scalar_data VALUES(11,13,TO_DATE('28/12/2015 08:45:45','DD/MM/YYYY HH24:MI:SS'), 88.77);
+INSERT INTO scalar_data VALUES(12,13,TO_DATE('24/12/2015 12:45:29','DD/MM/YYYY HH24:MI:SS'), 5);
+INSERT INTO scalar_data VALUES(13,13,TO_DATE('26/12/2015 21:11:59','DD/MM/YYYY HH24:MI:SS'), 789.0);
+INSERT INTO scalar_data VALUES(14,13,TO_DATE('25/12/2015 21:11:59','DD/MM/YYYY HH24:MI:SS'), 345.0);
+INSERT INTO scalar_data VALUES(15,13,TO_DATE('01/12/2015 01:55:01','DD/MM/YYYY HH24:MI:SS'), 11.0);
+
+commit;
