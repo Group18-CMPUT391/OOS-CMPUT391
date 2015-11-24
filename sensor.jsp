@@ -376,5 +376,8 @@ Web page for Sensor
 			</table>
 		</td></tr>	
 	</table></center>					
-</body> 
+</body>
+<footer>
+<center><jsp:include page="includes/footer.jsp"/></center>
+</footer> 
 </html>

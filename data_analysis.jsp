@@ -112,6 +112,9 @@ Search page allows to user to enter a search query
 			  	session.removeAttribute("selected_year");%>
 	</center>
   </body>
+  <footer>
+<center><jsp:include page="includes/footer.jsp"/></center>
+</footer> 
 </html>
 
 <% 

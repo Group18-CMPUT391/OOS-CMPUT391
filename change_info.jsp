@@ -199,4 +199,7 @@ username, firstname, lastname, address, email, phone and password changing
 	    <%} database.close_db(); %>
     </center>
   </body>
+  <footer>
+<center><jsp:include page="includes/footer.jsp"/></center>
+</footer> 
 </html>

@@ -42,7 +42,7 @@ Search page allows to user to enter a search query
 		    <form name="searchform" action="searchservlet" method="get">
 		      <table>
 		        <tr>
-		          <th>Keyword(s): </th>
+		          <th>Keyword(s)/Value: </th>
 		          <td>
 		            <input name="query" placeholder="Enter search query.."></input>
 		          </td>
@@ -66,9 +66,9 @@ Search page allows to user to enter a search query
 		        <tr>
 		          <th>*Date: </th>
 		          <td>
-		            <input name="fromdate" type="date" required="required" />
+		            <input name="fromdate" type="datetime-local" step="1" required="required" />
 		            to 
-		            <input name="todate" type="date" required="required" />
+		            <input name="todate" type="datetime-local" step="1" required="required" />
 		          </td>
 		        </tr>
 		        <tr>
@@ -86,4 +86,7 @@ Search page allows to user to enter a search query
 				session.removeAttribute("err");
 			  }%></center>
   </body>
+  <footer>
+<center><jsp:include page="includes/footer.jsp"/></center>
+</footer> 
 </html>

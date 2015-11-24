@@ -36,6 +36,23 @@ public class ScalarServlet extends HttpServlet {
 			OutputStream out = response.getOutputStream();
 			Writer w = new OutputStreamWriter(out, "UTF-8");
 			
+			String[] datef = fromdate.split("T");
+        	String[] datet = todate.split("T");
+        	String date1 = null;
+        	String date2 = null;
+        	if (datef[1].split(":").length != 3) {
+        		date1 = datef[0] +" "+datef[1] + ":00";
+    		}
+    		else {
+    			date1 = datef[0] +" "+datef[1];
+    		}
+        	if (datet[1].split(":").length != 3) {
+        		date2 = datet[0] +" "+datet[1] + ":00";
+    		}
+    		else {
+    			date2 = datet[0] +" "+datet[1];
+    		}
+			
 			if (user.equals("yes")) {
 				//Searching for value by checking id the keyword/value field is a number 
 				if(database.isNumber( value )){
@@ -46,8 +63,8 @@ public class ScalarServlet extends HttpServlet {
 							+ "WHERE su.person_id =" + id
 							+ "AND s.value ="+ Float.parseFloat(value)
 									+ "AND se.location LIKE '%"+location+"' "
-											+ "AND date_created BETWEEN TO_DATE('"+fromdate+"', 'YYYY-MM-DD') "
-													+ "AND TO_DATE('"+todate+"', 'YYYY-MM-DD') "
+											+ "AND date_created BETWEEN TO_DATE('"+date1+"', 'YYYY-MM-DD HH24:MI:SS') "
+													+ "AND TO_DATE('"+date2+"', 'YYYY-MM-DD HH24:MI:SS') "
 															+ "ORDER BY s.sensor_id";
 				}
 				//Searching without value
@@ -58,8 +75,8 @@ public class ScalarServlet extends HttpServlet {
 							+ "JOIN sensors se on s.sensor_id = se.sensor_id "
 							+ "WHERE su.person_id =" + id
 							+ "AND se.location LIKE '%"+location+"' "
-									+ "AND date_created BETWEEN TO_DATE('"+fromdate+"', 'YYYY-MM-DD') "
-											+ "AND TO_DATE('"+todate+"', 'YYYY-MM-DD') "
+									+ "AND date_created BETWEEN TO_DATE('"+date1+"', 'YYYY-MM-DD HH24:MI:SS') "
+											+ "AND TO_DATE('"+date2+"', 'YYYY-MM-DD HH24:MI:SS') "
 													+ "ORDER BY s.sensor_id";
 				}
 				//Searching for keyword instead of value to have to set value to null
@@ -71,8 +88,8 @@ public class ScalarServlet extends HttpServlet {
 							+ "WHERE su.person_id =" + id
 							+ "AND s.value =null "
 							+ "AND se.location LIKE '%"+location+"' "
-									+ "AND date_created BETWEEN TO_DATE('"+fromdate+"', 'YYYY-MM-DD') "
-											+ "AND TO_DATE('"+todate+"', 'YYYY-MM-DD') "
+									+ "AND date_created BETWEEN TO_DATE('"+date1+"', 'YYYY-MM-DD HH24:MI:SS') "
+											+ "AND TO_DATE('"+date2+"', 'YYYY-MM-DD HH24:MI:SS') "
 													+ "ORDER BY s.sensor_id";
 				}
 				

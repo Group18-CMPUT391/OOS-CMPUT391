@@ -22,7 +22,10 @@
        }
        %>
     <center>
-        <h2>Ocean Obseravation System Home Page</h2>
+        <h2>Ocean Observation System Home Page</h2>
     </center>
   </body>
+  <footer>
+	<center><jsp:include page="includes/footer.jsp"/></center>
+  </footer> 
 </html>

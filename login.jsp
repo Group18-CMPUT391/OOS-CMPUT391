@@ -44,8 +44,7 @@ Webpage for logging in, displays form names and servlet error response messages
                         required="required" /></td> 
                     </tr>
                     <tr>
-                        <td><input type="submit" value="Login" /></td>
-                        <td><input type="reset" value="Reset" /></td>
+                        <td colspan="2"><center><input type="submit" value="Login" />&nbsp;<input type="reset" value="Reset" /></center></td>
                     </tr>
                     <tr>
                     	<td colspan="2" align="center">
@@ -62,4 +61,7 @@ Webpage for logging in, displays form names and servlet error response messages
             </center>
         </form>
   </body>
+  <footer>
+<center><jsp:include page="includes/footer.jsp"/></center>
+</footer> 
 </html>

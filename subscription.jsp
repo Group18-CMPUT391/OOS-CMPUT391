@@ -98,7 +98,7 @@
 
 		<center><form action="subscriptionservlet?type=addSubscription" method="post"
 			id="addSub" onsubmit="this">
-			<table width="59%" border="1">
+			<table width="59%" border="1" style="white-space:nowrap;">
 					<thead><tr><th colspan="5">ADD SUBSCRIPTION</th></tr></thead>
 				<tr>	
 					<th></th>
@@ -146,7 +146,7 @@
 	<div id="deleteSubscription" title="Delete/View Subscription">
 		<center><form action="subscriptionservlet?type=deleteSubscription"
 			method="post" id="deleteSub" onsubmit="this">
-			<table width="59%" border="1">
+			<table width="59%" border="1" style="white-space:nowrap;">
 					<thead><tr><th colspan="5">DELETE/VIEW SUBSCRIPTIONS</th></tr></thead>
 				<tr>
 					<th></th>
@@ -235,5 +235,8 @@
 		</table>
 	</center>
 </body>
+<footer>
+<center><jsp:include page="includes/footer.jsp"/></center>
+</footer> 
 </html>
 

@@ -29,8 +29,8 @@ import javax.imageio.ImageIO;
 import net.coobird.thumbnailator.*;
 
 public class Db {
-	static final String USERNAME = "hbtruong";
-	static final String PASSWORD = "qwerty123456";
+	static final String USERNAME = "wkchoi";
+	static final String PASSWORD = "Kingfreak95";
 	// JDBC driver name and database URL
 	static final String DRIVER_NAME = "oracle.jdbc.driver.OracleDriver";
 	static final String DB_URL = "jdbc:oracle:thin:@gwynne.cs.ualberta.ca:1521:CRS";
@@ -292,8 +292,8 @@ public class Db {
 						+ "WHERE su.person_id =" + person_id 
 						+ "AND au.description LIKE '%"+keywords+"' "
 								+ "AND s.location LIKE '%"+location+"'"
-										+ "AND au.date_created BETWEEN TO_DATE('"+fromdate+"', 'YYYY-MM-DD')"
-												+ "AND TO_DATE('"+todate+"', 'YYYY-MM-DD')"
+										+ "AND au.date_created BETWEEN TO_DATE('"+fromdate+"', 'YYYY-MM-DD HH24:MI:SS')"
+												+ "AND TO_DATE('"+todate+"', 'YYYY-MM-DD HH24:MI:SS')"
 														+ "ORDER BY au.recording_id";
 				results = execute_stmt(query);
 			}
@@ -304,8 +304,8 @@ public class Db {
 						+ "WHERE su.person_id =" + person_id 
 						+ "AND i.description LIKE '%"+keywords+"' "
 								+ "AND s.location LIKE '%"+location+"' "
-										+ "AND i.date_created BETWEEN TO_DATE('"+fromdate+"', 'YYYY-MM-DD') "
-												+ "AND TO_DATE('"+todate+"', 'YYYY-MM-DD')"
+										+ "AND i.date_created BETWEEN TO_DATE('"+fromdate+"', 'YYYY-MM-DD HH24:MI:SS') "
+												+ "AND TO_DATE('"+todate+"', 'YYYY-MM-DD HH24:MI:SS')"
 														+ "ORDER BY i.image_id";
 				results = execute_stmt(query);
 			}
@@ -318,8 +318,8 @@ public class Db {
 							+ "WHERE su.person_id =" + person_id
 							+ "AND s.value =" + Float.parseFloat(keywords)
 							+ "AND se.location LIKE '%"+location+"' "
-									+ "AND date_created BETWEEN TO_DATE('"+fromdate+"', 'YYYY-MM-DD') "
-											+ "AND TO_DATE('"+todate+"', 'YYYY-MM-DD') "
+									+ "AND date_created BETWEEN TO_DATE('"+fromdate+"', 'YYYY-MM-DD HH24:MI:SS') "
+											+ "AND TO_DATE('"+todate+"', 'YYYY-MM-DD HH24:MI:SS') "
 													+ "ORDER BY s.id";
 					results = execute_stmt(query);
 				}
@@ -330,8 +330,8 @@ public class Db {
 							+ "JOIN sensors se on s.sensor_id = se.sensor_id "
 							+ "WHERE su.person_id =" + person_id
 							+ "AND se.location LIKE '%"+location+"' "
-									+ "AND date_created BETWEEN TO_DATE('"+fromdate+"', 'YYYY-MM-DD') "
-											+ "AND TO_DATE('"+todate+"', 'YYYY-MM-DD') "
+									+ "AND date_created BETWEEN TO_DATE('"+fromdate+"', 'YYYY-MM-DD HH24:MI:SS') "
+											+ "AND TO_DATE('"+todate+"', 'YYYY-MM-DD HH24:MI:SS') "
 													+ "ORDER BY s.id";
 				}
 				else{
@@ -342,8 +342,8 @@ public class Db {
 							+ "WHERE su.person_id =" + person_id
 							+ "AND s.value =null "
 							+ "AND se.location LIKE '%"+location+"' "
-									+ "AND date_created BETWEEN TO_DATE('"+fromdate+"', 'YYYY-MM-DD') "
-											+ "AND TO_DATE('"+todate+"', 'YYYY-MM-DD') "
+									+ "AND date_created BETWEEN TO_DATE('"+fromdate+"', 'YYYY-MM-DD HH24:MI:SS') "
+											+ "AND TO_DATE('"+todate+"', 'YYYY-MM-DD HH24:MI:SS') "
 													+ "ORDER BY s.id";
 				}
 				
@@ -368,8 +368,8 @@ public class Db {
     				+ "WHERE au.description LIKE '%"+keywords+"' "
     				+ "AND s.location LIKE '%"+location+"' "
     				+ "AND su.person_id =" +person_id
-    				+ "AND date_created BETWEEN TO_DATE('"+fromdate+"', 'YYYY-MM-DD') "
-    				+ "AND TO_DATE('"+todate+"','YYYY-MM-DD') "
+    				+ "AND date_created BETWEEN TO_DATE('"+fromdate+"', 'YYYY-MM-DD HH24:MI:SS') "
+    				+ "AND TO_DATE('"+todate+"','YYYY-MM-DD HH24:MI:SS') "
     				+ "UNION ALL "
     				+ "SELECT i.image_id as id,i.sensor_id ,i.date_created,i.description, s.sensor_type "
     				+ "FROM images i "
@@ -378,8 +378,8 @@ public class Db {
     				+ "WHERE i.description LIKE '%"+keywords+"' "
     				+ "AND s.location LIKE '%"+location+"' "
     				+ "AND su.person_id ="+person_id + ""
-    				+ "AND date_created BETWEEN TO_DATE('"+fromdate+"', 'YYYY-MM-DD') "
-    				+ "AND TO_DATE('"+todate+"','YYYY-MM-DD') "
+    				+ "AND date_created BETWEEN TO_DATE('"+fromdate+"', 'YYYY-MM-DD HH24:MI:SS') "
+    				+ "AND TO_DATE('"+todate+"','YYYY-MM-DD HH24:MI:SS') "
     				+ "UNION ALL ";
     		
     		if(isNumber( keywords )){
@@ -390,7 +390,7 @@ public class Db {
         				+ "WHERE sc.value = " + Float.parseFloat(keywords)
         				+ "AND s.location LIKE '%"+location+"'"
         				+ "AND su.person_id ="+person_id
-        				+ "AND date_created BETWEEN TO_DATE('"+fromdate+"', 'YYYY-MM-DD') "
+        				+ "AND date_created BETWEEN TO_DATE('"+fromdate+"', 'YYYY-MM-DD HH24:MI:SS') "
         				+ "AND TO_DATE('"+todate+"','YYYY-MM-DD')";
     		}
     		else if(keywords.equals("")){
@@ -400,8 +400,8 @@ public class Db {
 	    				+ "JOIN sensors s on sc.sensor_id = s.sensor_id "
 	    				+ "WHERE s.location LIKE '%"+location+"'"
 	    				+ "AND su.person_id ="+person_id
-	    				+ "AND date_created BETWEEN TO_DATE('"+fromdate+"', 'YYYY-MM-DD') "
-	    				+ "AND TO_DATE('"+todate+"','YYYY-MM-DD')";
+	    				+ "AND date_created BETWEEN TO_DATE('"+fromdate+"', 'YYYY-MM-DD HH24:MI:SS') "
+	    				+ "AND TO_DATE('"+todate+"','YYYY-MM-DD HH24:MI:SS')";
     		}
     		else {
     			query2 ="SELECT sc.id,sc.sensor_id,sc.date_created,CAST(sc.value as varchar(128)),s.sensor_type "
@@ -411,8 +411,8 @@ public class Db {
 	    				+ "WHERE s.location LIKE '%"+location+"'"
 	    				+ "AND su.person_id ="+person_id
 	    				+ "AND s.value =null "
-	    				+ "AND date_created BETWEEN TO_DATE('"+fromdate+"', 'YYYY-MM-DD') "
-	    				+ "AND TO_DATE('"+todate+"','YYYY-MM-DD')";
+	    				+ "AND date_created BETWEEN TO_DATE('"+fromdate+"', 'YYYY-MM-DD HH24:MI:SS') "
+	    				+ "AND TO_DATE('"+todate+"','YYYY-MM-DD HH24:MI:SS')";
     		}
     		
     		results = execute_stmt(query + query2);
@@ -807,9 +807,9 @@ public class Db {
 			}
 		return ret_list; }
 
-	public ArrayList<User> printUsers(){
+	public ArrayList<User> printUsers(String user){
 		ArrayList<User> ret_list=new ArrayList<User>();
-		String us_id_b = "SELECT * from users";
+		String us_id_b = "SELECT * from users WHERE user_name !='" + user+"'";
 
 		try{
 			ResultSet rs_b =execute_stmt(us_id_b);

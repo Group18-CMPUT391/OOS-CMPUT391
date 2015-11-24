@@ -78,9 +78,28 @@ public class SearchServlet extends HttpServlet {
         try{
         	
         	//Check if first date is less than second date in the search field 
-        	SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-        	if(formatter.parse(fromDate).after(formatter.parse(toDate)) || 
-        			formatter.parse(fromDate).equals(formatter.parse(toDate))){
+        	SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        	String[] datef = fromDate.split("T");
+        	String[] datet = toDate.split("T");
+        	String date1 = null;
+        	String date2 = null;
+        	if (datef[1].split(":").length != 3) {
+        		date1 = datef[0] +" "+datef[1] + ":00";
+    		}
+    		else {
+    			date1 = datef[0] +" "+datef[1];
+    		}
+        	if (datet[1].split(":").length != 3) {
+        		date2 = datet[0] +" "+datet[1] + ":00";
+    		}
+    		else {
+    			date2 = datet[0] +" "+datet[1];
+    		}
+        	System.out.print(date1);
+        	System.out.print(date2);
+        	
+        	if(formatter.parse(date1).after(formatter.parse(date2)) || 
+        			formatter.parse(date1).equals(formatter.parse(date2))){
         		
         		session.setAttribute("err", "The first data has to be smaller than the second date.");
 				response.sendRedirect("/oos-cmput391/search.jsp");
@@ -88,7 +107,7 @@ public class SearchServlet extends HttpServlet {
         	else {
         		//search with sensor type
         		if (!(sensor_type.equals("empty"))) {
-            		rs = database.getResultsSensor(user.getPerson_id(), sensor_type, fromDate, toDate, keywords, location);
+            		rs = database.getResultsSensor(user.getPerson_id(), sensor_type, date1, date2, keywords, location);
                     out.println("<center><b>Your results for '" + keywords + "' between "
                                 + fromDate + " and " + toDate + ":\n<b></center>");
                     
@@ -161,7 +180,7 @@ public class SearchServlet extends HttpServlet {
         		
         		//Searching without sensor type
             	else if (sensor_type.equals("empty")){
-            		rs = database.getResultAll(user.getPerson_id(), fromDate, toDate, keywords, location);
+            		rs = database.getResultAll(user.getPerson_id(), date1, date2, keywords, location);
             		
             		out.println("<center><table border=\"1\" width=\"30%\" cellpadding=\"5\"style=\"white-space:nowrap;\">");
     	          	 out.println("<thead style=\"white-space:nowrap;\">"

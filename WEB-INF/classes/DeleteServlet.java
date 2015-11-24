@@ -47,7 +47,6 @@ public class DeleteServlet extends HttpServlet {
 			db.connect_db();
 			if (type.equals("deleteUser")){
 				String update = request.getParameter("update");
-
 				if (update.equals("Update Password")) {
 					String []checkbox = request.getParameterValues("usercheckbox");
 					if (checkbox.length == 1) {
