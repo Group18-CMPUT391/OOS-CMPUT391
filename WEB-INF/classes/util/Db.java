@@ -391,7 +391,7 @@ public class Db {
         				+ "AND s.location LIKE '%"+location+"'"
         				+ "AND su.person_id ="+person_id
         				+ "AND date_created BETWEEN TO_DATE('"+fromdate+"', 'YYYY-MM-DD HH24:MI:SS') "
-        				+ "AND TO_DATE('"+todate+"','YYYY-MM-DD')";
+        				+ "AND TO_DATE('"+todate+"','YYYY-MM-DD HH24:MI:SS')";
     		}
     		else if(keywords.equals("")){
     			query2 ="SELECT sc.id,sc.sensor_id,sc.date_created,CAST(sc.value as varchar(128)),s.sensor_type "
@@ -475,7 +475,7 @@ public class Db {
     public String addScalarData (int sensor_id, String[] date_created, float value) {
 		
     	
-		String dateTimeLocal = null;
+    	String dateTimeLocal = null;
 		String[] time = date_created[1].split(":");
 		if (time.length != 3) {
 			dateTimeLocal = date_created[0]  + " " + date_created[1] + ":00";
@@ -485,7 +485,10 @@ public class Db {
 		}
 		
 		try {
-
+			SimpleDateFormat format = new SimpleDateFormat( "DD/MM/YYYY HH:mm:ss" );
+			java.util.Date date_time = format.parse(dateTimeLocal );
+			java.sql.Timestamp sqlDate = new java.sql.Timestamp( date_time.getTime());
+		
 			String maxID = "SELECT max(id) FROM scalar_data";
 			
 			ResultSet rs = execute_stmt(maxID);
@@ -493,11 +496,18 @@ public class Db {
 			int id = rs.getInt(1);
 			id++;
 			
-			String insert = ("INSERT INTO scalar_data VALUES(" + id + "," + sensor_id +", "
-					+ "TO_DATE('"+dateTimeLocal+"', 'DD/MM/YYYY HH24:MI:SS'),"+ value +")"); 
-			execute_update(insert);
-
+			PreparedStatement statement = conn.prepareStatement("INSERT INTO scalar_data VALUES(" + id +
+					"," + sensor_id +",?,"+ value +")"); 
+			statement.setTimestamp(1,sqlDate);
+			statement.executeQuery();
+			statement.executeUpdate("commit");
 			return "Scalar Data file Added";
+			
+		}catch (Exception e) {
+			System.out.println(e.getMessage());
+			}
+		return "Scalar Data file was not Added";
+	}
 			
 		}catch (Exception e) {
 			System.out.println(e.getMessage());
