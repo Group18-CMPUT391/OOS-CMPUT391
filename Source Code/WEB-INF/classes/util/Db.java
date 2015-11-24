@@ -473,6 +473,7 @@ public class Db {
     
     //Batch add scalar data to the DB
     public String addScalarData (int sensor_id, String[] date_created, float value) {
+
 		
     	
     	String dateTimeLocal = null;
@@ -508,12 +509,7 @@ public class Db {
 			}
 		return "Scalar Data file was not Added";
 	}
-			
-		}catch (Exception e) {
-			System.out.println(e.getMessage());
-			}
-		return "Scalar Data file was not Added";
-	}
+	
     
     //Creates new sensors in the DB
     public String newSensor (int sensor_id, String location, String sensor_type, String description) {
