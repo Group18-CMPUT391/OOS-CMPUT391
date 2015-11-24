@@ -66,6 +66,9 @@ the left table will change depending on who accesses that page.
 
 ###Data Analysis Module
 
+This module is accessed by scientists. He or she will click the drop-box in order to access the sensor_id values that they are subscribed to. Once you select the sensor_id, a table will be printed showing the yearly minimum, maximum and average of each year. Right below, another field will ask for what year you would like to do the data analysis on. Once the year is chosen, select to what time hierarchy you would like to perform the analysis on, choosing from either daily, weekly, or quarterly. Once you click submit, a table is produced below showing the Analysis of drilldown from year onto what time hierarchy was chose.  
+
+
 ## Installation
 ***Step 1:*** Since this site uses TomCat please place the souce code in the webbapps folder in TomCat. 
 
@@ -128,7 +131,9 @@ Used the example code from class
 * Blob to byte-array: http://stackoverflow.com/questions/6662432/easiest-way-to-convert-a-blob-into-a-byte-array
 * Blob to image to display on jsp: http://stackoverflow.com/questions/2438375/how-to-convert-bufferedimage-to-image-to-display-on-jsp
 * Bufferedimage to blob: http://stackoverflow.com/questions/7645068/how-can-i-convert-a-bufferedimage-object-into-an-inputstream-or-a-blob
+* Check if ResultSet is empty: http://stackoverflow.com/questions/867194/java-resultset-how-to-check-if-there-are-any-results
 * Create thumbnail (thumbnailer lib): https://github.com/coobird/thumbnailator/wiki/Examples
+* Create checkbox and push value to servlet: http://stackoverflow.com/questions/19562140/delete-a-row-from-table-and-database-on-clicking-checkbox-using-jsp
 * Dialog box: https://jqueryui.com/dialog/
 * Files to database: http://www.codejava.net/coding/upload-files-to-database-servlet-jsp-mysql
 * Inputstream for html file upload: http://stackoverflow.com/questions/5730532/values-of-input-text-fields-in-a-html-multipart-form
