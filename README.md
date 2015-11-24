@@ -131,7 +131,9 @@ Used the example code from class
 * Blob to byte-array: http://stackoverflow.com/questions/6662432/easiest-way-to-convert-a-blob-into-a-byte-array
 * Blob to image to display on jsp: http://stackoverflow.com/questions/2438375/how-to-convert-bufferedimage-to-image-to-display-on-jsp
 * Bufferedimage to blob: http://stackoverflow.com/questions/7645068/how-can-i-convert-a-bufferedimage-object-into-an-inputstream-or-a-blob
+* Check if ResultSet is empty: http://stackoverflow.com/questions/867194/java-resultset-how-to-check-if-there-are-any-results
 * Create thumbnail (thumbnailer lib): https://github.com/coobird/thumbnailator/wiki/Examples
+* Create checkbox and push value to servlet: http://stackoverflow.com/questions/19562140/delete-a-row-from-table-and-database-on-clicking-checkbox-using-jsp
 * Dialog box: https://jqueryui.com/dialog/
 * Files to database: http://www.codejava.net/coding/upload-files-to-database-servlet-jsp-mysql
 * Inputstream for html file upload: http://stackoverflow.com/questions/5730532/values-of-input-text-fields-in-a-html-multipart-form
