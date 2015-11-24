@@ -95,8 +95,6 @@ public class SearchServlet extends HttpServlet {
     		else {
     			date2 = datet[0] +" "+datet[1];
     		}
-        	System.out.print(date1);
-        	System.out.print(date2);
         	
         	if(formatter.parse(date1).after(formatter.parse(date2)) || 
         			formatter.parse(date1).equals(formatter.parse(date2))){
