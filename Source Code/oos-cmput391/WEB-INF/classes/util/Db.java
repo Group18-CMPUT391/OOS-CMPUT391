@@ -29,8 +29,8 @@ import javax.imageio.ImageIO;
 import net.coobird.thumbnailator.*;
 
 public class Db {
-	static final String USERNAME = "wkchoi";
-	static final String PASSWORD = "Kingfreak95";
+	static final String USERNAME = "USERNAME";
+	static final String PASSWORD = "*********";
 	// JDBC driver name and database URL
 	static final String DRIVER_NAME = "oracle.jdbc.driver.OracleDriver";
 	static final String DB_URL = "jdbc:oracle:thin:@gwynne.cs.ualberta.ca:1521:CRS";
