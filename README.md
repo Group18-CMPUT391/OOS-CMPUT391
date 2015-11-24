@@ -66,6 +66,9 @@ the left table will change depending on who accesses that page.
 
 ###Data Analysis Module
 
+This module is accessed by scientists. He or she will click the drop-box in order to access the sensor_id values that they are subscribed to. Once you select the sensor_id, a table will be printed showing the yearly minimum, maximum and average of each year. Right below, another field will ask for what year you would like to do the data analysis on. Once the year is chosen, select to what time hierarchy you would like to perform the analysis on, choosing from either daily, weekly, or quarterly. Once you click submit, a table is produced below showing the Analysis of drilldown from year onto what time hierarchy was chose.  
+
+
 ## Installation
 ***Step 1:*** Since this site uses TomCat please place the souce code in the webbapps folder in TomCat. 
 
